@@ -1,0 +1,31 @@
+body {
+    background-color: #d5e3e4;
+}
+
+.container {
+    text-align: center;
+}
+
+.formLogin {
+    text-align: left;
+    margin: auto;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+#logo {
+    width: 220px;
+    height: 200px;
+    margin-bottom: 30px;
+}
+
+#Login {
+    background-color: #76c8ce;
+    color: #ffff;
+    padding: 5px 25px;
+    border-radius: 10px;
+}

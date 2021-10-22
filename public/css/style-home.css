@@ -1,0 +1,54 @@
+body {
+    background-color: #d5e3e4;
+}
+
+.menu {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    margin-top: 80px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    text-align: center;
+}
+
+.Vaccine {
+    width: 50%;
+    padding: 30px;
+    border-right: 5px solid #ffff;
+}
+
+.Test {
+    width: 50%;
+    padding: 30px;
+}
+
+.Test img,
+.Vaccine img {
+    width: 30%;
+}
+
+.Vaccine a,
+.Test a {
+    display: block;
+    transition: all 0.1s;
+}
+
+.Vaccine a:hover,
+.Test a:hover {
+    transform: scale(1.1);
+}
+
+.Vaccine span,
+.Test span {
+    font-size: 2rem;
+    font-family: monospace;
+    margin-top: 10px;
+    display: block;
+    color: black;
+}
