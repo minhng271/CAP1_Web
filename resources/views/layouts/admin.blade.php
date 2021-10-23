@@ -32,6 +32,21 @@
             display: block;
         }
 
+        li.sidebar-item a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            position: relative;
+            color: white;
+            text-decoration: none;
+        }
+
+        .dropdown-toggle:after {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+
     </style>
     <div class="wrapper">
         <nav id="sidebar" class="sidebar js-sidebar">
@@ -41,19 +56,31 @@
                 </a>
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
-                        DANH SÁCH
+                        DANH SÁCH ACCOUNT-ADMIN
                     </li>
-
+                    <li></li>
                     <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
-                        <a class="sidebar-link" href="{{ url('test/tiem-hom-nay') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Xét Nghiệm Hôm Nay</span>
-                        </a>
+                        <a href="#hospital" data-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">DANH SÁCH BỆNH VIỆN</a>
+                        <ul class="collapse list-unstyled" id="hospital">
+                            <li><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh Viện</a></li>
+                            <li><a href="{{ url('admin/hospital') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện</a></li>
+                            <li><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện đã xóa</a></li>
+                        </ul>
                     </li>
-                    <li class="sidebar-item @php if(session('active') == 'wait') echo " active" @endphp">
+                    <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
+                        <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH NGƯỜI DÙNG</a>
+                        <ul class="collapse list-unstyled" id="user">
+                            <li><a href="" class="sidebar-dropdown-link">Thêm Người Dùng</a></li>
+                            <li><a href="" class="sidebar-dropdown-link">Danh Sách Người Dùng</a></li>
+                            <li><a href="" class="sidebar-dropdown-link">Danh Sách Người Dùng đã xóa</a></li>
+                        </ul>
+                    </li>
+                    {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active" @endphp">
                         <a class="sidebar-link" href="{{ url('test/danh-sach-cho') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ Kết Quả</span>
+                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ</span>
                         </a>
-                    </li>
+                    </li> --}}
 
 
                     <li class="sidebar-header">
@@ -96,7 +123,7 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">Bệnh Viện Hoàn Mỹ</span>
+                                        class="text-dark">Tuấn Anh VIP PRO</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
@@ -363,6 +390,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+
     <script>
         $(document).ready(function() {
             $('label.result').click(function() {

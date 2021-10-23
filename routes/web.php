@@ -33,4 +33,15 @@ Route::post('test/result', 'TestController@result');
 
 // VACCINE
 Route::get('vaccine', 'VaccineController@todayList');
+
+
+// ADMIN
+Route::get('admin/hospital', 'AdminController@hospitals');
+Route::get('admin/hospital/add', 'AdminController@add_hospitals');
+Route::post('admin/hospital/store', 'AdminController@store_add_hospitals');
+Route::get('admin/hospital/delete/{id}', 'AdminController@delete_hospitals');
+Route::get('admin/hospital/edit/{id}', 'AdminController@edit_hospitals');
+Route::post('admin/hospital/store/edit', 'AdminController@store_edit_hospitals');
+Route::get('admin/hospital/bin', 'AdminController@bin_hospitals');
+Route::get('admin/hospital/restore/{id}', 'AdminController@restore_hospitals');
 });

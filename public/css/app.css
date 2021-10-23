@@ -13703,9 +13703,13 @@ span.flatpickr-weekday {
 span.alert.alert-success {
     margin-bottom: 0;
     position: absolute;
-    top: -30px;
+    top: -50px;
     left: 0;
     right: 0;
+}
+
+.card.position-relative {
+    top: 60px;
 }
 
 .container-fluid.p-0 {
