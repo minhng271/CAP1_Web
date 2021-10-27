@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class vaccine extends Model
 {
     use SoftDeletes;
+    
 }

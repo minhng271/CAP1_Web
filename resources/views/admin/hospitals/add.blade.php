@@ -10,7 +10,7 @@
     <div id="content" class="container-fluid">
         <div class="card add">
             <div class="card-header font-weight-bold">
-                Thêm Bệnh Viện
+                Thêm MỚI Bệnh Viện
             </div>
             <div class="card-body">
                 {!! Form::open(['url' => 'admin/hospital/store', 'method' => 'POST']) !!}
@@ -22,6 +22,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+               
                 <div class="form-group">
                     {!! Form::label('email', 'Email', []) !!}
                     {!! Form::email('email', '', ['class' => 'form-control', 'id' => 'email']) !!}
@@ -36,8 +37,17 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary" name="submit" value="submit">Thêm mới</button>
+                <div class="form-group">
+                    {!! Form::label('address', 'Địa Chỉ', []) !!}
+                    {!! Form::text('address', '', ['class' => 'form-control', 'id' => 'address']) !!}
+                    @error('address')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                
 
+                <button type="submit" class="btn btn-primary" name="submit" value="submit">Thêm mới</button>
+                
                 {!! Form::close() !!}
             </div>
         </div>

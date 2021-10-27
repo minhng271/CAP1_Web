@@ -32,6 +32,13 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    {!! Form::label('address', 'Địa Chỉ', []) !!}
+                    {!! Form::text('address', "$hospital->address", ['class' => 'form-control', 'id' => 'address']) !!}
+                    @error('address')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- <div class="form-group">
                     {!! Form::label('password', 'Mật khẩu Cũ', []) !!}
                     {!! Form::password('password_old', ['class' => 'form-control', 'id' => 'password']) !!}
                     @error('password_old')
@@ -51,7 +58,7 @@
                     @error('password_confirm')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> --}}
                 <button type="submit" class="btn btn-primary" name="submit_edit" value="{{$hospital->id}}">Thay Đổi</button>
                 <a href="{{ url('admin/hospital', []) }}" class="btn btn-secondary" >Hủy</a>
 

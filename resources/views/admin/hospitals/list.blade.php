@@ -6,8 +6,11 @@
                 <span class="alert alert-success">{{ session('status') }}</span>
             @endif
             @if (session('delete'))
-                <span class="alert alert-success">Đã xóa <b>{{ session('delete') }}</b> thành công !!!</span>
+                <span  class="alert alert-success">Xóa <b>{{ session('delete') }}</b> thành công !!!</span>
             @endif
+            @if (session('update'))
+            <span class="alert alert-success">Cập Nhật <b>{{ session('update') }}</b> thành công !!!</span>
+        @endif
             <div class="card-header d-flex justify-content-between">
                 <div class="card-header-left">
                     <span class="font-weight-bold" style="font-size: 1.8rem; text-transform: uppercase;">Danh Sách Bệnh Viện</span>
@@ -28,15 +31,15 @@
             </div>
             {!! Form::open(['url' => 'users/option']) !!}
 
-            <div class="select-option" style="display: flex;">
+            {{-- <div class="select-option" style="display: flex;">
                 <select name="act" class="form-control col-md-2" style="margin-right: 10px;">
                     <option>Chọn</option>
-                    {{-- @foreach ($hospitals_act as $key => $value)
+                    @foreach ($hospitals_act as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
-                    @endforeach --}}
+                    @endforeach
                 </select>
                 <input type="submit" class="btn btn-primary" name="option" value="Áp dụng">
-            </div>
+            </div> --}}
             {{-- script --}}
             <script>
                 $(document).ready(function() {
@@ -51,9 +54,9 @@
                         <tr>
                             <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td>
                             <th scope="col">#</th>
-                            <th scope="col">Họ tên</th>
+                            <th scope="col">Tên Bệnh Viện</th>
+                            <th scope="col">Địa Chỉ</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Quyền</th>
                             <th scope="col">Ngày tạo</th>
                             <th scope="col">Tác vụ</th>
                         </tr>
@@ -70,8 +73,9 @@
                                             class="check"></td>
                                     <th scope="row">{{ $count }}</th>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->address }}</td>
                                     <td>{{ $item->email }}</td>
-                                    <td>Admination</td>
+                                    
                                     <td>{{ $item->created_at }}</td>
                                     <td>
                                         <a href="{{ url('admin/hospital/edit/' . $item->id) }}"

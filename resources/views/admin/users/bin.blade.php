@@ -13,7 +13,7 @@
             @endif
             <div class="card-header d-flex justify-content-between">
                 <div class="card-header-left">
-                    <span class="font-weight-bold" style="font-size: 1.8rem; text-transform: uppercase;">Danh Sách Bệnh Viện Đã Xóa</span>
+                    <span class="font-weight-bold" style="font-size: 1.8rem; text-transform: uppercase;">DANH SÁCH NGƯỜI DÙNG ĐÃ XÓA</span>
                     {{-- <div class="header-count">
                         <a href="{{ request()->fullUrlWithQuery(['status' => 'active']) }}" class="header-count-link a1">Tài
                             khoản được kích hoạt({{ $count['active'] }})</a>
@@ -31,15 +31,15 @@
             </div>
             {!! Form::open(['url' => 'users/option']) !!}
 
-            <div class="select-option" style="display: flex;">
+            {{-- <div class="select-option" style="display: flex;">
                 <select name="act" class="form-control col-md-2" style="margin-right: 10px;">
                     <option>Chọn</option>
-                    {{-- @foreach ($hospitals_act as $key => $value)
+                    @foreach ($users_act as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
-                    @endforeach --}}
+                    @endforeach
                 </select>
                 <input type="submit" class="btn btn-primary" name="option" value="Áp dụng">
-            </div>
+            </div> --}}
             {{-- script --}}
             <script>
                 $(document).ready(function() {
@@ -54,30 +54,30 @@
                         <tr>
                             <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td>
                             <th scope="col">#</th>
-                            <th scope="col">Họ tên</th>
+                            <th scope="col">Tên Bệnh Viện</th>
+                            <th scope="col">Địa Chỉ</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Quyền</th>
                             <th scope="col">Ngày tạo</th>
                             <th scope="col">Tác vụ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($hospitals->count() > 0)
+                        @if ($users->count() > 0)
                             @php
                                 $count = 1;
                             @endphp
-                            @foreach ($hospitals as $item)
+                            @foreach ($users as $item)
 
                                 <tr>
                                     <td><input type="checkbox" name="check[]" value="{{ $item->id }}"
                                             class="check"></td>
                                     <th scope="row">{{ $count }}</th>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->address}}</td>
                                     <td>{{ $item->email }}</td>
-                                    <td>Admination</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
-                                        <a href="{{ url('admin/hospital/restore/' . $item->id) }}"
+                                        <a href="{{ url('admin/user/restore/' . $item->id) }}"
                                             class="btn btn-success btn-sm rounded-0 text-white"
                                             type="button"
                                             onclick="return confirm('Khôi phục tài khoản?')"><i
@@ -85,7 +85,7 @@
                                             <i class="far fa-window-restore"></i>
                                         </a>
                                         @if (Auth::id() != $item->id)
-                                            <a href="{{ url('admin/hospital/delete/' . $item->id) }}"
+                                            <a href="{{ url('admin/user/delete/' . $item->id) }}"
                                                 class="btn btn-danger btn-sm rounded-0 text-white" type="button"
                                                 title="Xóa Vĩnh Viễn"
                                                 onclick="return confirm('Xóa vĩnh viễn?')"><i
@@ -107,7 +107,7 @@
                     </tbody>
                 </table>
                 <nav aria-label="Page navigation example">
-                    {{ $hospitals->links() }}
+                    {{ $users->links() }}
                 </nav>
             </div>
             {!! Form::close() !!}

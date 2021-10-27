@@ -42,7 +42,7 @@
                             <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
                         </form>
                     </div>
-                    {!! Form::open(['url' => url('vaccine/result')]) !!}
+                    {!! Form::open(['url' => url('test/result')]) !!}
                     <div class="card flex-fill">
                         <table class="table table-hover my-0">
                             <thead>
@@ -62,8 +62,8 @@
                                 @php
                                     $count = 0;
                                 @endphp
-                                @if ($patients)
-                                    @foreach ($patients as $item)
+                                @if ($vaccines)
+                                    @foreach ($vaccines as $item)
                                         @php
                                             $count++;
                                         @endphp
@@ -84,7 +84,9 @@
                                                     @endphp
                                                 </span>
                                             </td>
-                                            <td class="d-none d-xl-table-cell"><span>{{ $item->birthday }}</span></td>
+                                            <td class="d-none d-xl-table-cell">@php
+                                                echo date("d-m-Y", strtotime($item->birthday));
+                                            @endphp</td>
                                             <td class="d-none d-xl-table-cell"><span>{{ $item->phone }}</span></td>
                                             <td class="d-none d-md-table-cell">
                                                 <label for="negative[{{ $item->id }}]" class="result">
@@ -116,7 +118,7 @@
                     </div>
                     {!! Form::close() !!}
                     <nav aria-label="Page navigation example">
-                        {{ $patients->links() }}
+                        {{ $vaccines->links() }}
                     </nav>
                 </div>
 

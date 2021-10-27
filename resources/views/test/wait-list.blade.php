@@ -84,7 +84,9 @@
                                                     @endphp
                                                 </span>
                                             </td>
-                                            <td class="d-none d-xl-table-cell"><span>{{ $item->birthday }}</span></td>
+                                            <td class="d-none d-xl-table-cell">@php
+                                                echo date("d-m-Y", strtotime($item->birthday));
+                                            @endphp</td>
                                             <td class="d-none d-xl-table-cell"><span>{{ $item->phone }}</span></td>
                                             <td class="d-none d-md-table-cell">
                                                 <label for="negative[{{ $item->id }}]" class="result">

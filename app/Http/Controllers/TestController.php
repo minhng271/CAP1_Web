@@ -47,4 +47,13 @@ class TestController extends Controller
         }
         return redirect('test/danh-sach-cho')->with('status','Đã Xác Nhận thành công!!!');
     }
+
+    //DS theo lịch
+    function list_to_calander(Request $request){
+
+        $created_at = date("Y-m-d", strtotime($request->input('created_at')));
+
+        $patients = patient::where('created_at',$created_at)->paginate(8);
+        return view('test.list-to-calander',compact('patients'));
+    }
 }

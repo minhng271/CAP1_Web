@@ -43,13 +43,12 @@
 
         .dropdown-toggle:after {
             position: absolute;
-            right: 15px;
             top: 15px;
         }
 
     </style>
     <div class="wrapper">
-        <nav id="sidebar" class="sidebar js-sidebar">
+        <nav id="sidebar"  class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
                 <a class="sidebar-brand" href="{{ url('test') }}">
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
@@ -64,16 +63,16 @@
                             class="dropdown-toggle">DANH SÁCH BỆNH VIỆN</a>
                         <ul class="collapse list-unstyled" id="hospital">
                             <li><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh Viện</a></li>
-                            <li><a href="{{ url('admin/hospital') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện</a></li>
+                            <li><a href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện</a></li>
                             <li><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện đã xóa</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
                         <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH NGƯỜI DÙNG</a>
                         <ul class="collapse list-unstyled" id="user">
-                            <li><a href="" class="sidebar-dropdown-link">Thêm Người Dùng</a></li>
-                            <li><a href="" class="sidebar-dropdown-link">Danh Sách Người Dùng</a></li>
-                            <li><a href="" class="sidebar-dropdown-link">Danh Sách Người Dùng đã xóa</a></li>
+                            <li><a href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người Dùng</a></li>
+                            <li><a href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người Dùng</a></li>
+                            <li><a href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người Dùng đã xóa</a></li>
                         </ul>
                     </li>
                     {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active" @endphp">
@@ -81,20 +80,6 @@
                             <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ</span>
                         </a>
                     </li> --}}
-
-
-                    <li class="sidebar-header">
-                        LỊCH
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="test/danh-sach-theo-lich">
-                            <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
-                        </a>
-                    </li>
-
-
-
 
                 </ul>
 
@@ -123,7 +108,7 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">Tuấn Anh VIP PRO</span>
+                                        class="text-dark">ADMIN</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"

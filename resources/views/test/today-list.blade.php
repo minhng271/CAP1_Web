@@ -110,7 +110,9 @@
                                                     echo 'Nữ';
                                                 }
                                             @endphp</td>
-                                            <td class="d-none d-xl-table-cell">{{ $item->birthday }}</td>
+                                            <td class="d-none d-xl-table-cell">@php
+                                                echo date("d-m-Y", strtotime($item->birthday));
+                                            @endphp</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
                                                 <a href="{{ url('test/done-patient', ['id' => $item->id]) }}"

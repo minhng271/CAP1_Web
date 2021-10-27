@@ -10,13 +10,13 @@
     <div id="content" class="container-fluid">
         <div class="card add">
             <div class="card-header font-weight-bold">
-                Thêm Bệnh Viện
+                Thêm Người Dùng
             </div>
             <div class="card-body">
-                {!! Form::open(['url' => 'admin/hospital/store', 'method' => 'POST']) !!}
-                {!! Form::hidden('type', 'hospital', []) !!}
+                {!! Form::open(['url' => 'admin/user/store', 'method' => 'POST']) !!}
+                {!! Form::hidden('type', 'user', []) !!}
                 <div class="form-group">
-                    {!! Form::label('name', 'Tên Bệnh Viện', []) !!}
+                    {!! Form::label('name', 'Tên Người Dùng', []) !!}
                     {!! Form::text('name', '', ['class' => 'form-control', 'id' => 'name']) !!}
                     @error('name')
                         <span class="text-danger">{{ $message }}</span>

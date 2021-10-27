@@ -66,13 +66,21 @@
             @endif
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
-                    <div class="card-header  d-flex justify-content-between">
-                        <h3 style="text-transform: uppercase; font-weight: 600;">Danh sách Tiêm Vaccine hôm nay</h3>
-                        <form class="col-md-4 d-flex justify-content-end" method="GET">
+                    <div class="card-header  d-flex justify-content-between row">
+                        <h3 class="col-md-6">Tra Danh Sách Theo Lịch</h3>
+                        {{-- <form class="col-md-4 d-flex justify-content-end" method="GET">
                             <input type="text" class='form-control' class="form-control" name="keyword"
                                 value="{{ request()->input('keyword') }}" placeholder="Tìm Kiếm ...">
                             <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
-                        </form>
+                        </form> --}}
+                           <form action="" method="get" class="col-md-6 row d-flex justify-content-end">
+                            <div class="col-md-6">  
+                                <input type="text" id="from_date" name="created_at" value="{{request()->input('created_at')}}" readonly="readonly" class="form-control" />  
+                           </div>
+                            <div class="col-md-3">  
+                                <button type="submit" name="filter" id="filter" class="btn btn-info w-100">Tra cứu</button>  
+                           </div> 
+                           </form>
                     </div>
                     <div class="card flex-fill">
                         <table class="table table-hover my-0">
@@ -115,13 +123,13 @@
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/done-patient', ['id' => $item->id]) }}"
+                                                <a href="{{ url('test/done-patient', ['id' => $item->id]) }}"
                                                     onclick="return confirm('CHUYỂN VÀO DANH SÁCH CHỜ')">
                                                     <i class="fas fa-check"></i>
                                                 </a>
                                             </td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/delete-patient', ['id' => $item->id]) }}"
+                                                <a href="{{ url('test/delete-patient', ['id' => $item->id]) }}"
                                                     onclick="return confirm('XÓA KHỎI DANH SÁCH HÔM NAY')">
                                                     <i class="far fa-trash-alt"></i>
                                                 </a>
@@ -130,6 +138,7 @@
                                                 <i class="far fa-user" style="color: #3b7ddd;"></i>
                                             </td>
                                         </tr>
+
                                         <div class="col-md-6 info-patient d-none" id="{{ $item->id }}">
                                             <form action="">
                                                 <h3>ThÔNG TIN BỆNH NHÂN</h3>
@@ -144,13 +153,6 @@
                                                         <label for="" class='form-label'>CMND/CCCD</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->number_cccd }}">
-                                                    </div>
-                                                    <div class="mb d-flex">
-                                                        <label for="" class='form-label'>Ngày Sinh</label>
-                                                        <input type="text" class='form-control w-50'
-                                                            value="@php
-                                                            echo date("d-m-Y", strtotime($item->birthday));
-                                                        @endphp">
                                                     </div>
                                                     <div class="mb d-flex">
                                                         <label for="" class='form-label'>Giới tính</label>
@@ -171,7 +173,13 @@
                                                                 for="female[{{ $item->id }}]">Nữ</label>
                                                         </div>
                                                     </div>
-                                                    
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Ngày Sinh</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="@php
+                                                                echo date("d-m-Y", strtotime($item->birthday));
+                                                            @endphp">
+                                                    </div>
                                                     <div class="mb d-flex">
                                                         <label for="" class='form-label'>Số Điện thoại</label>
                                                         <input type="text" class='form-control w-50'
@@ -182,21 +190,11 @@
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->address }}">
                                                     </div>
-                                                    <div class="mb d-flex">
+                                                    {{-- <div class="mb d-flex">
                                                         <label for="" class='form-label'>Lần tiêm</label>
                                                         <input type="text" class='form-control w-50'
-                                                            value="{{ $item->number_test}}">
-                                                    </div>
-                                                    <div class="mb d-flex">
-                                                        <label for="" class='form-label'>Tên Vaccine</label>
-                                                        <input type="text" class='form-control w-50'
-                                                            value="{{ $item->name_vaccine }}">
-                                                    </div>
-                                                    <div class="mb d-flex">
-                                                        <label for="" class='form-label'>số lô</label>
-                                                        <input type="text" class='form-control w-50'
-                                                            value="{{ $item->number_shipment }}">
-                                                    </div>
+                                                            value="{{ $item->number_test }}">
+                                                    </div> --}}
                                                 </div>
 
                                                 <div class="mb-3 d-flex mb-submit justify-content-end mt-3">

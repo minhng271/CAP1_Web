@@ -57,7 +57,7 @@
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="vaccine/danh-sach-theo-lich">
+                        <a class="sidebar-link" href="{{ url('vaccine/danh-sach-theo-lich') }}">
                             <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
                         </a>
                     </li>
@@ -361,6 +361,12 @@
     </script>
     <script>
         $(document).ready(function(){
+            $.datepicker.setDefaults({  
+                dateFormat: 'dd-mm-yy'   
+           });  
+           $(function(){  
+                $("#from_date").datepicker();  
+           }); 
         $('label.result').click(function(){          
             $(this).parents('tr').children('th').children('input[type=checkbox]').attr('checked','checked');
         });
@@ -375,6 +381,12 @@
         
         });
     </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"
+        type="text/javascript"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+        rel="Stylesheet" type="text/css" />
 </body>
 
 </html>
