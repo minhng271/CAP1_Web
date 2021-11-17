@@ -12,13 +12,13 @@
       <img src="{{ asset('img/mtac-system.png') }}" alt="" />
       <div class="menu">
         <div class="Vaccine">
-          <a href="{{ url('vaccine') }}">
+          <a href="{{ url('dashboard/vaccine') }}">
             <img src="{{ asset('img/iconVac.png') }}" alt="" /> <br />
             <span>Tiêm Vaccine</span>
           </a>
         </div>
         <div class="Test">
-          <a href="{{ url('test') }}">
+          <a href="{{ url('dashboard/test') }}">
             <img src="{{ asset('img/iconTest.png') }}" alt="" /> <br />
             <span>Xét nghiệm</span>
           </a>

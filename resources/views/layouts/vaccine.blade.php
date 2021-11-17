@@ -36,6 +36,12 @@
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
                 </a>
                 <ul class="sidebar-nav">
+                    
+                    <li class="sidebar-item @php if(session('active') == 'dashboard') echo "active" @endphp">
+                        <a class="sidebar-link" href="{{ url('dashboard/vaccine') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Trang Chính</span>
+                        </a>
+                    </li>
                     <li class="sidebar-header">
                         DANH SÁCH
                     </li>
@@ -61,6 +67,34 @@
                             <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
                         </a>
                     </li>
+                    <li class="sidebar-header">
+                        VẮC XIN
+                    </li>
+                    
+                    <li class="sidebar-item @php if(session('active') == 'them-moi-vaccine') echo "active" @endphp">
+                        <a class="sidebar-link" href="{{ url('vaccine/them-moi-vaccine') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Thêm mới vắc xin</span>
+                        </a>
+                    </li>
+                    
+                    <li class="sidebar-item @php if(session('active') == 'nhap-them-vaccine') echo "active" @endphp">
+                        <a class="sidebar-link" href="{{ url('vaccine/nhap-them-vaccine') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Nhập thêm số lượng vắc xin</span>
+                        </a>
+                    </li>
+                    
+                    <li class="sidebar-item @php if(session('active') == 'danh-sach-vaccine') echo "active" @endphp">
+                        <a class="sidebar-link" href="{{ url('vaccine/danh-sach-vaccine') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Vắc Xin</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item @php if(session('active') == 'danh-sach-vaccine-da-xoa') echo "active" @endphp">
+                        <a class="sidebar-link" href="{{ url('vaccine/danh-sach-vaccine-da-xoa') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Vắc Xin đã xóa</span>
+                        </a>
+                    </li>
+
+                    
 
 
 

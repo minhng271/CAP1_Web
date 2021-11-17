@@ -41,9 +41,17 @@
                 </a>
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
-                        DANH SÁCH
+                        XÉT NGHIỆM
+                    </li>
+                    <li class="sidebar-item @php if(session('active') == 'dashboard') echo " active" @endphp">
+                        <a class="sidebar-link" href="{{ url('dashboard/test') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Trang Chính</span>
+                        </a>
                     </li>
 
+                    <li class="sidebar-header">
+                        DANH SÁCH
+                    </li>
                     <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
                         <a class="sidebar-link" href="{{ url('test/tiem-hom-nay') }}">
                             <i class="fas fa-list"></i> <span class="align-middle">Xét Nghiệm Hôm Nay</span>
@@ -55,11 +63,9 @@
                         </a>
                     </li>
 
-
                     <li class="sidebar-header">
                         LỊCH
                     </li>
-
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url('test/danh-sach-theo-lich') }}">
                             <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
@@ -96,7 +102,7 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">Bệnh Viện Hoàn Mỹ</span>
+                                        class="text-dark">{{Auth::user()->name}}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"

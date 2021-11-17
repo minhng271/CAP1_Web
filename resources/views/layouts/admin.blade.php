@@ -9,7 +9,7 @@
     <meta name="author" content="AdminKit">
     <meta name="keywords"
         content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="{{ asset('img/icons/icon-48x48.png') }}" />
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
@@ -46,9 +46,14 @@
             top: 15px;
         }
 
+        h1.title {
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
     </style>
     <div class="wrapper">
-        <nav id="sidebar"  class="sidebar js-sidebar">
+        <nav id="sidebar" class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
                 <a class="sidebar-brand" href="{{ url('test') }}">
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
@@ -59,20 +64,27 @@
                     </li>
                     <li></li>
                     <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
-                        <a href="#hospital" data-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle">DANH SÁCH BỆNH VIỆN</a>
+                        <a href="#hospital" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH
+                            SÁCH BỆNH VIỆN</a>
                         <ul class="collapse list-unstyled" id="hospital">
-                            <li><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh Viện</a></li>
-                            <li><a href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện</a></li>
-                            <li><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện đã xóa</a></li>
+                            <li><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh
+                                    Viện</a></li>
+                            <li><a href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
+                                    viện</a></li>
+                            <li><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
+                                    viện đã xóa</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
-                        <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH NGƯỜI DÙNG</a>
+                        <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH
+                            NGƯỜI DÙNG</a>
                         <ul class="collapse list-unstyled" id="user">
-                            <li><a href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người Dùng</a></li>
-                            <li><a href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người Dùng</a></li>
-                            <li><a href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người Dùng đã xóa</a></li>
+                            <li><a href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người
+                                    Dùng</a></li>
+                            <li><a href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
+                                    Dùng</a></li>
+                            <li><a href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
+                                    Dùng đã xóa</a></li>
                         </ul>
                     </li>
                     {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active" @endphp">

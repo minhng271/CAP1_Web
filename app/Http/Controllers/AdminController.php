@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\hospital;
 use App\user;
 use App\User as AppUser;
 use Illuminate\Http\Request;
@@ -17,8 +18,8 @@ class AdminController extends Controller
         if($request->input('keyword')){
             $keyword = $request->input('keyword');
         }
-
-        $hospitals = AppUser::where('name','like','%'.$keyword.'%')->where('type','hospital')->paginate(8);
+        $hospitals = hospital::where('name','like','%'.$keyword.'%')->paginate(8);
+        return $hospitals;
         return view('admin.hospitals.list', compact('hospitals'));
     }
     

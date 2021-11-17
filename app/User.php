@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','type','address'
+        'email', 'password','type'
     ];
 
     /**
@@ -41,10 +41,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // 'email_verified_at' => 'datetime',
     ];
-
-    function hospital(){
-        return $this->hasOne('App/hospital');
+    
+    public function hospital()
+    {
+        return $this->hasOne(hospital::class, 'id_user', 'id');
     }
 }

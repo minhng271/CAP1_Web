@@ -55,6 +55,7 @@
                             <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td>
                             <th scope="col">#</th>
                             <th scope="col">Tên Bệnh Viện</th>
+                            <th scope="col">SDT</th>
                             <th scope="col">Địa Chỉ</th>
                             <th scope="col">Email</th>
                             <th scope="col">Ngày tạo</th>
@@ -72,6 +73,7 @@
                                     <td><input type="checkbox" name="check[]" value="{{ $item->id }}"
                                             class="check"></td>
                                     <th scope="row">{{ $count }}</th>
+                                    <td>{{ $item->name }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->address }}</td>
                                     <td>{{ $item->email }}</td>

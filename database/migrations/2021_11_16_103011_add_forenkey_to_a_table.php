@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDeletesoftToUsers extends Migration
+class AddForenkeyToATable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddDeletesoftToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('vaccines', function (Blueprint $table) {
+            $table->timestamps();
         });
     }
 
@@ -25,7 +25,7 @@ class AddDeletesoftToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('vaccines', function (Blueprint $table) {
             //
         });
     }

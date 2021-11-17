@@ -24,6 +24,12 @@
             align-items: center;
         }
 
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
     </style>
     <main class="content">
 
@@ -50,10 +56,10 @@
                                     <th></th>
                                     <th class="d-none d-xl-table-cell">STT</th>
                                     <th class="d-none d-xl-table-cell">Họ Tên</th>
+                                    <th class="d-none d-xl-table-cell">CCCD/CMND</th>
                                     <th class="d-none d-xl-table-cell">Giới tính</th>
                                     <th class="d-none d-xl-table-cell">Ngày Sinh</th>
                                     <th class="d-none d-md-table-cell">Số Điện Thoại</th>
-                                    <th class="d-none d-md-table-cell">CCCD/CMND</th>
                                     <th class="d-none d-md-table-cell">Âm Tính</th>
                                     <th class="d-none d-md-table-cell">Dương Tính</th>
                                 </tr>
@@ -69,10 +75,10 @@
                                         @endphp
                                         <tr>
                                             <th class="d-none d-xl-table-cell"><input type="checkbox" name="check[]"
-                                                    value="{{ $item->id }}" id="{{ $item->id }}"></th>
+                                                    value="{{ $item->id_card }}" id="{{ $item->id_card }}"></th>
                                             <td class="d-none d-xl-table-cell"><span>{{ $count }}</span></td>
-                                            <td class="d-none d-xl-table-cell"><span>{{ $item->name }}</span></td>
-                                            <td class="d-none d-xl-table-cell"><span>{{ $item->cccd }}</span></td>
+                                            <td class="d-none d-xl-table-cell"><span>{{ $item->fullname }}</span></td>
+                                            <td class="d-none d-xl-table-cell"><span>{{ $item->id_card }}</span></td>
                                             <td class="d-none d-xl-table-cell">
                                                 <span>
                                                     @php
@@ -85,20 +91,20 @@
                                                 </span>
                                             </td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->birthday));
+                                                echo date('d-m-Y', strtotime($item->birthday));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell"><span>{{ $item->phone }}</span></td>
                                             <td class="d-none d-md-table-cell">
-                                                <label for="negative[{{ $item->id }}]" class="result">
-                                                    <input type="radio" id="negative[{{ $item->id }}]"
-                                                        name="result[{{ $item->id }}]" value="0">
+                                                <label for="negative[{{ $item->id_card }}]" class="result">
+                                                    <input type="radio" id="negative[{{ $item->id_card }}]"
+                                                        name="result[{{ $item->id_card }}]" value="0">
                                                 </label>
 
                                             </td>
                                             <td class="d-none d-md-table-cell">
-                                                <label for="positive[{{ $item->id }}]" class="result">
-                                                    <input type="radio" id="positive[{{ $item->id }}]"
-                                                        name="result[{{ $item->id }}]" value="1">
+                                                <label for="positive[{{ $item->id_card }}]" class="result">
+                                                    <input type="radio" id="positive[{{ $item->id_card }}]"
+                                                        name="result[{{ $item->id_card }}]" value="1">
                                                 </label>
                                             </td>
                                         </tr>
@@ -113,7 +119,8 @@
                         </table>
                     </div>
                     <div class="submit d-flex justify-content-end">
-                        <button style="margin-top: 10px;padding: 10px 20px;" type="submit" onclick=" return confirm('XÁC NHẬN THÀNH CÔNG')" class="btn btn-primary">XÁC
+                        <button style="margin-top: 10px;padding: 10px 20px;" type="submit"
+                            onclick=" return confirm('XÁC NHẬN THÀNH CÔNG')" class="btn btn-primary">XÁC
                             NHẬN</button>
                     </div>
                     {!! Form::close() !!}

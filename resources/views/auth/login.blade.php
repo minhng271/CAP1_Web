@@ -18,7 +18,7 @@
         <img src="{{ asset('img/mtac-system.png') }}" alt="" id="logo" />
         <div class="formLogin">
             <div class="row">
-                <form form method="POST" action="{{ route('login') }}" class="col-md-4">
+                <form form method="POST" action="{{ route('getLogin') }}" class="col-md-4">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Tên Đăng Nhập</label>

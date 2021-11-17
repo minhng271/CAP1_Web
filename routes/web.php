@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -13,33 +14,47 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes();
+// LOGIN
 Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+Route::post('getLogin', 'UserController@getLogin')->name('getLogin');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 
 Route::middleware(['auth'])->group(function () {
 
 // TEST
+Route::get('dashboard/test','TestController@dashboard');
 Route::get('test', 'TestController@todayList');
-Route::get('test/tiem-hom-nay', 'TestController@todayList')->name('today-list');
+Route::get('test/tiem-hom-nay', 'TestController@todayList');
 Route::get('test/danh-sach-cho', 'TestController@waitList');
-Route::get('test/done-patient/{id}', 'TestController@done_patient');
-Route::get('test/delete-patient/{id}', 'TestController@delete_patient');
+Route::get('test/done-patient/{id_card}', 'TestController@done_patient');
+Route::get('test/delete-patient/{id_card}', 'TestController@delete_patient');
 Route::post('test/result', 'TestController@result');
-
 Route::get('test/danh-sach-theo-lich', 'TestController@list_to_calander');
 
 // VACCINE
+Route::get('dashboard/vaccine','VaccineController@dashboard');
+Route::get('vaccine/danh-sach-vaccine','VaccineController@vaccine_list');
+Route::get('vaccine/edit-vaccine/{id}','VaccineController@edit_vaccine');
+Route::post('vaccine/store-edit-vaccine','VaccineController@store_edit_vaccine');
+Route::get('vaccine/delete-vaccine/{id}','VaccineController@delete_vaccine');
+Route::get('vaccine/danh-sach-vaccine-da-xoa','VaccineController@bin_vaccine');
+Route::get('vaccine/khoi-phuc-vaccine/{id}','VaccineController@restore_bin_vaccine');
+Route::get('vaccine/them-moi-vaccine','VaccineController@vaccine_addnew');
+Route::post('vaccine/store-addnew-vaccine','VaccineController@store_addnew');
+Route::get('vaccine/nhap-them-vaccine','VaccineController@vaccine_import');
+
+// danh sach 
 Route::get('vaccine', 'VaccineController@todayList');
-Route::get('vaccine/tiem-hom-nay', 'VaccineController@todayList')->name('today-list');
+Route::get('vaccine/tiem-hom-nay', 'VaccineController@todayList');
 Route::get('vaccine/danh-sach-cho', 'VaccineController@waitList');
-Route::get('vaccine/done-patient/{id}', 'VaccineController@done_vaccine');
-Route::get('vaccine/delete-patient/{id}', 'VaccineController@delete_vaccine');
+Route::get('vaccine/done-patient/{id_card}', 'VaccineController@done_vaccine');
+Route::get('vaccine/delete-patient/{id_card}', 'VaccineController@delete_patient_vaccine');
 Route::post('vaccine/result', 'VaccineController@result');
 
 Route::get('vaccine/danh-sach-theo-lich', 'VaccineController@list_to_calander');
@@ -68,4 +83,18 @@ Route::get('admin/user/edit/{id}', 'AdminController@edit_users');
 Route::post('admin/user/store/edit', 'AdminController@store_edit_users');
 Route::get('admin/user/bin', 'AdminController@bin_users');
 Route::get('admin/user/restore/{id}', 'AdminController@restore_users');
+});
+
+
+
+Route::get('dashboard', function(){
+    return view('dashboard');
+});
+
+Route::get('them-vaccine', function(){
+    return view('them_vaccine');
+});
+
+Route::get('them-sl-vaccine', function(){
+    return view('nhap_sl_vaccine');
 });
