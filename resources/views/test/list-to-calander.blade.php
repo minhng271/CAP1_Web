@@ -128,8 +128,13 @@
                                             <td class="d-none d-xl-table-cell">@php
                                                 if ($item->result == '0') {
                                                     echo "<span style='background: #39f639;padding: 4px 6px;border-radius: 4px;'>Âm tính</span>";
-                                                } else {
-                                                    echo "<span style='color: white;background: #f12d2d;padding: 4px 6px;border-radius: 4px;'>Dương tính</span>";
+                                                } else{
+                                                    if($item->result == '1'){
+                                                        echo "<span style='color: white;background: #f12d2d;padding: 4px 6px;border-radius: 4px;'>Dương tính</span>";
+                                                    }
+                                                    else{
+                                                        echo "<span style='color: rgb(250, 250, 250);background: #bebebe;padding: 4px 6px;border-radius: 4px;'>Chưa XN</span>";
+                                                    }
                                                 }
                                             @endphp</td>
                                             <td class="d-none d-md-table-cell d-user" data="{{ $item->id_card }}">

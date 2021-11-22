@@ -36,7 +36,7 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="{{ url('test') }}">
+                <a class="sidebar-brand" href="{{ url('/home') }}">
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
                 </a>
                 <ul class="sidebar-nav">
@@ -53,7 +53,7 @@
                         DANH SÁCH
                     </li>
                     <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
-                        <a class="sidebar-link" href="{{ url('test/tiem-hom-nay') }}">
+                        <a class="sidebar-link" href="{{ url('test/xet-nghiem-hom-nay') }}">
                             <i class="fas fa-list"></i> <span class="align-middle">Xét Nghiệm Hôm Nay</span>
                         </a>
                     </li>
@@ -62,11 +62,17 @@
                             <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ Kết Quả</span>
                         </a>
                     </li>
+                    
+                    <li class="sidebar-item @php if(session('active') == 'softDeleteList') echo " active" @endphp">
+                        <a class="sidebar-link" href="{{ url('test/danh-sach-xoa-tam') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Xóa Tạm</span>
+                        </a>
+                    </li>
 
                     <li class="sidebar-header">
                         LỊCH
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item @php if(session('active') == 'list_to_calander') echo " active" @endphp">
                         <a class="sidebar-link" href="{{ url('test/danh-sach-theo-lich') }}">
                             <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
                         </a>

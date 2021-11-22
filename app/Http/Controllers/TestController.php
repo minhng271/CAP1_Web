@@ -58,22 +58,52 @@ class TestController extends Controller
         ->join('hospitals','test_patient.id_hos','hospitals.id')
         ->where('test_patient.id_hos',Auth::user()->hospital->id)
         ->where('test_patient.wait_at','0')
+        ->where('date',date('Y-m-d'))
         ->where('patients.fullname','like','%'.$keyword.'%')->paginate(8);
         // echo "<pre>";
         // print_r($patients);
         return view('test.today-list',compact('patients'));
     }
 
+    function softDeleteList(Request $request){
+        session(['active' => 'softDeleteList']);
+        $keyword = '';
+        if($request->input('keyword')){
+            $keyword = $request->input('keyword');
+        }          
+        $patients = test_patient::onlyTrashed()->select('patients.*','test_patient.*')
+        ->join('patients','test_patient.id_card','patients.id_card')
+        ->join('hospitals','test_patient.id_hos','hospitals.id')
+        ->where('test_patient.id_hos',Auth::user()->hospital->id)
+        ->where('test_patient.wait_at','0')
+        ->where('date',date('Y-m-d'))
+        ->where('patients.fullname','like','%'.$keyword.'%')->paginate(8);
+        // echo "<pre>";
+        // print_r($patients);
+        return view('test.softDelete-list',compact('patients'));
+    }
     function done_patient($id_card){
         test_patient::where('id_card',$id_card)->update(['wait_at'=>'1']);       
         $fullname = patient::where('id_card',$id_card)->first()->fullname;
-        return redirect('test/tiem-hom-nay')->with('done_patient',$fullname);
+        return redirect('test/xet-nghiem-hom-nay')->with('done_patient',$fullname);
+    }
+    
+    function restore_patient($id_card){
+        test_patient::onlyTrashed()->where('id_card',$id_card)->restore();       
+        $fullname = patient::where('id_card',$id_card)->first()->fullname;
+        return redirect('test/danh-sach-xoa-tam')->with('restore_patient',$fullname);
     }
 
-    function delete_patient($id_card){       
+    function delete_patient($id_card){  
         $fullname = patient::where('id_card',$id_card)->first()->fullname;
         test_patient::where('id_card',$id_card)->delete();
-        return redirect('test/tiem-hom-nay')->with('delete_patient',$fullname);
+        return redirect('test/xet-nghiem-hom-nay')->with('delete_patient',$fullname);
+    }
+
+    function delete_patient_softDelete($id_card){  
+        $fullname = patient::where('id_card',$id_card)->first()->fullname;
+        test_patient::onlyTrashed()->where('id_card',$id_card)->forceDelete();
+        return redirect('test/danh-sach-xoa-tam')->with('delete_patient',$fullname);
     }
 
     function waitList(Request $request){
@@ -87,6 +117,7 @@ class TestController extends Controller
         ->join('hospitals','test_patient.id_hos','hospitals.id')
         ->where('test_patient.id_hos',Auth::user()->hospital->id)
         ->where('test_patient.wait_at','1')->whereNull('result')
+        ->where('date',date('Y-m-d'))
         ->where('patients.fullname','like','%'.$keyword.'%')->paginate(8);
         return view('test.wait-list',compact('patients'));
     }
@@ -102,7 +133,7 @@ class TestController extends Controller
 
     //DS theo lịch
     function list_to_calander(Request $request){
-
+        session(['active' => 'list_to_calander']);
         $created_at = date("Y-m-d", strtotime($request->input('created_at')));
         $keyword = '';
         if($request->input('keyword')){
@@ -113,7 +144,6 @@ class TestController extends Controller
         ->join('patients','test_patient.id_card','patients.id_card')
         ->join('hospitals','test_patient.id_hos','hospitals.id')
         ->where('test_patient.id_hos',Auth::user()->hospital->id)
-        ->where('test_patient.wait_at','1')->whereNotNull('result')
         ->where('date',$created_at)
         ->where('patients.fullname','like','%'.$keyword.'%')->paginate(8);
         

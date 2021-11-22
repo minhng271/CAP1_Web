@@ -79,6 +79,7 @@
                                     <th class="d-none d-md-table-cell">Quốc Gia</th>
                                     <th class="d-none d-xl-table-cell">Tuổi dùng từ</th>
                                     <th class="d-none d-xl-table-cell">tuổi dùng tới</th>
+                                    <th class="d-none d-md-table-cell">Ngày Nhập</th>
                                     <th class="d-none d-md-table-cell">Ngày Sản Xuất</th>
                                     <th class="d-none d-md-table-cell">Hạn Sử Dụng</th>
                                     <th class="d-none d-md-table-cell">Số Lô</th>
@@ -104,13 +105,16 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->age_use_from }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->age_use_to }}</td>
                                             <td class="d-none d-xl-table-cell">@php
+                                                echo date("d-m-Y", strtotime($item->date_add));
+                                            @endphp</td>
+                                            <td class="d-none d-xl-table-cell">@php
                                                 echo date("d-m-Y", strtotime($item->date_of_manufacture));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">@php
                                                 echo date("d-m-Y", strtotime($item->out_of_date));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->lot_number }}</td>
-                                            <td class="d-none d-xl-table-cell">{{ $item->quantity }}</td>
+                                            <td class="d-none d-xl-table-cell" style="color: #ff2525">{{ $item->quantity }}</td>
                                             
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
                                                 <a href="{{ url('vaccine/edit-vaccine', ['id' => $item->id]) }}">

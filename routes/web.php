@@ -29,11 +29,13 @@ Route::middleware(['auth'])->group(function () {
 
 // TEST
 Route::get('dashboard/test','TestController@dashboard');
-Route::get('test', 'TestController@todayList');
-Route::get('test/tiem-hom-nay', 'TestController@todayList');
+Route::get('test/xet-nghiem-hom-nay', 'TestController@todayList');
+Route::get('test/danh-sach-xoa-tam', 'TestController@softDeleteList');
 Route::get('test/danh-sach-cho', 'TestController@waitList');
 Route::get('test/done-patient/{id_card}', 'TestController@done_patient');
+Route::get('test/restore-patient/{id_card}', 'TestController@restore_patient');
 Route::get('test/delete-patient/{id_card}', 'TestController@delete_patient');
+Route::get('test/delete-patient-softDelete/{id_card}', 'TestController@delete_patient_softDelete');
 Route::post('test/result', 'TestController@result');
 Route::get('test/danh-sach-theo-lich', 'TestController@list_to_calander');
 
@@ -48,13 +50,15 @@ Route::get('vaccine/khoi-phuc-vaccine/{id}','VaccineController@restore_bin_vacci
 Route::get('vaccine/them-moi-vaccine','VaccineController@vaccine_addnew');
 Route::post('vaccine/store-addnew-vaccine','VaccineController@store_addnew');
 Route::get('vaccine/nhap-them-vaccine','VaccineController@vaccine_import');
+Route::get('vaccine/store-them-sl-vaccine','VaccineController@store_vaccine_import');
 
 // danh sach 
 Route::get('vaccine', 'VaccineController@todayList');
 Route::get('vaccine/tiem-hom-nay', 'VaccineController@todayList');
-Route::get('vaccine/danh-sach-cho', 'VaccineController@waitList');
-Route::get('vaccine/done-patient/{id_card}', 'VaccineController@done_vaccine');
+Route::post('vaccine/confirm-vaccine/{id_card}', 'VaccineController@confirm_vaccine');
 Route::get('vaccine/delete-patient/{id_card}', 'VaccineController@delete_patient_vaccine');
+Route::get('vaccine/danh-sach-cho', 'VaccineController@waitList');
+Route::get('vaccine/restore-patient/{id_card}', 'VaccineController@restorePatient');
 Route::post('vaccine/result', 'VaccineController@result');
 
 Route::get('vaccine/danh-sach-theo-lich', 'VaccineController@list_to_calander');

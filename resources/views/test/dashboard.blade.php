@@ -1,4 +1,4 @@
-@extends('layouts.vaccine')
+@extends('layouts.test')
 @section('content')
     <style>
         .card.col-md-3 {

@@ -32,7 +32,7 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="{{ url('vaccine') }}">
+                <a class="sidebar-brand" href="{{ url('/home') }}">
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
                 </a>
                 <ul class="sidebar-nav">
@@ -51,18 +51,18 @@
                             <i class="fas fa-list"></i> <span class="align-middle">Tiêm Hôm Nay</span>
                         </a>
                     </li>
-                    {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo "active" @endphp">
+                    <li class="sidebar-item @php if(session('active') == 'waitList') echo "active" @endphp">
                         <a class="sidebar-link" href="{{ url('vaccine/danh-sach-cho') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ</span>
+                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Xóa tạm thời</span>
                         </a>
-                    </li> --}}
+                    </li>
 
 
                     <li class="sidebar-header">
                         LỊCH
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" @php if(session('active') == 'calander') echo "active" @endphp">
                         <a class="sidebar-link" href="{{ url('vaccine/danh-sach-theo-lich') }}">
                             <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
                         </a>
@@ -85,7 +85,7 @@
                     
                     <li class="sidebar-item @php if(session('active') == 'danh-sach-vaccine') echo "active" @endphp">
                         <a class="sidebar-link" href="{{ url('vaccine/danh-sach-vaccine') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Vắc Xin</span>
+                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Vắc Xin Đã Nhập</span>
                         </a>
                     </li>
                     <li class="sidebar-item @php if(session('active') == 'danh-sach-vaccine-da-xoa') echo "active" @endphp">
@@ -408,10 +408,15 @@
             var data = $(this).attr('data');
             var id = $('#'+data).removeClass('d-none');
         });
+        $('.d-user-2').click(function(){
+            var data = $(this).attr('data');
+            var id = $('#'+data).removeClass('d-none');
+        });
+        
         $('.btn-d-none').click(function(){
             var data = $(this).attr('data');
             var id = $('#'+data).addClass('d-none');
-        });
+        }); 
         
         });
     </script>
