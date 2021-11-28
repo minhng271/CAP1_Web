@@ -44,12 +44,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-3">{{$count_yesterday}}</h1>
+                            <h1 class="mt-1 mb-3">{{$sum_count_yesterday}}</h1>
                             <div class="mb-0">
-                                <span class="@php if(($ratio_yesterday<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                                <span class="@php if(($ratio_sum_count_yesterday<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                                 <i class="mdi mdi-arrow-bottom-right"></i>
-                                    @php if(($ratio_yesterday<0)){ echo '-'; }else { echo '+'; } @endphp {{$ratio_yesterday}}%</span>
-                                <span class="text-muted">So với hôm trước</span>
+                                    @php if(($ratio_sum_count_yesterday>0)){ echo '+'; } @endphp {{$ratio_sum_count_yesterday}}%</span>
+                                <span class="text-muted">So với ngày trước</span>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col mt-0">
-                                    <h5 class="card-title">Tổng số đã xét nghiệm</h5>
+                                    <h5 class="card-title">Tổng số đã xét nghiệm<span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                        (trong tháng)</h5>
                                 </div>
 
                                 <div class="col-auto">
@@ -67,12 +68,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-3">{{$sum_count}}</h1>
+                            <h1 class="mt-1 mb-3">{{$sum_test_done}}</h1>
                             <div class="mb-0">
-                                <span class="@php if(($ratio_sum_count<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                                <span class="@php if(($ratio_sum_test_done<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                                      <i class="mdi mdi-arrow-bottom-right"></i> 
-                                     @php if(($ratio_sum_count<0)){ echo '-'; }else { echo '+'; } @endphp {{$ratio_sum_count}}% </span>
-                                <span class="text-muted">So với hôm qua</span>
+                                     @php if(($ratio_sum_test_done>0)){ echo '+'; } @endphp {{$ratio_sum_test_done}}% </span>
+                                <span class="text-muted">So với tháng trước</span>
                             </div>
                         </div>
                     </div>
@@ -83,7 +84,7 @@
                                 <div class="col mt-0">
                                     <h5 class="card-title">
                                         Âm tính <br> <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
-                                        (trong năm)
+                                        (trong tháng)
                                     </span></h5>
                                 </div>
 
@@ -93,12 +94,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-3" style="color: rgb(56, 230, 56)">{{$negative}}</h1>
+                            <h1 class="mt-1 mb-3" style="color: rgb(56, 230, 56)">{{$sum_negative}}</h1>
                             <div class="mb-0">
-                                <span class="@php if(($ratio_negative<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                                <span class="@php if(($ratio_sum_negative<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                                     <i class="mdi mdi-arrow-bottom-right"></i> 
-                                    @php if(($ratio_negative<0)){ echo '-'; }else { echo '+'; } @endphp {{$ratio_negative}}%</span>
-                                <span class="text-muted">So với hôm qua</span>
+                                    @php if(($ratio_sum_negative>0)){ echo '+'; } @endphp {{$ratio_sum_negative}}%</span>
+                                <span class="text-muted">So với tháng trước</span>
                             </div>
                         </div>
                     </div>
@@ -107,7 +108,7 @@
                             <div class="row">
                                 <div class="col mt-0">
                                     <h5 class="card-title"> Dương tính <br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
-                                        (trong năm)
+                                        (trong tháng)
                                     </span></h5>
                                 </div>
 
@@ -117,12 +118,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-3" style="color: red">{{$positive}}</h1>
+                            <h1 class="mt-1 mb-3" style="color: red">{{$sum_positive}}</h1>
                             <div class="mb-0">
-                                <span class="@php if(($ratio_positive<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                                <span class="@php if(($ratio_sum_positive>0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                                     <i class="mdi mdi-arrow-bottom-right"></i>
-                                    @php if(($ratio_positive<0)){ echo '-'; }else { echo '+'; } @endphp  {{$ratio_positive}}%</span>
-                                <span class="text-muted">So với hôm qua</span>
+                                    @php if(($ratio_sum_positive>0)){ echo '+'; } @endphp  {{$ratio_sum_positive}}%</span>
+                                <span class="text-muted">So với tháng trước</span>
                             </div>
                         </div>
                     </div>

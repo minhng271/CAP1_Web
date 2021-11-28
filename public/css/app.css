@@ -4805,7 +4805,7 @@ fieldset:disabled .btn {
 }
 
 .card-header {
-    background-color: #fff;
+    background-color: rgb(226, 226, 226);
     border-bottom: 0 solid transparent;
     margin-bottom: 0;
     padding: 1rem 1.25rem
@@ -13738,5 +13738,6 @@ w-50 {
 }
 
 .active-a {
-    background: #5e7795;
+    background: #3e5068;
+    color: white;
 }

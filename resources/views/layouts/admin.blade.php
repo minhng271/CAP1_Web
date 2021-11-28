@@ -44,6 +44,7 @@
         .dropdown-toggle:after {
             position: absolute;
             top: 15px;
+            right: 15px;
         }
 
         h1.title {
@@ -55,7 +56,7 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="{{ url('test') }}">
+                <a class="sidebar-brand" href="{{ url('dashboard/admin') }}">
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
                 </a>
                 <ul class="sidebar-nav">
@@ -63,31 +64,31 @@
                         DANH SÁCH ACCOUNT-ADMIN
                     </li>
                     <li></li>
-                    <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
+                    <li class="sidebar-item">
                         <a href="#hospital" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH
                             SÁCH BỆNH VIỆN</a>
-                        <ul class="collapse list-unstyled" id="hospital">
-                            <li><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh
+                        <ul class="collapse list-unstyled @php if(session('active') == 'hos_add' || session('active') == 'hos_lis' ||session('active') == 'hos_bin') echo " show" @endphp" id="hospital">
+                            <li class="@php if(session('active') == 'hos_add') echo " active-a" @endphp"><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh
                                     Viện</a></li>
-                            <li><a href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
+                            <li class="@php if(session('active') == 'hos_lis') echo " active-a" @endphp"><a href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
                                     viện</a></li>
-                            <li><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
+                            <li class="@php if(session('active') == 'hos_bin') echo " active-a" @endphp"><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
                                     viện đã xóa</a></li>
                         </ul>
                     </li>
-                    <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
+                    <li class="sidebar-item">
                         <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH
                             NGƯỜI DÙNG</a>
-                        <ul class="collapse list-unstyled" id="user">
-                            <li><a href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người
+                        <ul class="collapse list-unstyled @php if(session('active') == 'user_add' || session('active') == 'user_lis' ||session('active') == 'user_bin') echo " show" @endphp" id="user">
+                            <li class="@php if(session('active') == 'user_add') echo " active-a" @endphp"><a href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người
                                     Dùng</a></li>
-                            <li><a href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
+                            <li class="@php if(session('active') == 'user_list') echo " active-a" @endphp"><a href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng</a></li>
-                            <li><a href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
+                            <li class="@php if(session('active') == 'user_bin') echo " active-a" @endphp"><a href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng đã xóa</a></li>
                         </ul>
                     </li>
-                    {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active" @endphp">
+                    {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active-a" @endphp">
                         <a class="sidebar-link" href="{{ url('test/danh-sach-cho') }}">
                             <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ</span>
                         </a>

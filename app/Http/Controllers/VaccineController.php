@@ -16,34 +16,51 @@ class VaccineController extends Controller
 {
     function dashboard()
     {
+        // return date('Y-m-t',strtotime(vaccine_patient::where('id_card','112456798')->first()->date));
+        // return vaccine_hos::whereBetween('YEAR(date_add)',[date('Y',strtotime('-month')),'2022'])->get()->count();
+        
         session(['active' => 'dashboard']);
-        // return round(4/6,3);
-        $count_yesterday = test_patient::whereNotNull('result')->where('date', date('Y-m-d', strtotime('-1 days')))->get()->count();
-        if (test_patient::whereNotNull('result')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-2 days'))])->get()->count() == 0) {
-            $ratio_yesterday = 100;
-        } else {
-            $ratio_yesterday = round($count_yesterday * 100 / test_patient::whereNotNull('result')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-2 days'))])->get()->count() - 100);
+        
+        // vắc cin nhận được trong tháng
+        $sum_vac = vaccine_hos::whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])
+        ->sum('quantity_received');
+        $sum_vac_old = vaccine_hos::whereBetween('date_add',[date('Y-m-01',strtotime('-1 month')),date('Y-m-t',strtotime('-1 month'))])
+        ->sum('quantity_received');
+        // tỉ lệ so với số lượng nhận được tháng trước
+        if($sum_vac == 0){
+            $ratio_sum_vac = 0;
+        }else{
+            if($sum_vac_old == 0){
+                $ratio_sum_vac = 100;
+            }else{
+                $ratio_sum_vac = round($sum_vac*100/$sum_vac_old - 100,2);
+            }
         }
-        $sum_count = test_patient::whereNotNull('result')->get()->count();
-        if (test_patient::whereNotNull('result')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-1 days'))])->get()->count() == 0) {
-            $ratio_sum_count = 100;
-        } else {
-            $ratio_sum_count = round($sum_count * 100 / test_patient::whereNotNull('result')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-1 days'))])->get()->count() - 100);
+        
+        // vắc cin còn lại
+        $sum_vac_remain = vaccine_hos::whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])
+        ->sum('quantity');
+        // tỉ lệ so với tổng
+        $ratio_sum_vac_remain = round($sum_vac_remain*100/$sum_vac,2);
+        
+        // vắc cin tiêm thành công
+        $sum_vac_done = $sum_vac - $sum_vac_remain;
+        // tỉ lệ so với tổng
+        $ratio_sum_vac_done = 100 - $ratio_sum_vac_remain;
+        
+        // vắc xin dùng nhiều
+        $vaccines = vaccine_hos::selectRaw('id_vac, quantity_received - quantity as so_luong')->orderBy('so_luong', 'DESC')
+        ->whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])->get()->toArray();
+        for($i = 0; $i< count($vaccines) - 1;$i++){
+            for($j = $i+1; $j < count($vaccines);$j++){
+                if($vaccines[$i]['id_vac'] == $vaccines[$j]['id_vac']){
+                    $vaccines[$i]['so_luong'] += $vaccines[$j]['so_luong'];
+                }
+            }
         }
-        $negative = test_patient::where('result', '0')->get()->count();
-        if (test_patient::where('result', '0')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-1 days'))])->get()->count() == 0) {
-            $ratio_negative = 100;
-        } else {
-            $ratio_negative = round($negative * 100 / test_patient::whereNotNull('result')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-1 days'))])->get()->count() - 100);
-        }
-        $positive = test_patient::where('result', '1')->get()->count();
-        if (test_patient::where('result', '1')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-1 days'))])->get()->count() == 0) {
-            $ratio_positive = 100;
-        } else {
-            $ratio_positive = round($positive * 100 / test_patient::whereNotNull('result')->whereBetween('date', ['2000-01-01', date('Y-m-d', strtotime('-1 days'))])->get()->count() - 100);
-        }
-
-        return view('vaccine.dashboard', compact('count_yesterday', 'sum_count', 'negative', 'positive', 'ratio_yesterday', 'ratio_sum_count', 'ratio_negative', 'ratio_positive'));
+        $vac_top = $vaccines[0];
+        $vac_top['name'] = vaccine::find($vac_top['id_vac'])->name;
+        return view('vaccine.dashboard', compact('sum_vac','ratio_sum_vac','sum_vac_remain','ratio_sum_vac_remain','sum_vac_done','ratio_sum_vac_done','vac_top'));
     }
 
 
@@ -151,8 +168,9 @@ class VaccineController extends Controller
     }
 
 
-    function vaccine_addnew()
+    function vaccine_addnew(Request $request)
     {
+        session(['active' => 'them-moi']);
         $diseases = disease::selectRaw('count(id_vac) as number, name')->groupBy('name')->get();
         return view('vaccine.vaccine_addnew', compact('diseases'));
     }
@@ -216,6 +234,7 @@ class VaccineController extends Controller
 
     function vaccine_import()
     {
+        session(['active' => 'nhap-them']);
         $list_vac = vaccine::all();
         return view('vaccine.vaccine_import', compact('list_vac'));
     }
@@ -248,6 +267,7 @@ class VaccineController extends Controller
                 'id_vac' => vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id,
                 'id_hos' => hospital::where('id_user', Auth::id())->first()->id,
                 'quantity' => $request->input('quantity'),
+                'quantity_received' => $request->input('quantity'),
                 'lot_number' => $request->input('lot_number'),
                 'date_add' => date('Y-m-d'),
                 'date_of_manufacture' => $request->input('date_of_manufacture'),
@@ -265,23 +285,23 @@ class VaccineController extends Controller
         if ($request->input('keyword')) {
             $keyword = $request->input('keyword');
         }
-        $count_vac = $list_id_vac = vaccine_hos::select('id_vac')->groupBy('id_vac')->count();
+        $count_vac = vaccine_hos::select('id_vac')->groupBy('id_vac')->count();
         $list_id_vac = vaccine_hos::select('id_vac')->groupBy('id_vac')->get()->toArray();
 
-        for ($i=0; $i < $count_vac ; $i++) { 
+        for ($i=0; $i <= $count_vac ; $i++) { 
             
             $list_vac[$i]['name'] = vaccine_hos::select('vaccines.name')
             ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
-                ->where('id_vac',$list_id_vac[$i]['id_vac'])->first()->name;
+            ->where('id_vac',$list_id_vac[$i]['id_vac'])->first()->name;
             
                 if(vaccine_hos::select('vaccine_hos.quantity')
-                    ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
+                ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
+                ->where('id_vac',$list_id_vac[$i]['id_vac'])
+                ->where('quantity','>','0')->orderBy('date_add','ASC')->first()){
+                    $list_vac[$i]['quantity'] = vaccine_hos::select('vaccine_hos.quantity')
+                        ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
                         ->where('id_vac',$list_id_vac[$i]['id_vac'])
-                        ->where('quantity','>','0')->orderBy('date_add','ASC')->first()){
-                            $list_vac[$i]['quantity'] = vaccine_hos::select('vaccine_hos.quantity')
-                                ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
-                                ->where('id_vac',$list_id_vac[$i]['id_vac'])
-                                ->where('quantity','>','0')->orderBy('date_add','ASC')->first()->quantity;
+                        ->where('quantity','>','0')->orderBy('date_add','ASC')->first()->quantity;
                 }else{
                     $list_vac[$i]['quantity'] = 0;
                 }
@@ -300,7 +320,9 @@ class VaccineController extends Controller
 
     function confirm_vaccine($id_card, Request $request)
     {
-         // ta chỉ lấy dc tên vắc cin = select_vac -> từ cái tên suy ngược ra lấy số vắc xin
+        
+        // ta chỉ lấy dc tên vắc cin = select_vac -> từ cái tên suy ngược ra lấy số vắc xin
+        // số lượng
         if(vaccine_hos::join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
         ->where('id_vac',vaccine::where('name', 'like', '%' . $request->input('select_vac') . '%')->first()->id)
         ->orderBy('date_add','ASC')
@@ -315,7 +337,7 @@ class VaccineController extends Controller
             return redirect('vaccine/tiem-hom-nay')->with('quantity_zero', $name);
         } 
         // nhập tên vắc xin
-        if (vaccine_patient::where('id_card', $id_card)->first()->injection_times    == 1) {
+        if (vaccine_patient::where('id_card', $id_card)->first()->injection_times == 1) {
             vaccine_patient::where('id_card', $id_card)->update([
                 'id_vac' => vaccine::where('name', 'like', '%' . $request->input('select_vac') . '%')->first()->id,
                 'vaccine_1' => $request->input('select_vac'),
@@ -340,13 +362,19 @@ class VaccineController extends Controller
             }
         }
         //cập nhật số lượng vac
-        vaccine_hos::where('id_vac', vaccine::where('name', 'like', '%' . $request->input('select_vac') . '%')->first()->id)
-        ->orderBy('date_add','ASC')->first()
-            ->update(
-                [
-                    'quantity' => $quantity - 1
-                ]
-            );
+        if(vaccine_hos::where('id_vac', vaccine::where('name', 'like', '%' . $request->input('select_vac') . '%')->first()->id)
+        ->orderBy('date_add','ASC')
+        ->where('vaccine_hos.quantity','>','0')->first()){
+            vaccine_hos::where('id_vac', vaccine::where('name', 'like', '%' . $request->input('select_vac') . '%')->first()->id)
+            ->orderBy('date_add','ASC')
+            ->where('vaccine_hos.quantity','>','0')->first()
+                ->update(
+                    [
+                        'quantity' => $quantity - 1
+                    ]
+                );
+        }
+        
         $name = patient::where('id_card', $id_card)->first()->fullname;
         return redirect('vaccine/tiem-hom-nay')->with('done_patient', $name);
     }

@@ -31,7 +31,9 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col mt-0">
-                                            <h5 class="card-title">Vắc Xin nhận được</h5>
+                                            <h5 class="card-title">Vắc Xin nhận được<br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                                (trong Tháng)
+                                            </span></h5>
                                         </div>
 
                                         <div class="col-auto">
@@ -40,41 +42,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">22.382</h1>
+                                    <h1 class="mt-1 mb-3">{{number_format($sum_vac)}} <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                        (Liều)
+                                    </span></h1>
                                     <div class="mb-0">
-                                        <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i>
-                                            -3.65% </span>
-                                        <span class="text-muted">Since last week</span>
+                                        <span class="@php if(($sum_vac<0)){ echo 'text-danger'; }else echo 'text-success';@endphp"> <i class="mdi mdi-arrow-bottom-right"></i>
+                                            @php if(($ratio_sum_vac>=0)){ echo '+'; } @endphp {{$ratio_sum_vac}}%</span>
+                                        <span class="text-muted"> so với tháng trước</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card col-md-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col mt-0">
-                                            <h5 class="card-title">Vắc Xin còn lại</h5>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <div class="stat text-primary">
-                                                <img style="width: 100%;" src="{{ asset('img/icons/vaccine-con-lai.png') }}" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h1 class="mt-1 mb-3">14.212</h1>
-                                    <div class="mb-0">
-                                        <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25%
-                                        </span>
-                                        <span class="text-muted">Since last week</span>
-                                    </div>
-                                </div>
-                            </div>
+                            
 
                             <div class="card col-md-3">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col mt-0">
-                                            <h5 class="card-title">Tiêm thành công</h5>
+                                            <h5 class="card-title">Tiêm thành công<br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                                (trong Tháng)
+                                            </span></h5>
                                         </div>
 
                                         <div class="col-auto">
@@ -83,11 +69,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">21.300</h1>
+                                    <br>
+                                    <h1 class="mt-1 mb-3">{{number_format($sum_vac_done)}}<span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                        (Liều)
+                                    </span></h1>
                                     <div class="mb-0">
-                                        <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65%
-                                        </span>
-                                        <span class="text-muted">Since last week</span>
+                                        <span class="text-muted">Đã Tiêm </span>
+                                        <span class="text-success">
+                                            <i class="mdi mdi-arrow-bottom-right"></i>
+                                            {{$ratio_sum_vac_done}}%</span>
+                                        <span class="text-muted">Vắc Xin</span>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +86,36 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col mt-0">
-                                            <h5 class="card-title"> Âm tính/dương tính</h5>
+                                            <h5 class="card-title">Vắc Xin còn lại<br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                                (trong Tháng)
+                                            </span></h5>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <div class="stat text-primary">
+                                                <img style="width: 100%;" src="{{ asset('img/icons/vaccine-con-lai.png') }}" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <h1 class="mt-1 mb-3">{{number_format($sum_vac_remain) }}<span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                        (Liều)
+                                    </span></h1>
+                                    <div class="mb-0">
+                                        <span class="text-muted">Còn lại </span>
+                                        <span class="text-success">
+                                            <i class="mdi mdi-arrow-bottom-right"></i>
+                                            {{$ratio_sum_vac_remain}}%</span>
+                                        <span class="text-muted">Vắc Xin</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card col-md-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col mt-0">
+                                            <h5 class="card-title">Vaccine dùng nhiều nhất<br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                                (trong Tháng)</h5>
                                         </div>
 
                                         <div class="col-auto">
@@ -104,11 +124,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">640 / <span style="color: red">12</span></h1>
+                                    <h1 class="mt-1 mb-3">{{$vac_top['name']}}</h1>
                                     <div class="mb-0">
-                                        <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i>
-                                            -2.25% </span>
-                                        <span class="text-muted">Since last week</span>
+                                        <h3 class="">{{number_format($vac_top['so_luong'])}}<span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                            (Liều)
+                                        </span> </h3>    
                                     </div>
                                 </div>
                             </div>

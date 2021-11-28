@@ -11,15 +11,23 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
+    // dashboard
+    function dashboard(){
+        return view('admin.dashboard');
+    }
     // LIST HOSPITAL
     function hospitals(Request $request)
     {
+        session(['active' => 'hos_lis']);
         $keyword = '';
         if($request->input('keyword')){
             $keyword = $request->input('keyword');
         }
-        $hospitals = hospital::where('name','like','%'.$keyword.'%')->paginate(8);
-        return $hospitals;
+        $hospitals = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')
+        ->where('name','like','%'.$keyword.'%')->paginate(8);
+        
         return view('admin.hospitals.list', compact('hospitals'));
     }
     
@@ -27,6 +35,7 @@ class AdminController extends Controller
     // ADD HOSPITAL
     function add_hospitals()
     {
+        session(['active' => 'hos_add']);
         return view('admin.hospitals.add');
     }
     function store_add_hospitals(Request $request)
@@ -41,6 +50,7 @@ class AdminController extends Controller
                 ],
                 [
                     'required' => ':attribute không được để trống',
+                    'unique' => ':attribute đã tồn tại',
                     'email' => 'Email không đúng định dạng',
                     'regex' => ':attribute không đúng định dạng',
                 ],
@@ -53,11 +63,14 @@ class AdminController extends Controller
             );
 
             User::create([
-                'name' => $request['name'],
-                'address' => $request['address'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
                 'type' => $request['type'],
+            ]);
+            hospital::create([
+                'name' => $request['name'],
+                'address' => $request['address'],
+                'id_user' => user::where('email',$request['email'])->first()->id,
             ]);
             return redirect('admin/hospitals')->with('status', 'Tạo Mới Bệnh Viện Thành Công.');
         }
@@ -82,6 +95,7 @@ class AdminController extends Controller
     }
     function bin_hospitals()
     {
+        session(['active','hos_bin']);
         $hospitals = AppUser::onlyTrashed()->where('type','hospital')->paginate(8);
         return view('admin.hospitals.bin', compact('hospitals'));
     }
@@ -95,7 +109,8 @@ class AdminController extends Controller
     // EDIT HOSPITAL
     function edit_hospitals($id)
     {
-        $hospital = user::find($id);
+        $hospital = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')->where('hospitals.id',$id)->first();
         return view('admin.hospitals.edit', compact('hospital'));
     }
     function store_edit_hospitals(Request $request)
@@ -115,8 +130,8 @@ class AdminController extends Controller
             ]
         );
 
-        $id = user::find($request->submit_edit);
-        user::find($id->id)->update([
+    
+        hospital::find($request->submit_edit)->update([
             'name' => $request->input('name'),
             'address' => $request->input('address'),
         ]);
@@ -128,6 +143,7 @@ class AdminController extends Controller
     // LIST USER
     function users(Request $request)
     {
+        session(['active' => 'user_lis']);
         $keyword = '';
         if($request->input('keyword')){
             $keyword = $request->input('keyword');
@@ -141,6 +157,7 @@ class AdminController extends Controller
     // ADD user
     function add_users()
     {
+        session(['active' => 'user_add']);
         return view('admin.users.add');
     }
     function store_add_users(Request $request)
@@ -196,6 +213,7 @@ class AdminController extends Controller
     }
     function bin_users()
     {
+        session(['active','user_bin']);
         $users = AppUser::onlyTrashed()->where('type','user')->paginate(8);
         return view('admin.users.bin', compact('users'));
     }

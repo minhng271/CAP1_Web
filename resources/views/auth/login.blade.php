@@ -46,17 +46,23 @@
                     <div class="form-group row">
                         <div class="mb-3 form-check">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                                <input class="form-check-input" type="checkbox" value="remember" name="remember" id="remember"
                                     {{ old('remember') ? 'checked' : '' }}>
 
                                 <label class="form-check-label" for="remember">Nhớ mật khẩu?</label>
                             </div>
                         </div>
                     </div>
+                    
+                    @if (session('wrong_account'))
+                        <div class="mb-3">
+                            <span style="color: red">{{session('wrong_account')}} </span>
+                        </div>
+                    @endif
                     <button type="submit" class="btn btn-primary w-100">ĐĂNG NHẬP</button>
                     @if (Route::has('password.request'))
                         <a class="btn btn-link" href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
+                            {{ __('Quên mật khẩu?') }}
                         </a>
                     @endif
                 </form>

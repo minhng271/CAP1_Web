@@ -74,11 +74,10 @@
                                             class="check"></td>
                                     <th scope="row">{{ $count }}</th>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->phone }}</td>
                                     <td>{{ $item->address }}</td>
                                     <td>{{ $item->email }}</td>
-                                    
-                                    <td>{{ $item->created_at }}</td>
+                                    <td>{{ date('d-m-Y',strtotime($item->created_at)) }}</td>
                                     <td>
                                         <a href="{{ url('admin/hospital/edit/' . $item->id) }}"
                                             class="btn btn-success btn-sm rounded-0 text-white"

@@ -31,6 +31,34 @@
         .d-md-table-cell>a {
             display: block;
         }
+        
+        li.sidebar-item a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            position: relative;
+            color: white;
+            text-decoration: none;
+        }
+
+        .dropdown-toggle:after {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        h1.title {
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        span{
+            color: #cccccc;
+        }
+        i{
+            display: inline-block !important;
+            padding-right: 10px !important;
+        }   
 
     </style>
     <div class="wrapper">
@@ -43,46 +71,39 @@
                     <li class="sidebar-header">
                         XÉT NGHIỆM
                     </li>
-                    <li class="sidebar-item @php if(session('active') == 'dashboard') echo " active" @endphp">
+                    <li class="sidebar-item @php if(session('active') == 'dashboard') echo " active-a" @endphp">
                         <a class="sidebar-link" href="{{ url('dashboard/test') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Trang Chính</span>
+                            <i class="fas fa-list"></i> <span class="align-middle">Trang Chủ</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-header">
-                        DANH SÁCH
-                    </li>
-                    <li class="sidebar-item @php if(session('active') == 'today') echo " active" @endphp">
-                        <a class="sidebar-link" href="{{ url('test/xet-nghiem-hom-nay') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Xét Nghiệm Hôm Nay</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item @php if(session('active') == 'wait') echo " active" @endphp">
-                        <a class="sidebar-link" href="{{ url('test/danh-sach-cho') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Chờ Kết Quả</span>
-                        </a>
+                    <li class="sidebar-item">
+                        <a href="#test_now" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            DANH SÁCH HÔM NAY</a>
+                        <ul class="collapse list-unstyled @php if(session('active') == 'today' || session('active') == 'wait' || session('active') == 'softDeleteList') echo " show" @endphp" id="test_now">
+                            <li class="@php if(session('active') == 'today') echo " active-a" @endphp"><a href="{{ url('test/xet-nghiem-hom-nay') }}" class="sidebar-dropdown-link">
+                                 <span @php if(session('active') == 'today') echo " style='color: #fff'" @endphp  class="align-middle">
+                                    <i class="fas fa-stethoscope"></i></i> Xét Nghiệm Hôm Nay</span></a></li>
+                            <li class="@php if(session('active') == 'wait') echo " active-a" @endphp"><a href="{{ url('test/danh-sach-cho') }}" class="sidebar-dropdown-link">
+                                 <span @php if(session('active') == 'wait') echo " style='color: #fff'" @endphp  class="align-middle">
+                                    <i class="fas fa-stethoscope"></i></i> Danh Sách Chờ Kết Quả</span></a></li>
+                            <li class="@php if(session('active') == 'softDeleteList') echo " active-a" @endphp"><a href="{{ url('test/danh-sach-xoa-tam') }}" class="sidebar-dropdown-link">
+                                 <span @php if(session('active') == 'softDeleteList') echo " style='color: #fff'" @endphp  class="align-middle">
+                                    <i class="fas fa-stethoscope"></i></i> Danh Sách Xóa tạm thời</span></a></li>
+                            
+                        </ul>
                     </li>
                     
-                    <li class="sidebar-item @php if(session('active') == 'softDeleteList') echo " active" @endphp">
-                        <a class="sidebar-link" href="{{ url('test/danh-sach-xoa-tam') }}">
-                            <i class="fas fa-list"></i> <span class="align-middle">Danh Sách Xóa Tạm</span>
-                        </a>
+                    <li class="sidebar-item">
+                        <a href="#list_to_calander" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">QUẢN LÝ THEO LỊCH</a>
+                        <ul class="collapse list-unstyled @php if(session('active') == 'list_to_calander') echo " show" @endphp" id="list_to_calander">
+                            <li class="@php if(session('active') == 'list_to_calander') echo " active-a" @endphp"><a href="{{ url('test/danh-sach-theo-lich') }}" class="sidebar-dropdown-link">
+                               <span @php if(session('active') == 'list_to_calander') echo " style='color: #fff'" @endphp  class="align-middle">
+                                <i class="fas fa-calendar-alt"></i> Danh Sách Theo Lịch</span></a></li>
+                            
+                        </ul>
                     </li>
-
-                    <li class="sidebar-header">
-                        LỊCH
-                    </li>
-                    <li class="sidebar-item @php if(session('active') == 'list_to_calander') echo " active" @endphp">
-                        <a class="sidebar-link" href="{{ url('test/danh-sach-theo-lich') }}">
-                            <i class="fas fa-calendar-alt"></i> <span class="align-middle">Danh Sách Theo Lịch</span>
-                        </a>
-                    </li>
-
-
-
-
                 </ul>
-
 
             </div>
         </nav>
@@ -108,7 +129,10 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">{{Auth::user()->name}}</span>
+                                        class="text-dark">@php
+                                        use App\hospital;
+                                        echo hospital::where('id_user', Auth::user()->id)->first()->name;
+                                    @endphp</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"

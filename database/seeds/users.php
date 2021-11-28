@@ -14,25 +14,11 @@ class users extends Seeder
     public function run()
     {
         User::insert([
+            
             [
-             'email' => 'giadinh@gmail.com',
+             'email' => 'admin',
              'password' => Hash::make('123456'),
-             'type' => 'hospital',
-            ],
-            [
-             'email' => 'nhidong@gmail.com',
-             'password' => Hash::make('123456'),
-             'type' => 'hospital',
-            ],
-            [
-             'email' => 'c@gmail.com',
-             'password' => Hash::make('123456'),
-             'type' => 'hospital',
-            ],
-            [
-             'email' => 'quany@gmail.com',
-             'password' => Hash::make('123456'),
-             'type' => 'hospital',
+             'type' => 'admin',
             ]
         ]);
     }

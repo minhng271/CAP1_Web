@@ -68,6 +68,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
 
 // ADMIN HOSPITAL
+Route::get('dashboard/admin','AdminController@dashboard');
 Route::get('admin/hospitals', 'AdminController@hospitals');
 Route::get('admin/hospital/add', 'AdminController@add_hospitals');
 Route::post('admin/hospital/store', 'AdminController@store_add_hospitals');
