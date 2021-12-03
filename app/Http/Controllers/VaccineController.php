@@ -188,8 +188,9 @@ class VaccineController extends Controller
         $vaccines = vaccine::select('vaccines.*', 'diseases.name as diseases')
             ->leftJoin('diseases', 'vaccines.id_disease', 'diseases.id')->where('vaccines.id', $id)->first();
         $diseases = disease::all();
-
-        return view('vaccine.vaccine_edit', compact('vaccines', 'diseases', 'id'));
+        $vac_hos = vaccine_hos::where('id_vac',$id)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)
+        ->first();
+        return view('vaccine.vaccine_edit', compact('vaccines', 'diseases', 'id','vac_hos'));
     }
 
     function store_edit_vaccine(Request $request)
@@ -227,6 +228,13 @@ class VaccineController extends Controller
                     'id_disease' => disease::where('name','like','%'.$request->input('type_disease').'%')->first()->id,
                 ]
             );
+
+            vaccine_hos::where('id_vac',$request->input('id'))->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)
+            ->update([
+                'lot_number' => $request->lot_number,
+                'date_of_manufacture' => $request->date_of_manufacture,
+                'out_of_date' => $request->out_of_date
+            ]);
 
             return redirect('vaccine/danh-sach-vaccine')->with('update_vaccine', $request->input('name'));
         }

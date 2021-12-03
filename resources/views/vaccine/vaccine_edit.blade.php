@@ -61,6 +61,31 @@
 
             </div>
             <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label class="form-label" for="lot_number">Số Lô</label>
+                    <input class="form-control" type="text" name="lot_number" id="lot_number" value="{{$vac_hos->lot_number}}">
+                    @error('lot_number')
+                        <span class="text-danger" style="margin-top:5px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3 col-md-4">
+                    <label class="form-label" for="date_of_manufacture">Ngày Sản Xuất</label>
+                    <input class="form-control" type="date" min="0" name="date_of_manufacture" id="date_of_manufacture" value="{{$vac_hos->date_of_manufacture}}">
+                    @error('date_of_manufacture')
+                        <span class="text-danger" style="margin-top:5px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3 col-md-4">
+                    <label class="form-label" for="out_of_date">Hạn Sử Dụng</label>
+                    <input class="form-control" type="date" min="0" name="out_of_date" id="out_of_date" value="{{$vac_hos->out_of_date}}">
+                    @error('out_of_date')
+                        <span class="text-danger" style="margin-top:5px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+
+            </div>
+
+            <div class="row">
                 <div class="mb-3 col-md-12">
                     <label class="form-label" for="description">Mô Tả Thêm</label>
                     <textarea class="col-md-12" name="description" id="description" cols="30" rows="10">{{$vaccines->description}}</textarea>
