@@ -15,4 +15,9 @@ class patient extends Model
         return $this->hasMany(test_patient::class, 'id_card', 'id_card');
     }
     
+    public function vaccine_patient() 
+    {
+        return $this->hasMany(vaccine_patient::class, 'id_card', 'id_card');
+    }
+    
 }

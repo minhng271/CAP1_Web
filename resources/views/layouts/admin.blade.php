@@ -52,6 +52,10 @@
             font-weight: 600;
         }
 
+        .card.position-relative {
+            top: 25px;
+        }
+
     </style>
     <div class="wrapper">
         <nav id="sidebar" class="sidebar js-sidebar">
@@ -67,24 +71,33 @@
                     <li class="sidebar-item">
                         <a href="#hospital" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH
                             SÁCH BỆNH VIỆN</a>
-                        <ul class="collapse list-unstyled @php if(session('active') == 'hos_add' || session('active') == 'hos_lis' ||session('active') == 'hos_bin') echo " show" @endphp" id="hospital">
-                            <li class="@php if(session('active') == 'hos_add') echo " active-a" @endphp"><a href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh
+                        <ul class="collapse list-unstyled @php if(session('active') == 'hos_add' || session('active') == 'hos_lis' ||session('active') == 'hos_bin') echo "
+                            show" @endphp" id="hospital">
+                            <li class="@php if(session('active') == 'hos_add') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/hospital/add') }}" class="sidebar-dropdown-link">Thêm Bệnh
                                     Viện</a></li>
-                            <li class="@php if(session('active') == 'hos_lis') echo " active-a" @endphp"><a href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
+                            <li class="@php if(session('active') == 'hos_lis') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/hospitals') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
                                     viện</a></li>
-                            <li class="@php if(session('active') == 'hos_bin') echo " active-a" @endphp"><a href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
+                            <li class="@php if(session('active') == 'hos_bin') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách
+                                    Bệnh
                                     viện đã xóa</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
                         <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH
                             NGƯỜI DÙNG</a>
-                        <ul class="collapse list-unstyled @php if(session('active') == 'user_add' || session('active') == 'user_lis' ||session('active') == 'user_bin') echo " show" @endphp" id="user">
-                            <li class="@php if(session('active') == 'user_add') echo " active-a" @endphp"><a href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người
+                        <ul class="collapse list-unstyled @php if(session('active') == 'user_add' || session('active') == 'user_lis' ||session('active') == 'user_bin') echo "
+                            show" @endphp" id="user">
+                            <li class="@php if(session('active') == 'user_add') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người
                                     Dùng</a></li>
-                            <li class="@php if(session('active') == 'user_list') echo " active-a" @endphp"><a href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
+                            <li class="@php if(session('active') == 'user_list') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng</a></li>
-                            <li class="@php if(session('active') == 'user_bin') echo " active-a" @endphp"><a href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
+                            <li class="@php if(session('active') == 'user_bin') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng đã xóa</a></li>
                         </ul>
                     </li>
@@ -121,14 +134,14 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">ADMIN</span>
+                                        class="text-dark" style="margin-right: 20px;">ADMIN</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
+                                    {{-- <a class="dropdown-item" href="{{ url('admin/profile') }}"><i class="align-middle me-1"
                                             data-feather="user"></i> Thông Tin Cá Nhân</a>
                                     <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="pie-chart"></i> Phân Tích</a>
-                                    <div class="dropdown-divider"></div>
+                                            data-feather="pie-chart"></i> Phân Tích</a> --}}
+                                    {{-- <div class="dropdown-divider"></div> --}}
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         Đăng Xuất
@@ -154,78 +167,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="js/app.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
-            var gradient = ctx.createLinearGradient(0, 0, 0, 225);
-            gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
-            gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-            // Line chart
-            new Chart(document.getElementById("chartjs-dashboard-line"), {
-                type: "line",
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ],
-                    datasets: [{
-                        label: "Sales ($)",
-                        fill: true,
-                        backgroundColor: gradient,
-                        borderColor: window.theme.primary,
-                        data: [
-                            2115,
-                            1562,
-                            1584,
-                            1892,
-                            1587,
-                            1923,
-                            2566,
-                            2448,
-                            2805,
-                            3438,
-                            2917,
-                            3327
-                        ]
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        intersect: false
-                    },
-                    hover: {
-                        intersect: true
-                    },
-                    plugins: {
-                        filler: {
-                            propagate: false
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            reverse: true,
-                            gridLines: {
-                                color: "rgba(0,0,0,0.0)"
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1000
-                            },
-                            display: true,
-                            borderDash: [3, 3],
-                            gridLines: {
-                                color: "rgba(0,0,0,0.0)"
-                            }
-                        }]
-                    }
-                }
-            });
-        });
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Pie chart
@@ -254,119 +195,7 @@
             });
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Bar chart
-            new Chart(document.getElementById("chartjs-dashboard-bar"), {
-                type: "bar",
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ],
-                    datasets: [{
-                        label: "This year",
-                        backgroundColor: window.theme.primary,
-                        borderColor: window.theme.primary,
-                        hoverBackgroundColor: window.theme.primary,
-                        hoverBorderColor: window.theme.primary,
-                        data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
-                        barPercentage: .75,
-                        categoryPercentage: .5
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        yAxes: [{
-                            gridLines: {
-                                display: false
-                            },
-                            stacked: false,
-                            ticks: {
-                                stepSize: 20
-                            }
-                        }],
-                        xAxes: [{
-                            stacked: false,
-                            gridLines: {
-                                color: "transparent"
-                            }
-                        }]
-                    }
-                }
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var markers = [{
-                    coords: [31.230391, 121.473701],
-                    name: "Shanghai"
-                },
-                {
-                    coords: [28.704060, 77.102493],
-                    name: "Delhi"
-                },
-                {
-                    coords: [6.524379, 3.379206],
-                    name: "Lagos"
-                },
-                {
-                    coords: [35.689487, 139.691711],
-                    name: "Tokyo"
-                },
-                {
-                    coords: [23.129110, 113.264381],
-                    name: "Guangzhou"
-                },
-                {
-                    coords: [40.7127837, -74.0059413],
-                    name: "New York"
-                },
-                {
-                    coords: [34.052235, -118.243683],
-                    name: "Los Angeles"
-                },
-                {
-                    coords: [41.878113, -87.629799],
-                    name: "Chicago"
-                },
-                {
-                    coords: [51.507351, -0.127758],
-                    name: "London"
-                },
-                {
-                    coords: [40.416775, -3.703790],
-                    name: "Madrid "
-                }
-            ];
-            var map = new jsVectorMap({
-                map: "world",
-                selector: "#world_map",
-                zoomButtons: true,
-                markers: markers,
-                markerStyle: {
-                    initial: {
-                        r: 9,
-                        strokeWidth: 7,
-                        stokeOpacity: .4,
-                        fill: window.theme.primary
-                    },
-                    hover: {
-                        fill: window.theme.primary,
-                        stroke: window.theme.primary
-                    }
-                },
-                zoomOnScroll: false
-            });
-            window.addEventListener("resize", () => {
-                map.updateSize();
-            });
-        });
-    </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var date = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);

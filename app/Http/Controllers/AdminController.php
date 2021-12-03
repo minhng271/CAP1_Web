@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\hospital;
+use App\patient;
 use App\user;
 use App\User as AppUser;
 use Illuminate\Http\Request;
@@ -14,7 +15,87 @@ class AdminController extends Controller
 
     // dashboard
     function dashboard(){
-        return view('admin.dashboard');
+        session(['active' => 'dashboard']);
+
+        // tổng bệnh viện
+        $sum_count_hos_moth = hospital::all()->count();
+        
+
+        // tổng bệnh viện trong tháng   
+        $sum_hos_moth = hospital::join('users','users.id','hospitals.id_user')
+        ->whereBetween('users.created_at', [date('Y-m-01'), date('Y-m-t')])->get()->count();
+        $sum_hos_moth_old = hospital::join('users','users.id','hospitals.id_user')
+        ->whereBetween('users.created_at', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
+        if ($sum_hos_moth == 0) {
+            $ratio_sum_hos_moth = 0;
+        } else {
+            if ($sum_hos_moth_old == 0) {
+                $ratio_sum_hos_moth = 100;
+            } else {
+                $ratio_sum_hos_moth = round($sum_hos_moth * 100 / $sum_hos_moth_old - 100,2);
+            }
+        }
+
+        
+
+        // tổng người dùng
+        $sum_count_user_moth = patient::all()->count();
+        
+
+        // tổng người dùng trong tháng   
+        $sum_user_moth = patient::whereBetween('created_at', [date('Y-m-01'), date('Y-m-t')])->get()->count();
+        $sum_user_moth_old = patient::whereBetween('created_at', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
+        if ($sum_user_moth == 0) {
+            $ratio_sum_user_moth = 0;
+        } else {
+            if ($sum_user_moth_old == 0) {
+                $ratio_sum_user_moth = 100;
+            } else {
+                $ratio_sum_user_moth = round($sum_user_moth * 100 / $sum_user_moth_old - 100,2);
+            }
+        }
+
+        $sum_hos_count = hospital::selectRaw('Month(users.created_at) as month,count(*) as count')
+        ->join('users','users.id','hospitals.id_user')
+        ->whereYear('users.created_at',date('Y'))
+        ->groupByRaw('Month(users.created_at)')->pluck('count');
+        
+        $sum_hos_month = hospital::selectRaw('Month(users.created_at) as month,count(*) as count')
+        ->join('users','users.id','hospitals.id_user')
+        ->whereYear('users.created_at',date('Y'))
+        ->groupByRaw('Month(users.created_at)')->pluck('month');
+
+        $data_hos = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+        foreach ($sum_hos_month as $index => $month) {
+            $month--;
+            $data_hos[$month] = $sum_hos_count[$index];
+        }
+
+        $sum_pat_count = patient::selectRaw('Month(created_at) as month,count(*) as count')
+        ->whereYear('created_at',date('Y'))
+        ->groupByRaw('Month(created_at)')->pluck('count');
+        
+        $sum_pat_month = patient::selectRaw('Month(created_at) as month,count(*) as count')
+        ->whereYear('created_at',date('Y'))
+        ->groupByRaw('Month(created_at)')->pluck('month');
+
+        $data_pat = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+        foreach ($sum_pat_month as $index => $month) {
+            $month--;
+            $data_pat[$month] = $sum_pat_count[$index];
+        }
+        
+
+        return view('admin.dashboard', compact(
+            'sum_count_hos_moth',
+            'sum_hos_moth',
+            'ratio_sum_hos_moth',
+            'sum_count_user_moth',
+            'sum_user_moth',
+            'ratio_sum_user_moth',
+            'data_hos',
+            'data_pat'
+        ));
     }
     // LIST HOSPITAL
     function hospitals(Request $request)

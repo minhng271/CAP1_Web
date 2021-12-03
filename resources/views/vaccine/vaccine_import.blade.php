@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="return confirm('ok k cu')">Thêm Số Lượng</button>    
+            <button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="return confirm('Xác nhận nhập đúng số liệu')">Thêm Số Lượng</button>    
         </div>
     </form>
     </div>

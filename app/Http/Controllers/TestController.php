@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\hospital;
+use App\limit_web_mobile;
 use App\patient;
 use App\test;
 use App\test_patient;
@@ -20,15 +22,15 @@ class TestController extends Controller
         session(['active' => 'dashboard']);
 
         // tổng đã xét nghiệm hôm qua
-        $sum_count_yesterday = test_patient::whereNotNull('result')->where('date', date('Y-m-d', strtotime('-1 days')))->get()->count();
-        $sum_count_yesterday_old = test_patient::whereNotNull('result')->where('date', date('Y-m-d', strtotime('-2 days')))->get()->count();
-        if ($sum_count_yesterday == 0) {
-            $ratio_sum_count_yesterday = 0;
+        $sum_count_now = test_patient::whereNotNull('result')->where('date', date('Y-m-d'))->get()->count();
+        $sum_count_now_old = test_patient::whereNotNull('result')->where('date', date('Y-m-d', strtotime('-1 days')))->get()->count();
+        if ($sum_count_now == 0) {
+            $ratio_sum_count_now = 0;
         } else {
-            if ($sum_count_yesterday_old == 0) {
-                $ratio_sum_count_yesterday = 100;
+            if ($sum_count_now_old == 0) {
+                $ratio_sum_count_now = 100;
             } else {
-                $ratio_sum_count_yesterday = round($sum_count_yesterday * 100 / $sum_count_yesterday_old - 100,2);
+                $ratio_sum_count_now = round($sum_count_now * 100 / $sum_count_now_old - 100,2);
             }
         }
 
@@ -70,16 +72,132 @@ class TestController extends Controller
             }
         }
 
+        $sum_count = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->whereNotNull('result')
+        ->groupByRaw('Month(date)')->pluck('count');
+        
+        $sum_month = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->whereNotNull('result')
+        ->groupByRaw('Month(date)')->pluck('month');
+
+        $data = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+        foreach ($sum_month as $index => $month) {
+            $month--;
+            $data[$month] = $sum_count[$index];
+        }
+        
+        $sum_count_am = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->where('result','0')
+        ->groupByRaw('Month(date)')->pluck('count');
+        
+        $sum_month_am = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->where('result','0')
+        ->groupByRaw('Month(date)')->pluck('month');
+
+        $data2 = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+        foreach ($sum_month_am as $index => $month) {
+            $month--;
+            $data2[$month] = $sum_count_am[$index];
+        }
+        
+        $sum_count_duong = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->where('result','1')
+        ->groupByRaw('Month(date)')->pluck('count');
+        
+        $sum_month_duong = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->where('result','1')
+        ->groupByRaw('Month(date)')->pluck('month');
+
+        $data3 = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+        foreach ($sum_month_duong as $index => $month) {
+            $month--;
+            $data3[$month] = $sum_count_duong[$index];
+        }
+
         return view('test.dashboard', compact(
-            'sum_count_yesterday',
-            'ratio_sum_count_yesterday',
+            'sum_count_now',
+            'ratio_sum_count_now',
             'sum_test_done',
             'ratio_sum_test_done',
             'sum_negative',
             'ratio_sum_negative',
             'sum_positive',
-            'ratio_sum_positive'
+            'ratio_sum_positive',
+            'data',
+            'data2',
+            'data3',
         ));
+    }
+
+    function limit(){
+        session(['active'=>'limit']);      
+        $limit = 0;
+        if(limit_web_mobile::find(1)->limit_test){
+            $limit = limit_web_mobile::find(1)->limit_test;
+        }
+        return view('test.limit',compact('limit'));
+    }
+
+    function edit_limit(){
+        session(['active'=>'limit']);      
+        $limit = 0;
+        if(limit_web_mobile::find(1)->limit_test){
+            $limit = limit_web_mobile::find(1)->limit_test;
+        }
+        return view('test.edit_limit',compact('limit'));
+    }
+    function store_edit_limit(Request $request){
+        if($request->input('submit')){
+            limit_web_mobile::find(1)->update([
+                'limit_test' => $request->limit
+            ]);
+            return redirect('test/limit')->with('limit','Thay Đổi Giới Hạn Đăng Ký Thành Công');
+        }  
+        return view('test.edit_limit',compact('limit'));    
+        
+    }
+
+    function profile(){
+        $hospital = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')
+        ->where('users.id',Auth::id())->first();
+        return view('test.profile',compact('hospital'));
+    }
+    function edit_profile(){
+        $hospital = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')
+        ->where('users.id',Auth::id())->first();
+        return view('test.edit_profile',compact('hospital'));
+    }
+
+    function store_edit_profile(Request $request){
+        $request->validate(
+            [
+                'name' => ['required'],
+                'phone' => ['required'],
+                'address' => ['required'],
+            ],
+            [
+                'required' => ':attribute không được để trống'
+            ],
+            [
+                'name' => 'Tên Bệnh Viện',
+                'phone' => 'Số Điện Thoại',
+                'address' => 'Địa Chỉ',
+            ]
+        );
+        hospital::where('id_user',Auth::id())->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
+        return redirect('test/profile')->with('success','CẬP NHẬT THÔNG TIN BỆNH VIỆN THÀNH CÔNG');
     }
 
     function todayList(Request $request)
@@ -185,13 +303,15 @@ class TestController extends Controller
             $keyword = $request->input('keyword');
         }
 
+       
         $patients = test_patient::select('patients.*', 'test_patient.*')
             ->join('patients', 'test_patient.id_card', 'patients.id_card')
             ->join('hospitals', 'test_patient.id_hos', 'hospitals.id')
             ->where('test_patient.id_hos', Auth::user()->hospital->id)
-            ->where('date', $created_at)
+            ->where('test_patient.date', $created_at)
             ->where('patients.fullname', 'like', '%' . $keyword . '%')->paginate(8);
-
+        // echo "<pre>";
+        // print_r($patients);
         return view('test.list-to-calander', compact('patients'));
     }
 }

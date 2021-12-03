@@ -7,6 +7,9 @@
         @if (session('nameVaccine'))
             <div class="alert alert-success">đã thêm <b>{{session('nameVaccine')}}</b> vào danh sách vắc xin</div>
         @endif
+        @if (session('errorNameVaccine'))
+            <div class="alert alert-success">Vắc xin <b>{{session('errorNameVaccine')}}</b> đã tồn tại. Kiểm tra lại trong danh sách vắc xin đã xóa</div>
+        @endif
         <h1 class="title">Thêm mới vắc xin</h1>
         <form action="{{ url('vaccine/store-addnew-vaccine') }}" method="POST">
             @csrf

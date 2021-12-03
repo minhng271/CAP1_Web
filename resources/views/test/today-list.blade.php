@@ -139,7 +139,7 @@
 
                                                 <div class="info">
                                                     <div class="mb d-flex">
-                                                        <label for="" class='form-label'>{{ $item->fullname }}</label>
+                                                        <label for="" class='form-label'>Họ Tên</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->fullname }}">
                                                     </div>

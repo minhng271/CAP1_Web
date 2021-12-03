@@ -30,9 +30,9 @@
             color: red;
             opacity: 100%;
         }
-        
+
         .d-user:hover>i:after,
-        td.d-md-table-cell:hover>a:after{
+        td.d-md-table-cell:hover>a:after {
             width: 100%;
             opacity: 100%;
         }
@@ -49,7 +49,6 @@
             transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             opacity: 0;
         }
-
 
     </style>
     <main class="content">
@@ -73,14 +72,16 @@
                                 value="{{ request()->input('keyword') }}" placeholder="Tìm Kiếm ...">
                             <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
                         </form> --}}
-                           <form action="" method="get" class="col-md-6 row d-flex justify-content-end">
-                            <div class="col-md-6">  
-                                <input type="text" id="from_date" name="created_at" value="{{request()->input('created_at')}}" readonly="readonly" class="form-control" />  
-                           </div>
-                            <div class="col-md-3">  
-                                <button type="submit" name="filter" id="filter" class="btn btn-info w-100">Tra cứu</button>  
-                           </div> 
-                           </form>
+                        <form action="" method="get" class="col-md-6 row d-flex justify-content-end">
+                            <div class="col-md-6">
+                                <input type="text" id="from_date" name="created_at"
+                                    value="{{ request()->input('created_at') }}" readonly="readonly"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" name="filter" id="filter" class="btn btn-info w-100">Tra cứu</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="card flex-fill">
                         <table class="table table-hover my-0">
@@ -121,25 +122,24 @@
                                                 }
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->birthDate));
+                                                echo date('d-m-Y', strtotime($item->birthDate));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->email }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
                                             <td class="d-none d-xl-table-cell">@php
                                                 if ($item->result == '0') {
                                                     echo "<span style='background: #39f639;padding: 4px 6px;border-radius: 4px;'>Âm tính</span>";
-                                                } else{
-                                                    if($item->result == '1'){
+                                                } else {
+                                                    if ($item->result == '1') {
                                                         echo "<span style='color: white;background: #f12d2d;padding: 4px 6px;border-radius: 4px;'>Dương tính</span>";
-                                                    }
-                                                    else{
+                                                    } else {
                                                         echo "<span style='color: rgb(250, 250, 250);background: #bebebe;padding: 4px 6px;border-radius: 4px;'>Chưa XN</span>";
                                                     }
                                                 }
                                             @endphp</td>
                                             <td class="d-none d-md-table-cell d-user" data="{{ $item->id_card }}">
                                                 <i class="far fa-user" style="color: #3b7ddd;"></i>
-                                            </td> 
+                                            </td>
                                         </tr>
 
                                         <div class="col-md-6 info-patient d-none" id="{{ $item->id_card }}">
@@ -214,7 +214,8 @@
                                                 </div>
 
                                                 <div class="mb-3 d-flex mb-submit justify-content-end mt-3">
-                                                    <span class="btn btn-primary btn-d-none" data='{{$item->id_card}}'>Xác Nhận</span>
+                                                    <span class="btn btn-primary btn-d-none"
+                                                        data='{{ $item->id_card }}'>Xác Nhận</span>
                                                     {{-- <a href="{{ url()->current() }}" class="btn btn-primary">Xác Nhận</a> --}}
                                                 </div>
                                             </form>
@@ -231,6 +232,9 @@
                     </div>
                     <nav aria-label="Page navigation example">
                         {{ $patients->links() }}
+
+                      
+
                     </nav>
                 </div>
 

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div id="content" class="container-fluid">
-        <div class="card position-relative">
+        <div class="card position-relative" style="top:60px">
             @if (session('status'))
                 <span class="alert alert-success">{{ session('status') }}</span>
             @endif

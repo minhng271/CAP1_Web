@@ -52,9 +52,6 @@
             font-weight: 600;
         }
         
-        span{
-            color: #cccccc;
-        }
         i{
             display: inline-block !important;
             padding-right: 10px !important;
@@ -71,9 +68,14 @@
                     <li class="sidebar-header">
                         XÉT NGHIỆM
                     </li>
-                    <li class="sidebar-item @php if(session('active') == 'dashboard') echo " active-a" @endphp">
+                    <li class="sidebar-item @php if(session('active') == 'dashboard') echo " active" @endphp">
                         <a class="sidebar-link" href="{{ url('dashboard/test') }}">
                             <i class="fas fa-list"></i> <span class="align-middle">Trang Chủ</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item @php if(session('active') == 'limit') echo " active" @endphp">
+                        <a class="sidebar-link" href="{{ url('test/limit') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Xét giới hạn mỗi ngày</span>
                         </a>
                     </li>
 
@@ -129,16 +131,16 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">@php
+                                        class="text-dark" style="margin-right:20px ">@php
                                         use App\hospital;
                                         echo hospital::where('id_user', Auth::user()->id)->first()->name;
                                     @endphp</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
+                                    <a class="dropdown-item" href="{{ url('test/profile', []) }}"><i class="align-middle me-1"
                                             data-feather="user"></i> Thông Tin Cá Nhân</a>
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="pie-chart"></i> Phân Tích</a>
+                                    {{-- <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                            data-feather="pie-chart"></i> Phân Tích</a> --}}
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -165,78 +167,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="js/app.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
-            var gradient = ctx.createLinearGradient(0, 0, 0, 225);
-            gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
-            gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-            // Line chart
-            new Chart(document.getElementById("chartjs-dashboard-line"), {
-                type: "line",
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ],
-                    datasets: [{
-                        label: "Sales ($)",
-                        fill: true,
-                        backgroundColor: gradient,
-                        borderColor: window.theme.primary,
-                        data: [
-                            2115,
-                            1562,
-                            1584,
-                            1892,
-                            1587,
-                            1923,
-                            2566,
-                            2448,
-                            2805,
-                            3438,
-                            2917,
-                            3327
-                        ]
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        intersect: false
-                    },
-                    hover: {
-                        intersect: true
-                    },
-                    plugins: {
-                        filler: {
-                            propagate: false
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            reverse: true,
-                            gridLines: {
-                                color: "rgba(0,0,0,0.0)"
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1000
-                            },
-                            display: true,
-                            borderDash: [3, 3],
-                            gridLines: {
-                                color: "rgba(0,0,0,0.0)"
-                            }
-                        }]
-                    }
-                }
-            });
-        });
-    </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Pie chart

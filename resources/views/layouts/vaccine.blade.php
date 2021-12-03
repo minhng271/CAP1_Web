@@ -51,9 +51,6 @@
             text-transform: uppercase;
             font-weight: 600;
         }
-        span{
-            color: #cccccc;
-        }
         i{
             display: inline-block !important;
             padding-right: 10px !important;
@@ -72,6 +69,13 @@
                             <i class="fas fa-home"></i> <span @php if(session('active') == 'today') echo " style='color: #fff'" @endphp  class="align-middle">Trang Chủ</span>
                         </a>
                     </li>
+                    
+                    <li class="sidebar-item @php if(session('active') == 'limit') echo " active" @endphp">
+                        <a class="sidebar-link" href="{{ url('vaccine/limit') }}">
+                            <i class="fas fa-list"></i> <span class="align-middle">Xét giới hạn mỗi ngày</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item">
                         <a href="#hospital" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH
                             SÁCH HÔM NAY</a>
@@ -114,6 +118,23 @@
                                     <i class="fas fa-list"></i> Danh Sách Vắc Xin đã xóa</span></a></li>
                         </ul>
                     </li>
+
+                    <li class="sidebar-item">
+                        <a href="#disease" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            QUẢN LÝ LOẠI BỆNH
+                        </a>
+                        <ul class="collapse list-unstyled @php if(session('active') == 'them-moi-loai-benh' || session('active') == 'nhap-them-loai-benh' || session('active') == 'danh-sach-loai-benh' || session('active') == 'danh-sach-loai-benh-da-xoa') echo " show" @endphp" id="disease">
+                            <li class="@php if(session('active') == 'them-moi-loai-benh') echo " active-a" @endphp"><a href="{{ url('vaccine/them-moi-loai-benh') }}" class="sidebar-dropdown-link">
+                                 <span @php if(session('active') == 'them-moi-loai-benh') echo " style='color: #fff'" @endphp  class="align-middle">
+                                    <i class="fas fa-list"></i> Thêm mới Loại Bệnh</span></a></li>
+                            <li class="@php if(session('active') == 'danh-sach-loai-benh') echo " active-a" @endphp"><a href="{{ url('vaccine/danh-sach-loai-benh') }}" class="sidebar-dropdown-link">
+                                 <span @php if(session('active') == 'danh-sach-loai-benh') echo " style='color: #fff'" @endphp  class="align-middle">
+                                    <i class="fas fa-list"></i> Danh Sách Loại Bệnh Đã Nhập</span></a></li>
+                            <li class="@php if(session('active') == 'danh-sach-loai-benh-da-xoa') echo " active-a" @endphp"><a href="{{ url('vaccine/danh-sach-loai-benh-da-xoa') }}" class="sidebar-dropdown-link">
+                                 <span @php if(session('active') == 'danh-sach-loai-benh-da-xoa') echo " style='color: #fff'" @endphp  class="align-middle">
+                                    <i class="fas fa-list"></i> Danh Sách Loại Bệnh đã xóa</span></a></li>
+                        </ul>
+                    </li>
                 </ul>
 
 
@@ -141,16 +162,16 @@
                                     data-bs-toggle="dropdown">
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
-                                        class="text-dark">@php
+                                        class="text-dark" style="margin-right:20px ">@php
                                             use App\hospital;
                                             echo hospital::where('id_user', Auth::user()->id)->first()->name;
                                         @endphp</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
+                                    <a class="dropdown-item" href="{{ url('vaccine/profile') }}"><i class="align-middle me-1"
                                             data-feather="user"></i> Thông Tin Cá Nhân</a>
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="pie-chart"></i> Phân Tích</a>
+                                    {{-- <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                            data-feather="pie-chart"></i> Phân Tích</a> --}}
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -179,78 +200,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
-            var gradient = ctx.createLinearGradient(0, 0, 0, 225);
-            gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
-            gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-            // Line chart
-            new Chart(document.getElementById("chartjs-dashboard-line"), {
-                type: "line",
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ],
-                    datasets: [{
-                        label: "Sales ($)",
-                        fill: true,
-                        backgroundColor: gradient,
-                        borderColor: window.theme.primary,
-                        data: [
-                            2115,
-                            1562,
-                            1584,
-                            1892,
-                            1587,
-                            1923,
-                            2566,
-                            2448,
-                            2805,
-                            3438,
-                            2917,
-                            3327
-                        ]
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        intersect: false
-                    },
-                    hover: {
-                        intersect: true
-                    },
-                    plugins: {
-                        filler: {
-                            propagate: false
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            reverse: true,
-                            gridLines: {
-                                color: "rgba(0,0,0,0.0)"
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1000
-                            },
-                            display: true,
-                            borderDash: [3, 3],
-                            gridLines: {
-                                color: "rgba(0,0,0,0.0)"
-                            }
-                        }]
-                    }
-                }
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
             // Pie chart
             new Chart(document.getElementById("chartjs-dashboard-pie"), {
                 type: "pie",
@@ -277,119 +226,7 @@
             });
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Bar chart
-            new Chart(document.getElementById("chartjs-dashboard-bar"), {
-                type: "bar",
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ],
-                    datasets: [{
-                        label: "This year",
-                        backgroundColor: window.theme.primary,
-                        borderColor: window.theme.primary,
-                        hoverBackgroundColor: window.theme.primary,
-                        hoverBorderColor: window.theme.primary,
-                        data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
-                        barPercentage: .75,
-                        categoryPercentage: .5
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        yAxes: [{
-                            gridLines: {
-                                display: false
-                            },
-                            stacked: false,
-                            ticks: {
-                                stepSize: 20
-                            }
-                        }],
-                        xAxes: [{
-                            stacked: false,
-                            gridLines: {
-                                color: "transparent"
-                            }
-                        }]
-                    }
-                }
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var markers = [{
-                    coords: [31.230391, 121.473701],
-                    name: "Shanghai"
-                },
-                {
-                    coords: [28.704060, 77.102493],
-                    name: "Delhi"
-                },
-                {
-                    coords: [6.524379, 3.379206],
-                    name: "Lagos"
-                },
-                {
-                    coords: [35.689487, 139.691711],
-                    name: "Tokyo"
-                },
-                {
-                    coords: [23.129110, 113.264381],
-                    name: "Guangzhou"
-                },
-                {
-                    coords: [40.7127837, -74.0059413],
-                    name: "New York"
-                },
-                {
-                    coords: [34.052235, -118.243683],
-                    name: "Los Angeles"
-                },
-                {
-                    coords: [41.878113, -87.629799],
-                    name: "Chicago"
-                },
-                {
-                    coords: [51.507351, -0.127758],
-                    name: "London"
-                },
-                {
-                    coords: [40.416775, -3.703790],
-                    name: "Madrid "
-                }
-            ];
-            var map = new jsVectorMap({
-                map: "world",
-                selector: "#world_map",
-                zoomButtons: true,
-                markers: markers,
-                markerStyle: {
-                    initial: {
-                        r: 9,
-                        strokeWidth: 7,
-                        stokeOpacity: .4,
-                        fill: window.theme.primary
-                    },
-                    hover: {
-                        fill: window.theme.primary,
-                        stroke: window.theme.primary
-                    }
-                },
-                zoomOnScroll: false
-            });
-            window.addEventListener("resize", () => {
-                map.updateSize();
-            });
-        });
-    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var date = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);

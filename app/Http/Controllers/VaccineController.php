@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\disease;
 use App\hospital;
+use App\limit_web_mobile;
 use App\patient;
 use App\test_patient;
 use App\vaccine;
@@ -21,48 +22,149 @@ class VaccineController extends Controller
         
         session(['active' => 'dashboard']);
         
+        // vắc cin nhận được từ trước
+        $sum_vac = vaccine_hos::sum('quantity_received');
         // vắc cin nhận được trong tháng
-        $sum_vac = vaccine_hos::whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])
+        $sum_vac_month = vaccine_hos::whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])
         ->sum('quantity_received');
         $sum_vac_old = vaccine_hos::whereBetween('date_add',[date('Y-m-01',strtotime('-1 month')),date('Y-m-t',strtotime('-1 month'))])
         ->sum('quantity_received');
         // tỉ lệ so với số lượng nhận được tháng trước
-        if($sum_vac == 0){
+        if($sum_vac_month == 0){
             $ratio_sum_vac = 0;
         }else{
             if($sum_vac_old == 0){
                 $ratio_sum_vac = 100;
             }else{
-                $ratio_sum_vac = round($sum_vac*100/$sum_vac_old - 100,2);
+                $ratio_sum_vac = round($sum_vac_month*100/$sum_vac_old - 100,2);
             }
         }
         
-        // vắc cin còn lại
-        $sum_vac_remain = vaccine_hos::whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])
-        ->sum('quantity');
+        // vắc cin còn lại 
+        $sum_vac_remain = vaccine_hos::sum('quantity');
+       
         // tỉ lệ so với tổng
-        $ratio_sum_vac_remain = round($sum_vac_remain*100/$sum_vac,2);
+        if($sum_vac == 0){
+            $ratio_sum_vac_remain = 0;
+        }else{
+            $ratio_sum_vac_remain = round($sum_vac_remain*100/$sum_vac ,2);    
+        }
         
         // vắc cin tiêm thành công
-        $sum_vac_done = $sum_vac - $sum_vac_remain;
+        $sum_vac_done = count(vaccine_patient::whereBetween('date',[date('Y-m-01'),date('Y-m-t')])->get());
+        // vắc cin dk trong tháng
+        $sum_vac_done_old = count(vaccine_patient::get());
         // tỉ lệ so với tổng
-        $ratio_sum_vac_done = 100 - $ratio_sum_vac_remain;
+        if($sum_vac_done_old == 0){
+            $ratio_sum_vac_done = 0;
+        }else{
+            $ratio_sum_vac_done = round($sum_vac_done*100/$sum_vac_done_old ,2);
+        }
+        
         
         // vắc xin dùng nhiều
         $vaccines = vaccine_hos::selectRaw('id_vac, quantity_received - quantity as so_luong')->orderBy('so_luong', 'DESC')
-        ->whereBetween('date_add',[date('Y-m-01'),date('Y-m-t')])->get()->toArray();
-        for($i = 0; $i< count($vaccines) - 1;$i++){
-            for($j = $i+1; $j < count($vaccines);$j++){
-                if($vaccines[$i]['id_vac'] == $vaccines[$j]['id_vac']){
-                    $vaccines[$i]['so_luong'] += $vaccines[$j]['so_luong'];
+        ->get()->toArray();            
+        if(!empty($vaccines)){
+            for($i = 0; $i< count($vaccines) - 1;$i++){
+                for($j = $i+1; $j < count($vaccines);$j++){
+                    if($vaccines[$i]['id_vac'] == $vaccines[$j]['id_vac']){
+                        $vaccines[$i]['so_luong'] += $vaccines[$j]['so_luong'];
+                    }
                 }
             }
+            $vac_top = $vaccines[0];
+            $vac_top['name'] = vaccine::find($vac_top['id_vac'])->name;                
+        }else{
+            $vac_top['id_vac'] = '';
+            $vac_top['name'] = '';
+            $vac_top['so_luong'] = '';
         }
-        $vac_top = $vaccines[0];
-        $vac_top['name'] = vaccine::find($vac_top['id_vac'])->name;
-        return view('vaccine.dashboard', compact('sum_vac','ratio_sum_vac','sum_vac_remain','ratio_sum_vac_remain','sum_vac_done','ratio_sum_vac_done','vac_top'));
+
+        $sum_count = vaccine_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->whereNotNull('done_inject')
+        ->groupByRaw('Month(date)')->pluck('count');
+        
+        $sum_month = vaccine_patient::selectRaw('Month(date) as month,count(*) as count')
+        ->whereYear('date',date('Y'))
+        ->whereNotNull('done_inject')
+        ->groupByRaw('Month(date)')->pluck('month');
+
+        $data = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+        foreach ($sum_month as $index => $month) {
+            $month--;
+            $data[$month] = $sum_count[$index];
+        }
+
+        return view('vaccine.dashboard', compact('data','sum_vac','ratio_sum_vac','sum_vac_remain','ratio_sum_vac_remain','sum_vac_done','ratio_sum_vac_done','vac_top'));
     }
 
+    function limit(){
+        session(['active'=>'limit']);      
+        $limit = 0;
+        if(limit_web_mobile::find(1)->limit_vac){
+            $limit = limit_web_mobile::find(1)->limit_vac;
+        }
+        return view('vaccine.limit',compact('limit'));
+    }
+
+    function edit_limit(){
+        session(['active'=>'limit']);      
+        $limit = 0;
+        if(limit_web_mobile::find(1)->limit_vac){
+            $limit = limit_web_mobile::find(1)->limit_vac;
+        }
+        return view('vaccine.edit_limit',compact('limit'));
+    }
+    function store_edit_limit(Request $request){
+        if($request->input('submit')){
+            limit_web_mobile::find(1)->update([
+                'limit_vac' => $request->limit
+            ]);
+            return redirect('vaccine/limit')->with('limit','Thay Đổi Giới Hạn Đăng Ký Thành Công');
+        }  
+        return view('vaccine.edit_limit',compact('limit'));    
+        
+    }
+
+    
+    function profile(){
+        $hospital = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')
+        ->where('users.id',Auth::id())->first();
+        return view('vaccine.profile',compact('hospital'));
+    }
+    function edit_profile(){
+        $hospital = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')
+        ->where('users.id',Auth::id())->first();
+        return view('vaccine.edit_profile',compact('hospital'));
+    }
+
+    function store_edit_profile(Request $request){
+        $request->validate(
+            [
+                'name' => ['required'],
+                'phone' => ['required'],
+                'address' => ['required'],
+            ],
+            [
+                'required' => ':attribute không được để trống'
+            ],
+            [
+                'name' => 'Tên Bệnh Viện',
+                'phone' => 'Số Điện Thoại',
+                'address' => 'Địa Chỉ',
+            ]
+        );
+        hospital::where('id_user',Auth::id())->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
+        return redirect('vaccine/profile')->with('success','CẬP NHẬT THÔNG TIN BỆNH VIỆN THÀNH CÔNG');
+    }
 
     // VACCINE
 
@@ -84,8 +186,9 @@ class VaccineController extends Controller
     function edit_vaccine($id)
     {
         $vaccines = vaccine::select('vaccines.*', 'diseases.name as diseases')
-            ->leftJoin('diseases', 'vaccines.id', 'diseases.id_vac')->where('vaccines.id', $id)->first();
+            ->leftJoin('diseases', 'vaccines.id_disease', 'diseases.id')->where('vaccines.id', $id)->first();
         $diseases = disease::all();
+
         return view('vaccine.vaccine_edit', compact('vaccines', 'diseases', 'id'));
     }
 
@@ -121,13 +224,7 @@ class VaccineController extends Controller
                     'description' => $request->input('description'),
                     'age_use_from' => $request->input('age_use_from'),
                     'age_use_to' => $request->input('age_use_to'),
-
-                ]
-            );
-            disease::where('id_vac', $request->input('id'))->update(
-                [
-                    'id_vac' => $request->input('id'),
-                    'name'   => $request->input('type_disease')
+                    'id_disease' => disease::where('name','like','%'.$request->input('type_disease').'%')->first()->id,
                 ]
             );
 
@@ -171,7 +268,7 @@ class VaccineController extends Controller
     function vaccine_addnew(Request $request)
     {
         session(['active' => 'them-moi']);
-        $diseases = disease::selectRaw('count(id_vac) as number, name')->groupBy('name')->get();
+        $diseases = disease::select('name')->get();
         return view('vaccine.vaccine_addnew', compact('diseases'));
     }
 
@@ -199,7 +296,11 @@ class VaccineController extends Controller
                     'description' => 'Mô Tả',
                 ]
             );
-
+            $list_vac = vaccine::withTrashed()->where('name','like','%'.$request->input('name').'%')->first();
+            
+            if($list_vac){
+                return redirect('vaccine/them-moi-vaccine')->with('errorNameVaccine', $request->input('name'));
+            }
             vaccine::create(
                 [
                     'name' => $request->input('name'),
@@ -207,13 +308,7 @@ class VaccineController extends Controller
                     'description' => $request->input('description'),
                     'age_use_from' => $request->input('age_use_from'),
                     'age_use_to' => $request->input('age_use_to'),
-
-                ]
-            );
-            disease::create(
-                [
-                    'id_vac' => vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id,
-                    'name'   => $request->input('type_disease')
+                    'id_disease' => disease::where('name',$request->input('type_disease'))->first()->id
                 ]
             );
 
@@ -262,7 +357,7 @@ class VaccineController extends Controller
     
                 ]
             );
-    
+            
             vaccine_hos::create([
                 'id_vac' => vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id,
                 'id_hos' => hospital::where('id_user', Auth::id())->first()->id,
@@ -275,6 +370,113 @@ class VaccineController extends Controller
             ]);
             return redirect('vaccine/nhap-them-vaccine')->with('done_vac_hos',$request->input('name'));
         }
+    }
+
+    // DANH SÁCH LOẠI BỆNH
+    function disease_list(Request $request){
+        session(['active' => 'danh-sach-loai-benh']);
+        $keyword = '';
+        if ($request->input('keyword')) {
+            $keyword = $request->input('keyword');
+        }
+        $count = 0;
+        $list_disease = disease::select('id','name')->get()->toArray();
+        foreach ($list_disease as $item) {
+            $list_disease[$count]['vaccine'] = disease::find( $item['id'] )->vaccine->toArray();
+            $count++;
+        }
+        // echo "<pre>";
+        // print_r($list_disease);
+        return view('vaccine.disease_list', compact('list_disease'));
+    }
+    function delete_disease($id){
+        $name = disease::find($id)->name;
+        disease::find($id)->delete();
+        return redirect('vaccine/danh-sach-loai-benh')->with('delete',$name);
+    }
+
+    function edit_disease($id){
+        $name = disease::find($id)->name;
+        $list_vac = disease::find($id)->vaccine->toArray();
+        $list_vac_all = vaccine::select('id','name')->get()->toArray();
+        // echo "<pre>";
+        // print_r($list_vac_all);
+        return view('vaccine.edit_disease',compact('id','name','list_vac','list_vac_all'));
+    }
+
+    function store_edit_disease($id,Request $request){
+        // return $request->vaccine;
+        foreach ($request->vaccine as $key => $value) {
+            vaccine::find($key)->update([
+                'id_disease' => $id
+            ]);
+        }
+
+        return redirect('vaccine/danh-sach-loai-benh')->with('name',disease::find($id)->name);
+    }
+
+    function bin_disease(Request $request){
+        session(['active' => 'danh-sach-loai-benh-da-xoa']);
+        $keyword = '';
+        if ($request->input('keyword')) {
+            $keyword = $request->input('keyword');
+        }
+        $count = 0;
+        $list_disease = disease::onlyTrashed()->select('id','name')
+        ->get()->toArray();
+        foreach ($list_disease as $item) {
+            $list_disease[$count]['vaccine'] = disease::onlyTrashed()->find( $item['id'] )->vaccine->toArray();
+            $count++;
+        }      
+        return view('vaccine.disease_list_bin', compact('list_disease'));
+    }
+
+    function restore_bin_disease($id){
+        $name = disease::onlyTrashed()->find($id)->name;
+        disease::onlyTrashed()->find($id)->restore();
+        return redirect('vaccine/danh-sach-loai-benh-da-xoa')->with('restore',$name);
+    }
+
+    function delete_disease_bin($id){
+        $name = disease::onlyTrashed()->find($id)->name;
+        disease::onlyTrashed()->find($id)->forceDelete();
+        return redirect('vaccine/danh-sach-loai-benh-da-xoa')->with('delete',$name);
+    }
+
+
+    function disease_addnew(){
+        session(['active'=>'them-moi-loai-benh']);
+        return view('vaccine.disease_addnew');
+    }
+
+    function store_addnew_disease(Request $request){
+        if ($request->input('submit')) {
+            $request->validate(
+                [
+                    'disease' => ['required'],
+                    'symptom' => ['required'],
+                ],
+                [
+                    'required' => ':attribute không được để trống'
+                ],
+                [
+                    'disease' => 'Loại Bệnh',
+                    'symptom' => 'Triệu Chứng',
+                ]
+            );
+            $list_disease = disease::withTrashed()->where('name','like','%'.$request->input('disease').'%')->first();
+            
+            if($list_disease){
+                return redirect('vaccine/them-moi-loai-benh')->with('errorNameDisease', $request->input('disease'));
+            }
+            disease::create(
+                [
+                    'name' => $request->input('disease'),
+                    'symptom' => $request->input('symptom'),
+                ]
+            );
+            return redirect('vaccine/them-moi-loai-benh')->with('nameDisease', $request->input('disease'));
+        }else return 1;
     }
 
     // DANH SÁCH TIÊM CHÍCH

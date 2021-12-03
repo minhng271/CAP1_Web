@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use users;
 
 class hospital extends Model
 {
@@ -13,5 +14,17 @@ class hospital extends Model
     public function test_patient()
     {
         return $this->hasMany(test_patient::class, 'id_hos', 'id');
+    }
+    public function vaccine_hos()
+    {
+        return $this->hasMany(vaccine_hos::class, 'id_hos', 'id');
+    }
+    public function vaccine_patient()
+    {
+        return $this->hasMany(vaccine_patient::class, 'id_hos', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

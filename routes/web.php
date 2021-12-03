@@ -29,6 +29,12 @@ Route::middleware(['auth'])->group(function () {
 
 // TEST
 Route::get('dashboard/test','TestController@dashboard');
+Route::get('test/limit','TestController@limit');
+Route::get('test/limit/edit','TestController@edit_limit');
+Route::post('test/limit/store_edit','TestController@store_edit_limit');
+Route::get('test/profile','TestController@profile');
+Route::get('test/profile/edit','TestController@edit_profile');
+Route::post('test/profile/store-edit','TestController@store_edit_profile');
 Route::get('test/xet-nghiem-hom-nay', 'TestController@todayList');
 Route::get('test/danh-sach-xoa-tam', 'TestController@softDeleteList');
 Route::get('test/danh-sach-cho', 'TestController@waitList');
@@ -41,6 +47,14 @@ Route::get('test/danh-sach-theo-lich', 'TestController@list_to_calander');
 
 // VACCINE
 Route::get('dashboard/vaccine','VaccineController@dashboard');
+Route::get('vaccine/limit','VaccineController@limit');
+Route::get('vaccine/limit/edit','VaccineController@edit_limit');
+Route::post('vaccine/limit/store_edit','VaccineController@store_edit_limit');
+
+Route::get('vaccine/profile','VaccineController@profile');
+Route::get('vaccine/profile/edit','VaccineController@edit_profile');
+Route::post('vaccine/profile/store-edit','VaccineController@store_edit_profile');
+
 Route::get('vaccine/danh-sach-vaccine','VaccineController@vaccine_list');
 Route::get('vaccine/edit-vaccine/{id}','VaccineController@edit_vaccine');
 Route::post('vaccine/store-edit-vaccine','VaccineController@store_edit_vaccine');
@@ -51,6 +65,17 @@ Route::get('vaccine/them-moi-vaccine','VaccineController@vaccine_addnew');
 Route::post('vaccine/store-addnew-vaccine','VaccineController@store_addnew');
 Route::get('vaccine/nhap-them-vaccine','VaccineController@vaccine_import');
 Route::get('vaccine/store-them-sl-vaccine','VaccineController@store_vaccine_import');
+
+// loai benh
+Route::get('vaccine/danh-sach-loai-benh','VaccineController@disease_list');
+Route::get('vaccine/edit-disease/{id}','VaccineController@edit_disease');
+Route::post('vaccine/store-edit-disease/{id}','VaccineController@store_edit_disease');
+Route::get('vaccine/delete-disease/{id}','VaccineController@delete_disease');
+Route::get('vaccine/danh-sach-loai-benh-da-xoa','VaccineController@bin_disease');
+Route::get('vaccine/delete-disease-bin/{id}','VaccineController@delete_disease_bin');
+Route::get('vaccine/restore-disease/{id}','VaccineController@restore_bin_disease');
+Route::get('vaccine/them-moi-loai-benh','VaccineController@disease_addnew');
+Route::post('vaccine/store-addnew-disease','VaccineController@store_addnew_disease');
 
 // danh sach 
 Route::get('vaccine', 'VaccineController@todayList');
