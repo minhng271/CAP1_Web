@@ -53,13 +53,14 @@
 
     </style>
     <main class="content">
-        <div class="container-fluid p-0">
-            @if (session('update_vaccine'))
-                <span class="alert alert-success">Cập nhật vắc xin <b>{{ session('update_vaccine') }}</b> Thành Công</span>
+        @if (session('update_vaccine'))
+                <div class="alert alert-success" style="margin-bottom:1px;">Cập nhật vắc xin <b>{{ session('update_vaccine') }}</b> Thành Công</div>
             @endif
             @if (session('delete_vaccine'))
-                <span class="alert alert-success">Xóa <b>{{ session('delete_vaccine') }}</b> Khỏi danh sách chờ thành công</span>
+                <div class="alert alert-success" style="margin-bottom:1px;">Xóa <b>{{ session('delete_vaccine') }}</b> lô <b>{{session('lot_number')}}</b> Khỏi danh sách chờ thành công</div>
             @endif
+        <div class="container-fluid p-0">
+            
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
@@ -117,19 +118,16 @@
                                             <td class="d-none d-xl-table-cell" style="color: #ff2525">{{ $item->quantity }}</td>
                                             
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/edit-vaccine', ['id' => $item->id]) }}">
+                                                <a href="{{ url('vaccine/edit-vaccine/'.$item->id) }}">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             </td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/delete-vaccine', ['id' => $item->id]) }}"
+                                                <a href="{{ url('vaccine/delete-vaccine/'.$item->id.'?lot_number='.$item->lot_number) }}"
                                                     onclick="return confirm('XÓA VACCINE NÀY')">
                                                     <i class="far fa-trash-alt"></i>
                                                 </a>
                                             </td>
-                                            {{-- <td class="d-none d-md-table-cell d-user" data="{{ $item->id }}">
-                                                <i class="far fa-user" style="color: #3b7ddd;"></i>
-                                            </td> --}}
                                         </tr>
                                         
                                     @endforeach

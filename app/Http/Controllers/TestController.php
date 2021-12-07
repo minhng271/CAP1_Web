@@ -240,14 +240,14 @@ class TestController extends Controller
     }
     function done_patient($id_card)
     {
-        test_patient::where('id_card', $id_card)->update(['wait_at' => '1']);
+        test_patient::where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->update(['wait_at' => '1']);
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
         return redirect('test/xet-nghiem-hom-nay')->with('done_patient', $fullname);
     }
 
     function restore_patient($id_card)
     {
-        test_patient::onlyTrashed()->where('id_card', $id_card)->restore();
+        test_patient::onlyTrashed()->where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->restore();
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
         return redirect('test/danh-sach-xoa-tam')->with('restore_patient', $fullname);
     }
@@ -255,14 +255,14 @@ class TestController extends Controller
     function delete_patient($id_card)
     {
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
-        test_patient::where('id_card', $id_card)->delete();
+        test_patient::where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->delete();
         return redirect('test/xet-nghiem-hom-nay')->with('delete_patient', $fullname);
     }
 
     function delete_patient_softDelete($id_card)
     {
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
-        test_patient::onlyTrashed()->where('id_card', $id_card)->forceDelete();
+        test_patient::onlyTrashed()->where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->forceDelete();
         return redirect('test/danh-sach-xoa-tam')->with('delete_patient', $fullname);
     }
 

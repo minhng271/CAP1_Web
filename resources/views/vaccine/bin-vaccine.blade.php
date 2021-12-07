@@ -30,9 +30,9 @@
             color: red;
             opacity: 100%;
         }
-        
+
         .d-user:hover>i:after,
-        td.d-md-table-cell:hover>a:after{
+        td.d-md-table-cell:hover>a:after {
             width: 100%;
             opacity: 100%;
         }
@@ -50,18 +50,17 @@
             opacity: 0;
         }
 
-
     </style>
     <main class="content">
+        @if (session('restore_vaccine'))
+            <div class="alert alert-success" style="margin-bottom: 1px">Khôi phục vắc xin <b>{{ session('restore_vaccine') }}</b> lô
+                <b>{{ session('lot_number') }}</b> thành công</div>
+        @endif
+        @if (session('delete_vaccine'))
+            <div class="alert alert-success"  style="margin-bottom: 1px">Xóa Vắc xin <b>{{ session('delete_vaccine') }}</b> lô
+                <b>{{ session('lot_number') }}</b> vĩnh viễn thành công</div>
+        @endif
         <div class="container-fluid p-0">
-            @if (session('restore_vaccine'))
-                <span class="alert alert-success">Khôi phục vắc xin <b>{{ session('restore_vaccine') }}</b> thành công</span>
-                <br>
-            @endif
-            @if (session('delete_vaccine'))
-                <span class="alert alert-success">Xóa Vắc xin <b>{{ session('delete_vaccine') }}</b> vĩnh viễn thành công</span>
-                <br>
-            @endif
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
@@ -106,28 +105,28 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->age_use_from }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->age_use_to }}</td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->date_of_manufacture));
+                                                echo date('d-m-Y', strtotime($item->date_of_manufacture));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->out_of_date));
+                                                echo date('d-m-Y', strtotime($item->out_of_date));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->lot_number }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->quantity }}</td>
-                                            
+
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/khoi-phuc-vaccine', ['id' => $item->id]) }}"
+                                                <a href="{{ url('vaccine/khoi-phuc-vaccine/' . $item->id . '?lot_number=' . $item->lot_number) }}"
                                                     onclick="return confirm('KHÔI PHỤC VACCINE NÀY')">
                                                     <i class="fas fa-window-restore"></i>
                                                 </a>
                                             </td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/delete-vaccine', ['id' => $item->id]) }}"
+                                                <a href="{{ url('vaccine/delete-vaccine-bin/' . $item->id . '?lot_number=' . $item->lot_number) }}"
                                                     onclick="return confirm('XÓA VĨNH VIỄN VACCINE NÀY')">
                                                     <i class="far fa-trash-alt"></i>
                                                 </a>
                                             </td>
                                         </tr>
-                                        
+
                                     @endforeach
                                 @else
                                     <tr style="background:#rgb(240 238 238);color: black;">

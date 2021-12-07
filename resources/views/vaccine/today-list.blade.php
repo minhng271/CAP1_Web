@@ -53,21 +53,19 @@
         }
 
     </style>
-    <main class="content">
-        <div class="container-fluid p-0">
-            @if (session('done_patient'))
-                <span class="alert alert-success">Tiêm cho <b>{{ session('done_patient') }}</b> thành công </span>
-                <br>
+    <div class="content">
+        @if (session('done_patient'))
+                <div class="alert alert-success" style="margin-bottom:1px;">Tiêm cho <b>{{ session('done_patient') }}</b> thành công </div>
             @endif
             @if (session('delete_vaccine'))
-                <span class="alert alert-success">Chuyển <b>{{ session('delete_vaccine') }}</b> vào danh sách chờ thành
-                    công</span>
-                <br>
+                <div class="alert alert-success" style="margin-bottom:1px;">Chuyển <b>{{ session('delete_vaccine') }}</b> vào danh sách chờ thành
+                    công</div>
             @endif
             @if (session('quantity_zero'))
-                <span class="alert alert-success">Không thành công !!!Vắc xin <b>{{ session('quantity_zero') }}</b> đã hết số lượng </span>
-                <br>
+                <div class="alert alert-success" style="margin-bottom:1px;">Không thành công !!!Vắc xin <b>{{ session('quantity_zero') }}</b> đã hết số lượng </div>
             @endif
+        <div class="container-fluid p-0">
+            
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
@@ -312,6 +310,6 @@
 
             </div>
         </div>
-    </main>
+    </div>
 
 @endsection

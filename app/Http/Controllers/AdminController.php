@@ -107,7 +107,7 @@ class AdminController extends Controller
         }
         $hospitals = hospital::select('hospitals.*','users.email')
         ->join('users','hospitals.id_user','users.id')
-        ->where('name','like','%'.$keyword.'%')->paginate(8);
+        ->where('hospitals.name','like','%'.$keyword.'%')->paginate(8);
         
         return view('admin.hospitals.list', compact('hospitals'));
     }
@@ -161,29 +161,42 @@ class AdminController extends Controller
     function delete_hospitals($id)
     {
         
-        if(user::find($id)){
-            $name =  user::find($id)->name;
-            user::find($id)->delete();
+        if(hospital::find($id)){
+            $name =  hospital::find($id)->name;
+            $id_user = hospital::find($id)->id_user;
+            hospital::find($id)->delete();
+            user::find($id_user)->delete();
             return redirect('admin/hospitals')->with('delete', $name);
         }
-        if(user::onlyTrashed()->find($id)){
-            $name =  user::onlyTrashed()->find($id)->name;
-            user::onlyTrashed()->find($id)->forceDelete();
+        if(hospital::onlyTrashed()->find($id)){
+            $name =  hospital::onlyTrashed()->find($id)->name;
+            $id_user = hospital::onlyTrashed()->find($id)->id_user;
+            user::onlyTrashed()->find($id_user)->forceDelete();
             return redirect('admin/hospital/bin')->with('delete', $name);
         }
-
-        
     }
-    function bin_hospitals()
+    function bin_hospitals(Request $request)
     {
-        session(['active','hos_bin']);
-        $hospitals = AppUser::onlyTrashed()->where('type','hospital')->paginate(8);
+        session(['active' => 'hos_bin']);
+        $keyword = '';
+        if($request->input('keyword')){
+            $keyword = $request->input('keyword');
+        }
+        $hospitals = hospital::select('hospitals.*','users.email')
+        ->join('users','hospitals.id_user','users.id')->onlyTrashed()
+        ->where('hospitals.name','like','%'.$keyword.'%')->paginate(8);
         return view('admin.hospitals.bin', compact('hospitals'));
     }
-    function restore_hospitals($id){
-        $name = user::onlyTrashed()->find($id)->name;
-        user::onlyTrashed()->find($id)->restore();
-        return redirect('admin/hospital/bin')->with('restore',$name);  
+
+    function restore_hospitals($id){       
+        if(hospital::onlyTrashed()->find($id)){
+            $name =  hospital::onlyTrashed()->find($id)->name;
+            $id_user = hospital::onlyTrashed()->find($id)->id_user;
+            user::onlyTrashed()->find($id_user)->restore();
+            hospital::onlyTrashed()->find($id)->restore();
+            return redirect('admin/hospital/bin')->with('restore', $name);
+        }
+       
     }
     
 
@@ -224,14 +237,15 @@ class AdminController extends Controller
     // LIST USER
     function users(Request $request)
     {
-        session(['active' => 'user_lis']);
+        session(['active' => 'user_list']);
         $keyword = '';
         if($request->input('keyword')){
             $keyword = $request->input('keyword');
         }
 
-        $users = AppUser::where('name','like','%'.$keyword.'%')->where('type','user')->paginate(8);
-        return view('admin.users.list', compact('users'));
+        $patients = patient::where('fullname','like','%'.$keyword.'%')
+        ->paginate(8);
+        return view('admin.users.list', compact('patients'));
     }
     
 
@@ -244,25 +258,24 @@ class AdminController extends Controller
     function store_add_users(Request $request)
     {
         if ($request->input('submit')) {
-            // $request->validate(
-            //     [
-            //         'name' => ['required', 'string', 'max:255'],
-            //         'address' => ['required', 'string', 'max:255'],
-            //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            //         'password' => ['required', 'string', 'min:5'],
-            //     ],
-            //     [
-            //         'required' => ':attribute không được để trống',
-            //         'email' => 'Email không đúng định dạng',
-            //         'regex' => ':attribute không đúng định dạng',
-            //     ],
-            //     [
-            //         'name' => 'Họ và tên',
-            //         'email' => 'Email',
-            //         'password' => 'Mật khẩu',
-            //         'address' => 'Địa Chỉ',
-            //     ]
-            // );
+            $request->validate(
+                [
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'password' => ['required', 'string', 'min:5'],
+                ],
+                [
+                    'required' => ':attribute không được để trống',
+                    'email' => 'Email không đúng định dạng',
+                    'regex' => ':attribute không đúng định dạng',
+                ],
+                [
+                    'name' => 'Họ và tên',
+                    'email' => 'Email',
+                    'password' => 'Mật khẩu',
+                    'address' => 'Địa Chỉ',
+                ]
+            );
 
             User::create([
                 'name' => $request['name'],
@@ -276,32 +289,41 @@ class AdminController extends Controller
     }
 
     // DELETE BIN
-    function delete_users($id)
+    function delete_users($id_card)
     {
         
-        if(user::find($id)){
-            $name =  user::find($id)->name;
-            user::find($id)->delete();
+        if(patient::where('id_card',$id_card)){
+            $name = patient::where('id_card',$id_card)->first()->fullname;
+            patient::where('id_card',$id_card)->delete();
             return redirect('admin/users')->with('delete', $name);
-        }
-        if(user::onlyTrashed()->find($id)){
-            $name =  user::onlyTrashed()->find($id)->name;
-            user::onlyTrashed()->find($id)->forceDelete();
+        }   
+    }
+    function delete_user_bin($id_card)
+    {
+        if(patient::onlyTrashed()->where('id_card',$id_card)){
+            $name = patient::onlyTrashed()->where('id_card',$id_card)->first()->fullname;
+            patient::onlyTrashed()->where('id_card',$id_card)->forceDelete();
             return redirect('admin/user/bin')->with('delete', $name);
         }
-
-        
     }
-    function bin_users()
+    function bin_users(Request $request)
     {
         session(['active','user_bin']);
-        $users = AppUser::onlyTrashed()->where('type','user')->paginate(8);
-        return view('admin.users.bin', compact('users'));
+        $keyword = '';
+        if($request->input('keyword')){
+            $keyword = $request->input('keyword');
+        }
+
+        $patients = patient::onlyTrashed()->where('fullname','like','%'.$keyword.'%')
+        ->paginate(8);
+        return view('admin.users.bin', compact('patients'));
     }
-    function restore_users($id){
-        $name = user::onlyTrashed()->find($id)->name;
-        user::onlyTrashed()->find($id)->restore();
-        return redirect('admin/user/bin')->with('restore',$name);  
+    function restore_users($id_card){
+        if(patient::onlyTrashed()->where('id_card',$id_card)){
+            $name = patient::onlyTrashed()->where('id_card',$id_card)->first()->fullname;
+            patient::onlyTrashed()->where('id_card',$id_card)->restore();
+            return redirect('admin/user/bin')->with('restore',$name); 
+        } 
     }
     
 

@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-md-6" style=" padding: 0px; margin-top: 15px; ">
                                     <button type="submit" value="" name="submit" class="btn btn-primary">Xác nhận</button>
-                                    <a href="" class="btn btn-outline-secondary">Hủy Bỏ</a>
+                                    <a href="{{ url('vaccine/danh-sach-loai-benh', []) }}" class="btn btn-outline-secondary">Hủy Bỏ</a>
                                 </div>
                             </div>
                         </form>

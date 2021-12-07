@@ -53,17 +53,15 @@
         }
 
     </style>
-    <main class="content">
+    <div class="content">
+        @if (session('restore_vaccine'))
+            <div class="alert alert-success" style="margin-bottom:1px;">Khôi phục <b>{{ session('restore_vaccine') }}</b> thành công </div>
+        @endif
+        @if (session('delete_vaccine'))
+            <div class="alert alert-success" style="margin-bottom:1px;">Xóa <b>{{ session('delete_vaccine') }}</b> khỏi danh sách tiêm hôm nay thành
+                công</div>
+        @endif
         <div class="container-fluid p-0">
-            @if (session('restore_vaccine'))
-                <span class="alert alert-success">Khôi phục <b>{{ session('restore_vaccine') }}</b> thành công </span>
-                <br>
-            @endif
-            @if (session('delete_vaccine'))
-                <span class="alert alert-success">Xóa <b>{{ session('delete_vaccine') }}</b> khỏi danh sách tiêm hôm nay thành
-                    công</span>
-                <br>
-            @endif
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
@@ -120,7 +118,7 @@
                                             <td class="d-none d-md-table-cell d-user" data="{{ $item->id_card }}">
                                                 <i class="far fa-user" style="color: #3b7ddd;"></i>
                                             </td>
-                                            
+
                                         </tr>
 
 
@@ -152,7 +150,7 @@
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->health_card }}">
                                                     </div>
-                                                    
+
                                                     <div class="mb d-flex">
                                                         <label for="" class='form-label'>Giới tính</label>
                                                         <div class="mb d-flex-gender">
@@ -230,6 +228,6 @@
 
             </div>
         </div>
-    </main>
+    </div>
 
 @endsection

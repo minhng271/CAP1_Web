@@ -88,11 +88,11 @@
                     <li class="sidebar-item">
                         <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH
                             NGƯỜI DÙNG</a>
-                        <ul class="collapse list-unstyled @php if(session('active') == 'user_add' || session('active') == 'user_lis' ||session('active') == 'user_bin') echo "
+                        <ul class="collapse list-unstyled @php if(session('active') == 'user_add' || session('active') == 'user_list' ||session('active') == 'user_bin') echo "
                             show" @endphp" id="user">
-                            <li class="@php if(session('active') == 'user_add') echo " active-a" @endphp"><a
+                            {{-- <li class="@php if(session('active') == 'user_add') echo " active-a" @endphp"><a
                                     href="{{ url('admin/user/add') }}" class="sidebar-dropdown-link">Thêm Người
-                                    Dùng</a></li>
+                                    Dùng</a></li> --}}
                             <li class="@php if(session('active') == 'user_list') echo " active-a" @endphp"><a
                                     href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng</a></li>
@@ -195,7 +195,7 @@
             });
         });
     </script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var date = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);

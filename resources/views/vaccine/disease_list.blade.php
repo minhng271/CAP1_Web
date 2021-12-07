@@ -63,7 +63,7 @@
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
-                        <h3 style="text-transform: uppercase; font-weight: 600;">Danh sách Thông tin Vaccine</h3>
+                        <h3 style="text-transform: uppercase; font-weight: 600;">Danh sách Loại Bệnh</h3>
                         <form class="col-md-4 d-flex justify-content-end" method="GET">
                             <input type="text" class='form-control' class="form-control" name="keyword"
                                 value="{{ request()->input('keyword') }}" placeholder="Tìm Kiếm ...">

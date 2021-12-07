@@ -1,116 +1,232 @@
 @extends('layouts.admin')
 @section('content')
-    <div id="content" class="container-fluid">
-        <div class="card position-relative">
-            @if (session('status'))
-                <span class="alert alert-success">{{ session('status') }}</span>
-            @endif
-            @if (session('delete'))
-                <span  class="alert alert-success">Xóa <b>{{ session('delete') }}</b> thành công !!!</span>
-            @endif
-            @if (session('update'))
-            <span class="alert alert-success">Cập Nhật <b>{{ session('update') }}</b> thành công !!!</span>
-        @endif
-            <div class="card-header d-flex justify-content-between">
-                <div class="card-header-left">
-                    <span class="font-weight-bold" style="font-size: 1.8rem; text-transform: uppercase;">DANH SÁCH NGƯỜI DÙNG</span>
-                    {{-- <div class="header-count">
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'active']) }}" class="header-count-link a1">Tài
-                            khoản được kích hoạt({{ $count['active'] }})</a>
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'disable']) }}" class="header-count-link a2">Tài
-                            khoản bị vô hiệu hóa({{ $count['disable'] }})</a>
-                    </div> --}}
-                </div>
-                <form class="form-inline">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <input type="text" class="form-control" id="inputPassword2" name="keyword"
-                            value="{{ request()->input('keyword') }}" placeholder="Search ...">
+    <style>
+        .col-md-6.info-patient {
+            border: 1px solid;
+            border-radius: 8px;
+            box-sizing: border-box;
+            padding: 15px 20px;
+            background: #fff;
+            position: absolute;
+            top: -22%;
+            left: 25%;
+        }
+
+        .col-md-6.info-patient h3 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            font-weight: 400;
+            text-align: center;
+            display: block;
+            padding: 8px;
+        }
+
+        td.d-none.d-md-table-cell {
+            position: relative;
+        }
+
+        .d-md-table-cell:hover td.d-md-table-cell:after,
+        .d-md-table-cell:hover i {
+            color: red;
+            opacity: 100%;
+        }
+        
+        .d-user:hover>i:after,
+        td.d-md-table-cell:hover>a:after{
+            width: 100%;
+            opacity: 100%;
+        }
+
+        .d-user>i:after,
+        td.d-md-table-cell>a:after {
+            content: '';
+            width: 0%;
+            height: 2px;
+            background: red;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            opacity: 0;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+    </style>
+    <main class="content">
+          
+        @if (session('delete'))
+        <div class="alert alert-success" style=" margin: 1px; ">Xóa <b>{{ session('delete') }}</b> Khỏi danh sách thành
+            công</div>
+    @endif
+        <div class="container-fluid p-0">
+          
+            <div class="row">
+                <div class="col-12 col-lg-12 col-xxl-12">
+                    <div class="card-header  d-flex justify-content-between">
+                        <h3>Danh sách Người dùng</h3>
+                        <form class="col-md-4 d-flex justify-content-end" method="GET">
+                            <input type="text" class='form-control' class="form-control" name="keyword"
+                                value="{{ request()->input('keyword') }}" placeholder="Tìm Kiếm ...">
+                            <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
+                        </form>
                     </div>
-                    <button type="submit" class="btn btn-primary mb-2" name="submit">Tìm Kiếm</button>
-                </form>
-            </div>
-            {!! Form::open(['url' => 'users/option']) !!}
-
-            {{-- <div class="select-option" style="display: flex;">
-                <select name="act" class="form-control col-md-2" style="margin-right: 10px;">
-                    <option>Chọn</option>
-                    @foreach ($users_act as $key => $value)
-                    <option value="{{$key}}">{{$value}}</option>
-                    @endforeach
-                </select>
-                <input type="submit" class="btn btn-primary" name="option" value="Áp dụng">
-            </div> --}}
-            {{-- script --}}
-            <script>
-                $(document).ready(function() {
-                    $("#ckeck-all").click(function() {
-                        $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-                    });
-                });
-            </script>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td>
-                            <th scope="col">#</th>
-                            <th scope="col">Tên Bệnh Viện</th>
-                            <th scope="col">Địa Chỉ</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Ngày tạo</th>
-                            <th scope="col">Tác vụ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($users->count() > 0)
-                            @php
-                                $count = 1;
-                            @endphp
-                            @foreach ($users as $item)
-
+                    <div class="card flex-fill">
+                        <table class="table table-hover my-0">
+                            <thead>
                                 <tr>
-                                    <td><input type="checkbox" name="check[]" value="{{ $item->id }}"
-                                            class="check"></td>
-                                    <th scope="row">{{ $count }}</th>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->address }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>
-                                        <a href="{{ url('admin/user/edit/' . $item->id) }}"
-                                            class="btn btn-success btn-sm rounded-0 text-white"
-                                            type="button"
-                                            data-toggle="tooltip" data-placement="top" title="chỉnh sửa" name="edit">
-                                            <i class="far fa-edit"></i>
-                                        </a>
-                                        @if (Auth::id() != $item->id)
-                                            <a href="{{ url('admin/user/delete/' . $item->id) }}"
-                                                class="btn btn-danger btn-sm rounded-0 text-white" type="button"
-                                                title="Xóa Thùng Rác"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn không?')"><i
-                                                    class="fa fa-trash"></i></a>
-                                        @endif
-                                    </td>
+                                    <th class="d-none d-xl-table-cell">STT</th>
+                                    <th class="d-none d-xl-table-cell">Họ Tên</th>
+                                    <th class="d-none d-md-table-cell">CCCD/CMND</th>
+                                    <th class="d-none d-xl-table-cell">Giới tính</th>
+                                    <th class="d-none d-xl-table-cell">Ngày Sinh</th>
+                                    <th class="d-none d-md-table-cell">Số Điện Thoại</th>
+                                    <th class="d-none d-md-table-cell">Email</th>
+                                    <th colspan="3">Thao tác</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 @php
-                                    $count++;
+                                    $count = 0;
                                 @endphp
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="7">Không tìm thấy bản ghi nào</td>
-                            </tr>
+                                @if ($patients)
+                                    @foreach ($patients as $item)
 
-                        @endif
+                                        @php
+                                            $count++;
+                                        @endphp
+                                        <tr>
+                                            <td class="d-none d-xl-table-cell">{{ $count }}</td>
+                                            <td class="d-none d-xl-table-cell">{{ $item->fullname }}</td>
+                                            <td class="d-none d-xl-table-cell">{{ $item->id_card }}</td>
+                                            <td class="d-none d-xl-table-cell">@php
+                                                if ($item->gender == 'male') {
+                                                    echo 'Nam';
+                                                } else {
+                                                    echo 'Nữ';
+                                                }
+                                            @endphp</td>
+                                            <td class="d-none d-xl-table-cell">@php
+                                                echo date("d-m-Y", strtotime($item->birthDate));
+                                            @endphp</td>
+                                            <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
+                                            <td class="d-none d-xl-table-cell">{{ $item->email }}</td>
+                                            <td class="d-none d-md-table-cell" id="delete[{{ $item->id_card }}]">
+                                                <a href="{{ url('admin/user/delete', ['id_card' => $item->id_card]) }}"
+                                                    onclick="return confirm('XÓA NGƯỜI DÙNG NÀY')">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                            <td class="d-none d-md-table-cell d-user" data="{{ $item->id_card }}">
+                                                <i class="far fa-user" style="color: #3b7ddd;"></i>
+                                            </td>
+                                        </tr>
+                                        <div class="col-md-6 info-patient d-none" id="{{ $item->id_card }}">
+                                            <form action="">
+                                                <h3>ThÔNG TIN BỆNH NHÂN</h3>
 
-                    </tbody>
-                </table>
-                <nav aria-label="Page navigation example">
-                    {{ $users->links() }}
-                </nav>
+                                                <div class="info">
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Họ Tên</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->fullname }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>CMND/CCCD</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->id_card }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Thẻ BHYT</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->health_card }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Giới tính</label>
+                                                        <div class="mb d-flex-gender">
+                                                            <input type="radio" @php
+                                                                if ($item->gender == 'male') {
+                                                                    echo 'checked';
+                                                                }
+                                                            @endphp name="gender" value="male"
+                                                                id="male[{{ $item->id_card }}]"> <label
+                                                                for="male[{{ $item->id_card }}]">Nam</label>
+                                                            <input type="radio" @php
+                                                                if ($item->gender == 'female') {
+                                                                    echo 'checked';
+                                                                }
+                                                            @endphp name="gender"
+                                                                value="female" id="female[{{ $item->id_card }}]"><label
+                                                                for="female[{{ $item->id_card }}]">Nữ</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Ngày Sinh</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->birthDate }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Nghề nghiệp</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->job }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Số Điện thoại</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->phone }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Email</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->email }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Địa chỉ</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->address }}-{{ $item->ward }}-{{ $item->district }}-{{ $item->city }}-{{ $item->country }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Dân tộc</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->nation }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3 d-flex mb-submit justify-content-end mt-3">
+                                                    <span class="btn btn-primary btn-d-none" data='{{$item->id_card}}'>Xác Nhận</span>
+                                                    {{-- <a href="{{ url()->current() }}" class="btn btn-primary">Xác Nhận</a> --}}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <tr style="background:#rgb(240 238 238);color: black;">
+                                        <td></td>
+                                        <td colspan="8">Không có bản ghi nào</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Page navigation example">
+                        {{ $patients->links() }}
+                    </nav>
+                </div>
+
             </div>
-            {!! Form::close() !!}
+
         </div>
-    </div>
+
+        <div class="container">
+            <div class="row">
+
+            </div>
+        </div>
+    </main>
+
 @endsection
+

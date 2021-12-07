@@ -175,11 +175,12 @@ class VaccineController extends Controller
         if ($request->input('keyword')) {
             $keyword = $request->input('keyword');
         }
-        $vaccines = vaccine::select('vaccines.*', 'vaccine_hos.lot_number', 'vaccine_hos.quantity', 'vaccine_hos.date_add', 'vaccine_hos.date_of_manufacture', 'vaccine_hos.out_of_date')
-            ->where('name', 'like', '%' . $keyword . '%')
-            ->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
-            ->leftJoin('vaccine_hos', 'vaccines.id', 'vaccine_hos.id_vac')
-            ->where('vaccine_hos.quantity', '>', '0')->paginate(8);
+
+        $vaccines = vaccine_hos::select('vaccines.*', 'vaccine_hos.lot_number', 'vaccine_hos.quantity', 'vaccine_hos.date_add', 'vaccine_hos.date_of_manufacture', 'vaccine_hos.out_of_date')
+        ->where('vaccines.name', 'like', '%' . $keyword . '%')
+        ->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+        ->Join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
+        ->where('vaccine_hos.quantity', '>', '0')->paginate(8);
         return view('vaccine.vaccine_list', compact('vaccines'));
     }
 
@@ -240,36 +241,80 @@ class VaccineController extends Controller
         }
     }
 
-    function delete_vaccine($id)
-    {
-        if (vaccine::find($id)) {
+    // (1)
+    function delete_vaccine(Request $request, $id){
+
+        if (vaccine_hos::where('id_vac',$id)
+            ->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)
+            ->where('lot_number',$request->lot_number)) 
+            {
             $name = vaccine::find($id)->name;
-            vaccine::find($id)->delete();
-            return redirect('vaccine/danh-sach-vaccine')->with('delete_vaccine', $name);
-        } else {
-            $name = vaccine::onlyTrashed()->where('id', $id)->first()->name;
-            vaccine::onlyTrashed()->where('id', $id)->forceDelete();
-            return redirect('vaccine/danh-sach-vaccine-da-xoa')->with('delete_vaccine', $name);
+            vaccine_hos::where('id_vac',$id)
+            ->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+            ->where('lot_number',$request->lot_number)->delete();
+            return redirect('vaccine/danh-sach-vaccine')->with(['delete_vaccine'=> $name,'lot_number'=>$request->lot_number]);
         }
+        
+        
+    }
+    function delete_vaccine_bin(Request $request, $id){
+        if (vaccine_hos::onlyTrashed()->where('id_vac',$id)
+        ->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)
+        ->where('lot_number',$request->lot_number)) 
+        {
+        $name = vaccine::find($id)->name;
+        vaccine_hos::onlyTrashed()->where('id_vac',$id)
+        ->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+        ->where('lot_number',$request->lot_number)->forceDelete();
+        return redirect('vaccine/danh-sach-vaccine-da-xoa')->with(['delete_vaccine'=> $name,'lot_number'=>$request->lot_number]);
+    }
     }
 
     function bin_vaccine(Request $request)
     {
         session(['active' => 'danh-sach-vaccine-da-xoa']);
         $keyword = '';
-        $vaccines = vaccine::select('vaccines.*', 'vaccine_hos.lot_number', 'vaccine_hos.quantity', 'vaccine_hos.date_of_manufacture', 'vaccine_hos.out_of_date')
-            ->where('name', 'like', '%' . $keyword . '%')
+        $vaccines = vaccine_hos::select('vaccines.*', 'vaccine_hos.lot_number', 'vaccine_hos.quantity', 'vaccine_hos.date_of_manufacture', 'vaccine_hos.out_of_date')
+            ->where('vaccines.name', 'like', '%' . $keyword . '%')
             ->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
-            ->join('vaccine_hos', 'vaccines.id', 'vaccine_hos.id_vac')
+            ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
             ->onlyTrashed()->paginate(8);
         return view('vaccine.bin-vaccine', compact('vaccines'));
     }
 
-    function restore_bin_vaccine($id)
+    // (2)
+    function restore_bin_vaccine(Request $request, $id)
     {
-        $name = vaccine::onlyTrashed()->where('id', $id)->first()->name;
-        vaccine::onlyTrashed()->where('id', $id)->restore();
-        return redirect('vaccine/danh-sach-vaccine-da-xoa')->with('restore_vaccine', $name);
+        $name = vaccine::find($id)->name;
+        // return vaccine_hos::where('id_vac',$id)
+        // ->where('id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+        // ->where('lot_number',$request->lot_number)->get();
+
+
+        if(vaccine_hos::where('id_vac',$id)
+        ->where('id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+        ->where('lot_number',$request->lot_number)->first()){
+            $vac_update = vaccine_hos::where('id_vac',$id)
+            ->where('id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+            ->where('lot_number',$request->lot_number)->first();
+            
+            vaccine_hos::where('id_vac',$id)
+            ->where('id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+            ->where('lot_number',$request->lot_number)->update([
+                'quantity' => $vac_update->quantity + vaccine_hos::where('id_vac',$id)->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+                ->where('lot_number',$request->lot_number)->onlyTrashed()->first()->quantity,
+                'quantity_received' => $vac_update->quantity_received + vaccine_hos::where('id_vac',$id)->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+                ->where('lot_number',$request->lot_number)->onlyTrashed()->first()->quantity_received,      
+            ]); 
+            vaccine_hos::where('id_vac',$id)->where('vaccine_hos.id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+            ->where('lot_number',$request->lot_number)->onlyTrashed()->forceDelete();    
+            return redirect('vaccine/danh-sach-vaccine-da-xoa')->with(['restore_vaccine'=> $name,'lot_number'=>$request->lot_number]);
+        }
+
+
+        vaccine_hos::where('id_vac',$id)->where('id_hos', hospital::where('id_user', Auth::user()->id)->first()->id)
+        ->where('lot_number',$request->lot_number)->onlyTrashed()->restore();
+        return redirect('vaccine/danh-sach-vaccine-da-xoa')->with(['restore_vaccine'=> $name,'lot_number'=>$request->lot_number]);
     }
 
 
@@ -366,6 +411,29 @@ class VaccineController extends Controller
                 ]
             );
             
+            $list_vac_hos = vaccine_hos::select('lot_number')->get()->toArray();
+            foreach ($list_vac_hos as $item) {
+                if(vaccine_hos::where('id_vac',vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id)
+                ->where('id_hos', hospital::where('id_user', Auth::id())->first()->id)
+                ->where('lot_number',  $request->input('lot_number'))->first()){
+                    $vac_update = vaccine_hos::where('id_vac',vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id)
+                    ->where('id_hos', hospital::where('id_user', Auth::id())->first()->id)
+                    ->where('lot_number',  $request->input('lot_number'))->first();
+                    vaccine_hos::where('id_vac',vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id)
+                    ->where('id_hos', hospital::where('id_user', Auth::id())->first()->id)
+                    ->where('lot_number',  $request->input('lot_number'))
+                    ->update([
+                        'quantity' => $vac_update->quantity + $request->input('quantity'),
+                        'quantity_received' => $vac_update->quantity_received + $request->input('quantity'),
+                        'date_add' => date('Y-m-d'),
+                        'date_of_manufacture' => $request->input('date_of_manufacture'),
+                        'out_of_date' => $request->input('out_of_date')
+                    ]);
+                    return redirect('vaccine/nhap-them-vaccine')->with('done_vac_hos',$request->input('name'));
+                    break;
+                }
+            }
+
             vaccine_hos::create([
                 'id_vac' => vaccine::where('name','like', '%'.$request->input('name').'%')->first()->id,
                 'id_hos' => hospital::where('id_user', Auth::id())->first()->id,
@@ -397,6 +465,8 @@ class VaccineController extends Controller
         // print_r($list_disease);
         return view('vaccine.disease_list', compact('list_disease'));
     }
+
+    // (3)
     function delete_disease($id){
         $name = disease::find($id)->name;
         disease::find($id)->delete();
@@ -447,6 +517,9 @@ class VaccineController extends Controller
 
     function delete_disease_bin($id){
         $name = disease::onlyTrashed()->find($id)->name;
+        vaccine::where('id_disease',$id)->update([
+            'id_disease' => null
+        ]);
         disease::onlyTrashed()->find($id)->forceDelete();
         return redirect('vaccine/danh-sach-loai-benh-da-xoa')->with('delete',$name);
     }

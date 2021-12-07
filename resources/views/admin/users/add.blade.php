@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 {!! Form::open(['url' => 'admin/user/store', 'method' => 'POST']) !!}
-                {!! Form::hidden('type', 'user', []) !!}
+                {{-- {!! Form::hidden('type', 'user', []) !!} --}}
                 <div class="form-group">
                     {!! Form::label('name', 'Tên Người Dùng', []) !!}
                     {!! Form::text('name', '', ['class' => 'form-control', 'id' => 'name']) !!}
