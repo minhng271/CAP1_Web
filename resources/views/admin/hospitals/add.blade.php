@@ -11,14 +11,18 @@
         <div id="content" class="container-fluid">
             <div class="card add">
                 <div class="card-header font-weight-bold">
-                    Thêm MỚI Bệnh Viện
+                    Thêm MỚI tài khoản quản lý Bệnh Viện
                 </div>
                 <div class="card-body">
-                    {!! Form::open(['url' => 'admin/hospital/store', 'method' => 'POST']) !!}
+                    {!! Form::open(['url' => 'admin/hospital-acc/store', 'method' => 'POST']) !!}
                     {!! Form::hidden('type', 'hospital', []) !!}
                     <div class="form-group">
                         {!! Form::label('name', 'Tên Bệnh Viện', []) !!}
-                        {!! Form::text('name', '', ['class' => 'form-control', 'id' => 'name']) !!}
+                        <select class="form-select" name="name" id="name">
+                            @foreach ($hospital as $item)
+                            <option value="{{$item->name}}">{{$item->name}}</option>
+                            @endforeach
+                        </select>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -39,14 +43,32 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        {!! Form::label('phone', 'Số Điện Thoại', []) !!}
+                        {!! Form::text('phone', '', ['class' => 'form-control', 'id' => 'phone']) !!}
+                        @error('phone')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         {!! Form::label('address', 'Địa Chỉ', []) !!}
                         {!! Form::text('address', '', ['class' => 'form-control', 'id' => 'address']) !!}
                         @error('address')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    
-    
+                    <div class="form-group">
+                        
+                        {!! Form::label('type_hos', 'Quyền Sử Dụng', []) !!}
+                        <select class="form-select" name="type_hos" id="type_hos">
+                            <option value="null">không</option>
+                            <option value="test">xét nghiệm</option>
+                            <option value="vaccine">tiêm chủng</option>
+                        </select>
+                        @error('type')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+        
                     <button type="submit" class="btn btn-primary" name="submit" value="submit">Thêm mới</button>
                     
                     {!! Form::close() !!}

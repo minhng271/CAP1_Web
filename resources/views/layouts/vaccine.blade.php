@@ -163,8 +163,9 @@
                                     <img src="{{ asset('img/avatar-hoan-my.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
                                         class="text-dark" style="margin-right:20px ">@php
-                                            use App\hospital;
-                                            echo hospital::where('id_user', Auth::user()->id)->first()->name;
+                                        use App\hospital;
+                                        use App\user;
+                                        echo hospital::find(user::find(Auth::id())->id_hos)->name;
                                         @endphp</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">

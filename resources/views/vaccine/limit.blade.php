@@ -19,10 +19,11 @@
 
     </style>
     <div class="content">
+        @if (session('limit'))
+                <div style="margin-bottom: 1px" class="alert alert-success"><b>{{ session('limit') }}</b></div>
+        @endif
         <div class="container-fluid p-0">
-            @if (session('limit'))
-                <span style="top: -48px;" class="alert alert-success"><b>{{ session('limit') }}</b></span>
-             @endif
+           <div class="row">
             <div class="col-12 col-lg-12 col-xxl-12">
                 <div class="card-header  d-flex justify-content-between">
                     <h3>Xét giới hạn người đăng ký trong một ngày làm việc</h3>
@@ -55,6 +56,7 @@
 
                 </div>
             </div>
+        </div>     
         </div>
 
 

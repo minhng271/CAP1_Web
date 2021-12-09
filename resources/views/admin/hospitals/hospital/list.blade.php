@@ -1,26 +1,26 @@
 @extends('layouts.admin')
 @section('content')
     <div class="content">
-       
+        @if (session('email'))
+        <div class="alert alert-success" style="margin-bottom: 1px">{{ session('email') }}</div>
+    @endif
+        @if (session('status'))
+        <div class="alert alert-success" style="margin-bottom: 1px">{{ session('status') }}</div>
+    @endif
+    @if (session('delete'))
+        <div class="alert alert-success" style="margin-bottom: 1px">Xóa <b>{{ session('delete') }}</b> thành
+            công !!!</div>
+    @endif
+    @if (session('update'))
+        <div class="alert alert-success" style="margin-bottom: 1px">Cập Nhật <b>{{ session('update') }}</b>
+            thành công !!!</div>
+    @endif
         <div id="content">
-            @if (session('email'))
-            <div class="alert alert-success" style="margin-bottom: 1px">{{ session('email') }}</div>
-        @endif
-            @if (session('status'))
-            <div class="alert alert-success" style="margin-bottom: 1px">{{ session('status') }}</div>
-        @endif
-        @if (session('delete'))
-            <div class="alert alert-success" style="margin-bottom: 1px">Xóa <b>{{ session('delete') }}</b> thành
-                công !!!</div>
-        @endif
-        @if (session('update'))
-            <div class="alert alert-success" style="margin-bottom: 1px">Cập Nhật <b>{{ session('update') }}</b>
-                thành công !!!</div>
-        @endif
+            
             <div class="card position-relative" style="top: 1px ">
                 <div class="card-header d-flex justify-content-between">
                     <div class="card-header-left">
-                        <span class="font-weight-bold" style="font-size: 1.8rem; text-transform: uppercase;">Danh Sách Tài Khoản Bệnh
+                        <span class="font-weight-bold" style="font-size: 1.8rem; text-transform: uppercase;">Danh Sách Bệnh
                             Viện</span>
 
                     </div>
@@ -33,35 +33,21 @@
                     </form>
                 </div>
                 {!! Form::open(['url' => 'users/option']) !!}
-
-                {{-- <div class="select-option" style="display: flex;">
-                    <select name="act" class="form-control col-md-2" style="margin-right: 10px;">
-                        <option>Chọn</option>
-                        @foreach ($hospitals_act as $key => $value)
-                        <option value="{{$key}}">{{$value}}</option>
-                        @endforeach
-                    </select>
-                    <input type="submit" class="btn btn-primary" name="option" value="Áp dụng">
-                </div> --}}
-                {{-- script --}}
-                <script>
+                {{-- <script>
                     $(document).ready(function() {
                         $("#ckeck-all").click(function() {
                             $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
                         });
                     });
-                </script>
+                </script> --}}
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 {{-- <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td> --}}
                                 <th scope="col">#</th>
-                                <th scope="col">Email</th>
                                 <th scope="col">Tên Bệnh Viện</th>
-                                <th scope="col">SDT</th>
                                 <th scope="col">Địa Chỉ</th>
-                                <th scope="col">Chức năng</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Tác vụ</th>
                             </tr>
@@ -77,27 +63,17 @@
                                         {{-- <td><input type="checkbox" name="check[]" value="{{ $item->id }}"
                                                 class="check"></td> --}}
                                         <th scope="row">{{ $count }}</th>
-                                        <td>{{ $item->email }}</td>
                                         <td>{{ $item->name }}</td>
-                                        <td>{{ $item->phone }}</td>
                                         <td>{{ $item->address }}</td>
-                                        <td>@php
-                                            if($item->type_hos == 'test'){
-                                                echo "xét nghiệm";
-                                            }
-                                            if($item->type_hos == 'vaccine'){
-                                                echo "Tiêm Vắc xin";
-                                            }
-                                        @endphp</td>
                                         <td>{{ date('d-m-Y', strtotime($item->created_at)) }}</td>
                                         <td>
-                                            <a href="{{ url('admin/hospital-acc/edit/'.$item->id_user."?email=".$item->email) }}"
+                                            <a href="{{ url('admin/hospital/edit/'.$item->id) }}"
                                                 class="btn btn-success btn-sm rounded-0 text-white" type="button"
                                                 data-toggle="tooltip" data-placement="top" title="chỉnh sửa" name="edit">
                                                 <i class="far fa-edit"></i>
                                             </a>
                                             @if (Auth::id() != $item->id)
-                                                <a href="{{ url('admin/hospital-acc/delete/'.$item->id_user."?email=".$item->email) }}"
+                                                <a href="{{ url('admin/hospital/delete/'.$item->id) }}"
                                                     class="btn btn-danger btn-sm rounded-0 text-white" type="button"
                                                     title="Xóa Thùng Rác"
                                                     onclick="return confirm('Xóa tài khoản này không?')"><i

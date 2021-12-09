@@ -16,10 +16,26 @@ class users extends Seeder
         User::insert([
             
             [
-             'email' => 'admin',
-             'password' => Hash::make('123456'),
-             'type' => 'admin',
-            ]
+                'email' => 'admin',
+                'password' => Hash::make('123456'),
+                'type' => 'admin',
+                'id_hos' => '153',
+                'type_hos' => 'test',
+               ],
+               [
+                'email' => 'admin2',
+                'password' => Hash::make('123456'),
+                'type' => 'admin',
+                'id_hos' => '153',
+                'type_hos' => 'test',
+               ],
+               [
+                'email' => 'giadinh',
+                'password' => Hash::make('123456'),
+                'type' => 'admin',
+                'id_hos' => '153',
+                'type_hos' => 'test',
+               ]
         ]);
     }
 }

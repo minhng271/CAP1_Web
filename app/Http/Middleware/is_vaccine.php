@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\user;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class is_admin
+class is_vaccine
 {
     /**
      * Handle an incoming request.
@@ -17,10 +16,9 @@ class is_admin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->type == 'admin'){
+        if(Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'vaccine'){
             return $next($request);
         }
-        return redirect('/');
-        
+        return redirect('home');
     }
 }

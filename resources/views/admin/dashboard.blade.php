@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-0">
-                                <h5 class="card-title">Tổng số Bệnh viện ĐĂNG KÝ<br><br></h5>
+                                <h5 class="card-title">Tổng số Bệnh viện ĐĂNG KÝ</h5>
                             </div>
 
                             <div class="col-auto">
@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-0">
-                                <h5 class="card-title">Tổng số Người dùng ĐĂNG KÝ <br> <br></h5>
+                                <h5 class="card-title">Tổng số Người dùng ĐĂNG KÝ <br></h5>
                             </div>
 
                             <div class="col-auto">

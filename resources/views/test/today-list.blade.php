@@ -60,14 +60,14 @@
     <main class="content">
         <div class="container-fluid p-0">
             @if (session('done_patient'))
-                <span class="alert alert-success">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
-                    Nhận</span>
-                <br>
+                <div class="alert alert-success" style=" margin-bottom: 1px; ">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
+                    Nhận</div>
+                
             @endif
             @if (session('delete_patient'))
-                <span class="alert alert-success">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
-                    công</span>
-                <br>
+                <div class="alert alert-success" style=" margin-bottom: 1px; ">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
+                    công</div>
+                
             @endif
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">

@@ -78,20 +78,19 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->created_at }}</td>
                                         <td>
-                                            <a href="{{ url('admin/hospital/restore/' . $item->id) }}"
+                                            <a href="{{ url('admin/hospital-acc/restore/' . $item->id_user) }}"
                                                 class="btn btn-success btn-sm rounded-0 text-white"
                                                 type="button"
                                                 onclick="return confirm('Khôi phục tài khoản?')"><i
                                                 data-toggle="tooltip" data-placement="top" title="Khôi Phục" name="edit">
                                                 <i class="far fa-window-restore"></i>
                                             </a>
-                                            @if (Auth::id() != $item->id)
-                                                <a href="{{ url('admin/hospital/delete/' . $item->id) }}"
-                                                    class="btn btn-danger btn-sm rounded-0 text-white" type="button"
-                                                    title="Xóa Vĩnh Viễn"
-                                                    onclick="return confirm('Xóa vĩnh viễn?')"><i
-                                                        class="fa fa-trash"></i></a>
-                                            @endif
+                                            <a href="{{ url('admin/hospital-acc/delete-bin/' . $item->id_user) }}"
+                                                class="btn btn-danger btn-sm rounded-0 text-white" type="button"
+                                                title="Xóa Vĩnh Viễn"
+                                                onclick="return confirm('Xóa vĩnh viễn?')"><i
+                                                    class="fa fa-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                     @php

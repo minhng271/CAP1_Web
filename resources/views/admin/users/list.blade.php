@@ -116,6 +116,11 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->email }}</td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id_card }}]">
+                                                <a href="{{ url('admin/user/edit', ['id_card' => $item->id_card]) }}">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                            <td class="d-none d-md-table-cell" id="delete[{{ $item->id_card }}]">
                                                 <a href="{{ url('admin/user/delete', ['id_card' => $item->id_card]) }}"
                                                     onclick="return confirm('XÓA NGƯỜI DÙNG NÀY')">
                                                     <i class="far fa-trash-alt"></i>

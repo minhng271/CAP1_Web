@@ -7,6 +7,7 @@ use App\limit_web_mobile;
 use App\patient;
 use App\test;
 use App\test_patient;
+use App\User;
 use App\vaccine_patient;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -17,13 +18,14 @@ use PHPUnit\Util\Json;
 class TestController extends Controller
 {
 
-    function dashboard()
-    {
+    function dashboard(){
         session(['active' => 'dashboard']);
 
         // tổng đã xét nghiệm hôm qua
-        $sum_count_now = test_patient::whereNotNull('result')->where('date', date('Y-m-d'))->get()->count();
-        $sum_count_now_old = test_patient::whereNotNull('result')->where('date', date('Y-m-d', strtotime('-1 days')))->get()->count();
+        $sum_count_now = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->where('date', date('Y-m-d'))->get()->count();
+        $sum_count_now_old = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->where('date', date('Y-m-d', strtotime('-1 days')))->get()->count();
         if ($sum_count_now == 0) {
             $ratio_sum_count_now = 0;
         } else {
@@ -32,10 +34,11 @@ class TestController extends Controller
             } else {
                 $ratio_sum_count_now = round($sum_count_now * 100 / $sum_count_now_old - 100,2);
             }
-        }
+        } 
 
         // tổng đã xét nghiệm trong tháng   
-        $sum_test_done = test_patient::whereNotNull('result')->whereBetween('date', [date('Y-m-01'), date('Y-m-t')])->get()->count();
+        $sum_test_done = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->whereNotNull('result')->whereBetween('date', [date('Y-m-01'), date('Y-m-t')])->get()->count();
         $sum_test_done_old = test_patient::whereNotNull('result')->whereBetween('date', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
         if ($sum_test_done == 0) {
             $ratio_sum_test_done = 0;
@@ -48,8 +51,10 @@ class TestController extends Controller
         }
 
         // tổng âm tính 
-        $sum_negative = test_patient::where('result', '0')->whereBetween('date', [date('Y-m-01'), date('Y-m-t')])->get()->count();
-        $sum_negative_old = test_patient::where('result', '0')->whereBetween('date', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
+        $sum_negative = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->where('result', '0')->whereBetween('date', [date('Y-m-01'), date('Y-m-t')])->get()->count();
+        $sum_negative_old = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->where('result', '0')->whereBetween('date', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
         if ($sum_negative == 0) {
             $ratio_sum_negative = 0;
         } else {
@@ -60,8 +65,10 @@ class TestController extends Controller
             }
         }
         // tổng dương tính 
-        $sum_positive = test_patient::where('result', '1')->whereBetween('date', [date('Y-m-01'), date('Y-m-t')])->get()->count();
-        $sum_positive_old = test_patient::where('result', '1')->whereBetween('date', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
+        $sum_positive = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->where('result', '1')->whereBetween('date', [date('Y-m-01'), date('Y-m-t')])->get()->count();
+        $sum_positive_old = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->where('result', '1')->whereBetween('date', [date('Y-m-01', strtotime('-1 month')), date('Y-m-t', strtotime('-1 month'))])->get()->count();
         if($sum_positive == 0){
             $ratio_sum_positive = 0;
         }else{
@@ -72,12 +79,14 @@ class TestController extends Controller
             }
         }
 
-        $sum_count = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        $sum_count = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->selectRaw('Month(date) as month,count(*) as count')
         ->whereYear('date',date('Y'))
         ->whereNotNull('result')
         ->groupByRaw('Month(date)')->pluck('count');
         
-        $sum_month = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        $sum_month = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->selectRaw('Month(date) as month,count(*) as count')
         ->whereYear('date',date('Y'))
         ->whereNotNull('result')
         ->groupByRaw('Month(date)')->pluck('month');
@@ -88,12 +97,14 @@ class TestController extends Controller
             $data[$month] = $sum_count[$index];
         }
         
-        $sum_count_am = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        $sum_count_am = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->selectRaw('Month(date) as month,count(*) as count')
         ->whereYear('date',date('Y'))
         ->where('result','0')
         ->groupByRaw('Month(date)')->pluck('count');
         
-        $sum_month_am = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        $sum_month_am = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->selectRaw('Month(date) as month,count(*) as count')
         ->whereYear('date',date('Y'))
         ->where('result','0')
         ->groupByRaw('Month(date)')->pluck('month');
@@ -104,12 +115,14 @@ class TestController extends Controller
             $data2[$month] = $sum_count_am[$index];
         }
         
-        $sum_count_duong = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        $sum_count_duong = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->selectRaw('Month(date) as month,count(*) as count')
         ->whereYear('date',date('Y'))
         ->where('result','1')
         ->groupByRaw('Month(date)')->pluck('count');
         
-        $sum_month_duong = test_patient::selectRaw('Month(date) as month,count(*) as count')
+        $sum_month_duong = test_patient::where('id_hos',user::find(Auth::id())->id_hos)
+        ->selectRaw('Month(date) as month,count(*) as count')
         ->whereYear('date',date('Y'))
         ->where('result','1')
         ->groupByRaw('Month(date)')->pluck('month');
@@ -135,11 +148,39 @@ class TestController extends Controller
         ));
     }
 
+    // function limit(){
+    //     session(['active'=>'limit']);      
+    //     $limit = 0;
+    //     if(limit_web_mobile::find(1)->limit_test){
+    //         $limit = limit_web_mobile::find(1)->limit_test;
+    //     }
+    //     return view('test.limit',compact('limit'));
+    // }
+
+    // function edit_limit(){
+    //     session(['active'=>'limit']);      
+    //     $limit = 0;
+    //     if(limit_web_mobile::find(1)->limit_test){
+    //         $limit = limit_web_mobile::find(1)->limit_test;
+    //     }
+    //     return view('test.edit_limit',compact('limit'));
+    // }
+    // function store_edit_limit(Request $request){
+    //     if($request->input('submit')){
+    //         limit_web_mobile::find(1)->update([
+    //             'limit_test' => $request->limit
+    //         ]);
+    //         return redirect('test/limit')->with('limit','Thay Đổi Giới Hạn Đăng Ký Thành Công');
+    //     }  
+    //     return view('test.edit_limit',compact('limit'));    
+        
+    // }
+
     function limit(){
         session(['active'=>'limit']);      
         $limit = 0;
-        if(limit_web_mobile::find(1)->limit_test){
-            $limit = limit_web_mobile::find(1)->limit_test;
+        if(limit_web_mobile::where('id_hos',user::find(Auth::id())->id_hos)->first()){
+            $limit = limit_web_mobile::where('id_hos',user::find(Auth::id())->id_hos)->first()->limit_vac;
         }
         return view('test.limit',compact('limit'));
     }
@@ -147,31 +188,39 @@ class TestController extends Controller
     function edit_limit(){
         session(['active'=>'limit']);      
         $limit = 0;
-        if(limit_web_mobile::find(1)->limit_test){
-            $limit = limit_web_mobile::find(1)->limit_test;
+        if(limit_web_mobile::where('id_hos',user::find(Auth::id())->id_hos)->first()){
+            $limit = limit_web_mobile::where('id_hos',user::find(Auth::id())->id_hos)->first()->limit_vac;
         }
         return view('test.edit_limit',compact('limit'));
     }
     function store_edit_limit(Request $request){
         if($request->input('submit')){
-            limit_web_mobile::find(1)->update([
-                'limit_test' => $request->limit
-            ]);
-            return redirect('test/limit')->with('limit','Thay Đổi Giới Hạn Đăng Ký Thành Công');
-        }  
-        return view('test.edit_limit',compact('limit'));    
-        
+            if(limit_web_mobile::where('id_hos',user::find(Auth::id())->id_hos)->first()){
+                limit_web_mobile::where('id_hos',user::find(Auth::id())->id_hos)->first()->update([
+                    'limit_vac' => $request->limit
+                ]);
+                return redirect('test/limit')->with('limit','Thay Đổi Giới Hạn Đăng Ký Thành Công');
+            }else{
+                limit_web_mobile::create([
+                    'id_hos' => user::find(Auth::id())->id_hos,
+                    'limit_vac' => $request->limit
+                ]);
+                return redirect('test/limit')->with('limit','Thay Đổi Giới Hạn Đăng Ký Thành Công');
+            }           
+        }
     }
 
     function profile(){
-        $hospital = hospital::select('hospitals.*','users.email')
-        ->join('users','hospitals.id_user','users.id')
+        $hospital = hospital::select('hospitals.*','users.email','users.phone')
+        ->join('users','hospitals.id','users.id_hos')
+        ->where('id_hos',user::find(Auth::id())->id_hos)
         ->where('users.id',Auth::id())->first();
         return view('test.profile',compact('hospital'));
     }
     function edit_profile(){
-        $hospital = hospital::select('hospitals.*','users.email')
-        ->join('users','hospitals.id_user','users.id')
+        $hospital = hospital::select('hospitals.*','users.email','users.phone')
+        ->join('users','hospitals.id','users.id_hos')
+        ->where('id_hos',user::find(Auth::id())->id_hos)
         ->where('users.id',Auth::id())->first();
         return view('test.edit_profile',compact('hospital'));
     }
@@ -192,36 +241,33 @@ class TestController extends Controller
                 'address' => 'Địa Chỉ',
             ]
         );
-        hospital::where('id_user',Auth::id())->update([
-            'name' => $request->name,
+        User::where('id',Auth::id())->update([
             'phone' => $request->phone,
+        ]);
+        hospital::where('id',user::find(Auth::id())->id_hos)->update([
+            'name' => $request->name,
             'address' => $request->address,
         ]);
         return redirect('test/profile')->with('success','CẬP NHẬT THÔNG TIN BỆNH VIỆN THÀNH CÔNG');
     }
 
-    function todayList(Request $request)
-    {
+    function todayList(Request $request){
         session(['active' => 'today']);
         $keyword = '';
         if ($request->input('keyword')) {
             $keyword = $request->input('keyword');
         }
-
         $patients = test_patient::select('patients.*', 'test_patient.*')
             ->join('patients', 'test_patient.id_card', 'patients.id_card')
             ->join('hospitals', 'test_patient.id_hos', 'hospitals.id')
-            ->where('test_patient.id_hos', Auth::user()->hospital->id)
+            ->where('test_patient.id_hos', User::find(Auth::id())->id_hos)
             ->where('test_patient.wait_at', '0')
             ->where('date', date('Y-m-d'))
             ->where('patients.fullname', 'like', '%' . $keyword . '%')->paginate(8);
-        // echo "<pre>";
-        // print_r($patients);
         return view('test.today-list', compact('patients'));
     }
 
-    function softDeleteList(Request $request)
-    {
+    function softDeleteList(Request $request){
         session(['active' => 'softDeleteList']);
         $keyword = '';
         if ($request->input('keyword')) {
@@ -230,7 +276,7 @@ class TestController extends Controller
         $patients = test_patient::onlyTrashed()->select('patients.*', 'test_patient.*')
             ->join('patients', 'test_patient.id_card', 'patients.id_card')
             ->join('hospitals', 'test_patient.id_hos', 'hospitals.id')
-            ->where('test_patient.id_hos', Auth::user()->hospital->id)
+            ->where('test_patient.id_hos', User::find(Auth::id())->id_hos)
             ->where('test_patient.wait_at', '0')
             ->where('date', date('Y-m-d'))
             ->where('patients.fullname', 'like', '%' . $keyword . '%')->paginate(8);
@@ -238,36 +284,36 @@ class TestController extends Controller
         // print_r($patients);
         return view('test.softDelete-list', compact('patients'));
     }
-    function done_patient($id_card)
-    {
-        test_patient::where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->update(['wait_at' => '1']);
+    function done_patient($id_card){
+        test_patient::where('id_card', $id_card)
+        ->where('id_hos',user::find(Auth::id())->id_hos)
+        ->update(['wait_at' => '1']);
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
         return redirect('test/xet-nghiem-hom-nay')->with('done_patient', $fullname);
     }
 
-    function restore_patient($id_card)
-    {
-        test_patient::onlyTrashed()->where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->restore();
+    function restore_patient($id_card){
+        test_patient::onlyTrashed()->where('id_card', $id_card)
+        ->where('id_hos',user::find(Auth::id())->id_hos)->restore();
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
         return redirect('test/danh-sach-xoa-tam')->with('restore_patient', $fullname);
     }
 
-    function delete_patient($id_card)
-    {
+    function delete_patient($id_card){
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
-        test_patient::where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->delete();
+        test_patient::where('id_card', $id_card)
+        ->where('id_hos',user::find(Auth::id())->id_hos)->delete();
         return redirect('test/xet-nghiem-hom-nay')->with('delete_patient', $fullname);
     }
 
-    function delete_patient_softDelete($id_card)
-    {
+    function delete_patient_softDelete($id_card){
         $fullname = patient::where('id_card', $id_card)->first()->fullname;
-        test_patient::onlyTrashed()->where('id_card', $id_card)->where('id_hos',hospital::where('id_user',Auth::id())->first()->id)->forceDelete();
+        test_patient::onlyTrashed()->where('id_card', $id_card)
+        ->where('id_hos',user::find(Auth::id())->id_hos)->forceDelete();
         return redirect('test/danh-sach-xoa-tam')->with('delete_patient', $fullname);
     }
 
-    function waitList(Request $request)
-    {
+    function waitList(Request $request){
         session(['active' => 'wait']);
         $keyword = '';
         if ($request->input('keyword')) {
@@ -276,28 +322,32 @@ class TestController extends Controller
         $patients = test_patient::select('patients.*', 'test_patient.*')
             ->join('patients', 'test_patient.id_card', 'patients.id_card')
             ->join('hospitals', 'test_patient.id_hos', 'hospitals.id')
-            ->where('test_patient.id_hos', Auth::user()->hospital->id)
+            ->where('test_patient.id_hos', User::find(Auth::id())->id_hos)
             ->where('test_patient.wait_at', '1')->whereNull('result')
             ->where('date', date('Y-m-d'))
             ->where('patients.fullname', 'like', '%' . $keyword . '%')->paginate(8);
         return view('test.wait-list', compact('patients'));
     }
 
-    function result(Request $request)
-    {
+    function result(Request $request){
         $list_id = $request->input('check');
         $list_result = $request->input('result');
         foreach ($list_id as $item) {
-            test_patient::where('id_card', $item)->update(['result' => $list_result[$item]]);
+            test_patient::where('id_card', $item)
+            ->where('test_patient.id_hos', User::find(Auth::id())->id_hos)
+            ->update(['result' => $list_result[$item]]);
         }
         return redirect('test/danh-sach-cho')->with('status', 'Đã Xác Nhận thành công!!!');
     }
 
     //DS theo lịch
-    function list_to_calander(Request $request)
-    {
+    function list_to_calander(Request $request){
         session(['active' => 'list_to_calander']);
-        $created_at = date("Y-m-d", strtotime($request->input('created_at')));
+        if($request->input('created_at')){
+            $created_at = date("Y-m-d", strtotime($request->input('created_at')));
+        }else{
+            $created_at = date("Y-m-d");
+        }
         $keyword = '';
         if ($request->input('keyword')) {
             $keyword = $request->input('keyword');
@@ -307,11 +357,11 @@ class TestController extends Controller
         $patients = test_patient::select('patients.*', 'test_patient.*')
             ->join('patients', 'test_patient.id_card', 'patients.id_card')
             ->join('hospitals', 'test_patient.id_hos', 'hospitals.id')
-            ->where('test_patient.id_hos', Auth::user()->hospital->id)
+            ->where('test_patient.id_hos', User::find(Auth::id())->id_hos)
             ->where('test_patient.date', $created_at)
             ->where('patients.fullname', 'like', '%' . $keyword . '%')->paginate(8);
         // echo "<pre>";
         // print_r($patients);
-        return view('test.list-to-calander', compact('patients'));
+        return view('test.list-to-calander', compact('patients','created_at'));
     }
 }

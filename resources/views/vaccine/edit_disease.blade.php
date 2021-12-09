@@ -24,8 +24,7 @@
                                                 if($item['name'] == $vac_all_item['name']){
                                                     echo "checked";
                                                     break;
-                                                }
-                                                
+                                                }                                
                                             }
                                         @endphp
                                         id="{{$vac_all_item['id']}}" style=" font-size: 1.7rem; "

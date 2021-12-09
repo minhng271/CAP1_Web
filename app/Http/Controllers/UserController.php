@@ -16,6 +16,7 @@ class UserController extends Controller
             if(User::where('email',$email)->first()->type == 'hospital'){
                 return redirect('home');
             }
+            
             if(User::where('email',$email)->first()->type == 'admin'){
                 return redirect('dashboard/admin');
             }

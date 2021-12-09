@@ -53,20 +53,20 @@
 
     </style>
     <main class="content">
-        <div class="container-fluid p-0">
-            @if (session('done_patient'))
-                <span class="alert alert-success">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
-                    Nhận</span>
+        @if (session('done_patient'))
+                <div class="alert alert-success">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
+                    Nhận</div>
                 <br>
             @endif
             @if (session('delete_patient'))
-                <span class="alert alert-success">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
-                    công</span>
+                <div class="alert alert-success">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
+                    công</div>
                 <br>
             @endif
+        <div class="container-fluid p-0">           
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
-                    <div class="card-header  d-flex justify-content-between row">
+                    <div class="card-header  d-flex justify-content-between">
                         <h3 class="col-md-6">Tra Danh Sách Theo Lịch</h3>
                         {{-- <form class="col-md-4 d-flex justify-content-end" method="GET">
                             <input type="text" class='form-control' class="form-control" name="keyword"
@@ -75,7 +75,12 @@
                         </form> --}}
                            <form action="" method="get" class="col-md-6 row d-flex justify-content-end">
                             <div class="col-md-6">  
-                                <input type="text" id="from_date" name="created_at" value="{{request()->input('created_at')}}" readonly="readonly" class="form-control" />  
+                                <input type="text" id="from_date" name="created_at" 
+                                value="@if (request()->input('created_at'))
+                                {{ request()->input('created_at') }}
+                                @else
+                                    {{$created_at}}
+                                @endif" readonly="readonly" class="form-control" />  
                            </div>
                             <div class="col-md-3">  
                                 <button type="submit" name="filter" id="filter" class="btn btn-info w-100">Tra cứu</button>  
@@ -222,7 +227,7 @@
                     </div>
 
                     <nav aria-label="Page navigation example">
-                        {{ $vaccines->links() }}
+                        {{ $vaccines->links('vaccine.bootstrap-4',['created_at'=>request()->input('created_at')]) }}
                     </nav>
                 </div>
 
