@@ -128,18 +128,22 @@ Route::get('admin/user/edit/{id_card}', 'AdminController@edit_users');
 Route::post('admin/user/store/edit', 'AdminController@store_edit_users');
 Route::get('admin/user/bin', 'AdminController@bin_users');
 Route::get('admin/user/restore/{id}', 'AdminController@restore_users');
+
+// ADMIN DATA
+Route::get('admin/data/backup', 'AdminController@data_backup');
+Route::get('admin/data/restore', 'AdminController@data_restore');
 });
 
 
 
-Route::get('dashboard', function(){
-    return view('dashboard');
-});
+// Route::get('dashboard', function(){
+//     return view('dashboard');
+// });
 
-Route::get('them-vaccine', function(){
-    return view('them_vaccine');
-});
+// Route::get('them-vaccine', function(){
+//     return view('them_vaccine');
+// });
 
-Route::get('them-sl-vaccine', function(){
-    return view('nhap_sl_vaccine');
-});
+// Route::get('them-sl-vaccine', function(){
+//     return view('nhap_sl_vaccine');
+// });

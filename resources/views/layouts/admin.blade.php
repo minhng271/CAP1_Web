@@ -69,7 +69,8 @@
                     </li>
                     <li></li>
                     <li class="sidebar-item">
-                        <a href="#hospital" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH SÁCH BỆNH VIỆN</a>
+                        <a href="#hospital" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">DANH
+                            SÁCH BỆNH VIỆN</a>
                         <ul class="collapse list-unstyled @php if(session('active') == 'hos_add1' || session('active') == 'hos_lis1' ||session('active') == 'hos_bin1') echo "
                             show" @endphp" id="hospital">
                             <li class="@php if(session('active') == 'hos_add1') echo " active-a" @endphp"><a
@@ -79,22 +80,27 @@
                                     href="{{ url('admin/hospital') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
                                     viện</a></li>
                             <li class="@php if(session('active') == 'hos_bin1') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách Bệnh viện đã xóa</a></li>
+                                    href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách
+                                    Bệnh viện đã xóa</a></li>
                         </ul>
                     </li>
                     <li></li>
                     <li class="sidebar-item">
-                        <a href="#hospital_account" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">TÀI KHOẢN BỆNH VIỆN</a>
+                        <a href="#hospital_account" data-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">TÀI KHOẢN BỆNH VIỆN</a>
                         <ul class="collapse list-unstyled @php if(session('active') == 'hos_add' || session('active') == 'hos_lis' ||session('active') == 'hos_bin') echo "
                             show" @endphp" id="hospital_account">
                             <li class="@php if(session('active') == 'hos_add') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital-acc/add') }}" class="sidebar-dropdown-link">Thêm tài khoản quản lý Bệnh
+                                    href="{{ url('admin/hospital-acc/add') }}" class="sidebar-dropdown-link">Thêm tài
+                                    khoản quản lý Bệnh
                                     Viện</a></li>
                             <li class="@php if(session('active') == 'hos_lis') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital-acc') }}" class="sidebar-dropdown-link">Danh Sách tài khoản quản lý  Bệnh
+                                    href="{{ url('admin/hospital-acc') }}" class="sidebar-dropdown-link">Danh Sách tài
+                                    khoản quản lý Bệnh
                                     viện</a></li>
                             <li class="@php if(session('active') == 'hos_bin') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital-acc/bin') }}" class="sidebar-dropdown-link">Danh Sách tài khoản quản lý 
+                                    href="{{ url('admin/hospital-acc/bin') }}" class="sidebar-dropdown-link">Danh Sách
+                                    tài khoản quản lý
                                     Bệnh
                                     viện đã xóa</a></li>
                         </ul>
@@ -113,6 +119,19 @@
                             <li class="@php if(session('active') == 'user_bin') echo " active-a" @endphp"><a
                                     href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng đã xóa</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#backup" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Quản Lý
+                            DATA</a>
+                        <ul class="collapse list-unstyled @php if(session('active') == 'backup' || session('active') == 'restore_data') echo "
+                            show" @endphp" id="backup">
+                            <li class="@php if(session('active') == 'backup') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/data/backup') }}" class="sidebar-dropdown-link">
+                                    Sao lưu Data</a></li>
+                            <li class="@php if(session('active') == 'restore_data') echo " active-a" @endphp"><a
+                                    href="{{ url('admin/data/restore') }}" class="sidebar-dropdown-link">
+                                    Khôi Phục Data</a></li>
                         </ul>
                     </li>
                     {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active-a" @endphp">
@@ -245,6 +264,15 @@
             $('.btn-d-none').click(function() {
                 var data = $(this).attr('data');
                 var id = $('#' + data).addClass('d-none');
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#selectAll").click(function() {
+                $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
+
             });
 
         });

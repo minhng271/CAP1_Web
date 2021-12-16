@@ -511,6 +511,14 @@ class AdminController extends Controller
         }
     }
 
+    function data_backup(){
+        session(['active' => 'backup']);
+        return view('admin.data.backup');
+    }
 
+    function data_restore(){
+        session(['active' => 'restore']);
+        return view('admin.data.restore');
+    }
     
 }
