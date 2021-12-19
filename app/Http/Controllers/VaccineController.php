@@ -580,10 +580,11 @@ class VaccineController extends Controller
         if ($request->input('keyword')) {
             $keyword = $request->input('keyword');
         }
+
         $count_vac = vaccine_hos::where('id_hos', user::find(Auth::id())->id_hos)->select('id_vac')->groupBy('id_vac')->count();
         $list_id_vac = vaccine_hos::where('id_hos', user::find(Auth::id())->id_hos)->select('id_vac')->groupBy('id_vac')->get()->toArray();
-
-        for ($i=0; $i <= $count_vac ; $i++) { 
+        
+        for ($i=0; $i < count($list_id_vac) ; $i++) { 
             
             $list_vac[$i]['name'] = vaccine_hos::select('vaccines.name')
             ->join('vaccines', 'vaccines.id', 'vaccine_hos.id_vac')
@@ -606,8 +607,8 @@ class VaccineController extends Controller
         }
 
         // echo "<pre>";
-        // print_r($list_vac);
-        $vaccines = vaccine_patient::select('patients.*', 'vaccine_patients.injection_times', 'vaccine_patients.vaccine_1', 'vaccine_patients.vaccine_2', 'vaccine_patients.vaccine_3', 'vaccines.name')
+        // print_r($list_id_vac);
+        $vaccines = vaccine_patient::select('patients.*', 'vaccine_patients.id_disease', 'vaccine_patients.injection_times', 'vaccine_patients.vaccine_1', 'vaccine_patients.vaccine_2', 'vaccine_patients.vaccine_3', 'vaccines.name')
             ->join('patients', 'vaccine_patients.id_card', 'patients.id_card')
             ->leftJoin('vaccines', 'vaccine_patients.id_vac', 'vaccines.id')
             ->where('vaccine_patients.id_hos', user::find(Auth::id())->id_hos)

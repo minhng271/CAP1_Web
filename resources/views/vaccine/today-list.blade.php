@@ -229,7 +229,7 @@
                                    @csrf
                                    <div class="mb d-flex">
                                        <label for=""
-                                           class='form-label'>{{ $item->fullname }}</label>
+                                           class='form-label'>Tên bệnh nhân</label>
                                        <input type="text" class='form-control w-50'
                                            value="{{ $item->fullname }}">
                                    </div>
@@ -258,6 +258,18 @@
                                                value="{{ $item->vaccine_2 }}">
                                        </div>
                                    @endif
+                                   <div class="mb d-flex">
+                                    <label for=""
+                                        class='form-label'>Loại Bệnh</label>
+                                    <input type="text" class='form-control w-50'
+                                        value="@php
+                                        
+                                        if($item->id_disease){
+                                            echo DB::table('diseases')->where('id',$item->id_disease)->first()->name;
+                                        }
+                                        @endphp">
+                                </div>
+
                                    <div class="mb d-flex mt-4">
                                        <label for="select_vac" class='form-label'
                                            style=" font-weight: 600; font-size: 1.2rem; text-transform: uppercase; margin-left: 15%; text-decoration: underline;">
