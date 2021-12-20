@@ -61,7 +61,7 @@
     <main class="content">
 
 
-        <div class="container-fluid p-0">
+        <div class="container-fluid p-0">   
 
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
@@ -91,14 +91,14 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">1</td>
                                     <td class="d-none d-xl-table-cell">Tài Khoản</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
                                 <tr>
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">2</td>
                                     <td class="d-none d-xl-table-cell">Bệnh viện</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -106,7 +106,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">3</td>
                                     <td class="d-none d-xl-table-cell">Người dùng</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -114,7 +114,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">4</td>
                                     <td class="d-none d-xl-table-cell">Vắc Xin</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -122,7 +122,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">5</td>
                                     <td class="d-none d-xl-table-cell">Loại Bệnh</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -130,7 +130,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">6</td>
                                     <td class="d-none d-xl-table-cell">Vắc xin-bệnh viện</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -138,7 +138,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">7</td>
                                     <td class="d-none d-xl-table-cell">Vắc xin-Người dùng</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -146,7 +146,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">8</td>
                                     <td class="d-none d-xl-table-cell">Xét Nghiệm - người dùng</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 
@@ -154,7 +154,7 @@
                                     <td class="d-none d-xl-table-cell"><input name="name_check" type="checkbox"></td>
                                     <td class="d-none d-xl-table-cell">9</td>
                                     <td class="d-none d-xl-table-cell">giới hạn đăng ký</td>
-                                    <td class="d-none d-xl-table-cell">Hoạt động</td>
+                                    <td class="d-none d-xl-table-cell"><span style=" display: inline-block; background: #00ff4e; padding: 3px 10px; border-radius: 4px; ">Hoạt động</span></td>
                                     <td class="d-none d-xl-table-cell">16/12/2021</td>
                                 </tr>
 

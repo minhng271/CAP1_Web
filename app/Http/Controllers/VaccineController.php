@@ -54,7 +54,8 @@ class VaccineController extends Controller
         
         // vắc cin tiêm thành công
         $sum_vac_done = count(vaccine_patient::where('id_hos',user::find(Auth::id())->id_hos)
-        ->whereBetween('date',[date('Y-m-01'),date('Y-m-t')])->get());
+        ->whereBetween('date',[date('Y-m-01'),date('Y-m-t')])
+        ->where('done_inject','>','0')->get());
         // vắc cin dk trong tháng
         $sum_vac_done_old = count(vaccine_patient::where('id_hos',user::find(Auth::id())->id_hos)
         ->get());
@@ -83,7 +84,7 @@ class VaccineController extends Controller
         }else{
             $vac_top['id_vac'] = '';
             $vac_top['name'] = '';
-            $vac_top['so_luong'] = '';
+            $vac_top['so_luong'] = 0;
         }
 
         $sum_count = vaccine_patient::where('id_hos',user::find(Auth::id())->id_hos)
@@ -204,11 +205,12 @@ class VaccineController extends Controller
 
     function edit_vaccine($id)
     {
+        $list_vac = vaccine::all();
         $vaccines = vaccine::select('vaccines.*', 'diseases.name as diseases')
             ->leftJoin('diseases', 'vaccines.id_disease', 'diseases.id')->where('vaccines.id', $id)->first();
         $diseases = disease::all();
         $vac_hos = vaccine_hos::where('id_vac',$id)->where('id_hos',user::find(Auth::id())->id_hos)->first();
-        return view('vaccine.vaccine_edit', compact('vaccines', 'diseases', 'id','vac_hos'));
+        return view('vaccine.vaccine_edit', compact('list_vac','vaccines', 'diseases', 'id','vac_hos'));
     }
 
     function store_edit_vaccine(Request $request)
@@ -216,7 +218,6 @@ class VaccineController extends Controller
         if ($request->input('submit')) {
             $request->validate(
                 [
-                    'name' => ['required'],
                     'country' => ['required'],
                     'age_use_from' => ['required'],
                     'age_use_to' => ['required'],
@@ -227,7 +228,6 @@ class VaccineController extends Controller
                     'required' => ':attribute không được để trống'
                 ],
                 [
-                    'name' => 'Tên Vắc Xin',
                     'country' => 'Quốc Gia',
                     'age_use_from' => 'Tuổi Dùng Từ',
                     'age_use_to' => 'Tuổi Dùng Đến',
@@ -238,7 +238,6 @@ class VaccineController extends Controller
 
             vaccine::where('id', $request->input('id'))->update(
                 [
-                    'name' => $request->input('name'),
                     'country' => $request->input('country'),
                     'description' => $request->input('description'),
                     'age_use_from' => $request->input('age_use_from'),
@@ -583,7 +582,7 @@ class VaccineController extends Controller
 
         $count_vac = vaccine_hos::where('id_hos', user::find(Auth::id())->id_hos)->select('id_vac')->groupBy('id_vac')->count();
         $list_id_vac = vaccine_hos::where('id_hos', user::find(Auth::id())->id_hos)->select('id_vac')->groupBy('id_vac')->get()->toArray();
-        
+        $list_vac = array();
         for ($i=0; $i < count($list_id_vac) ; $i++) { 
             
             $list_vac[$i]['name'] = vaccine_hos::select('vaccines.name')

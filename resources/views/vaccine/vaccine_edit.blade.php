@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="mb-3 col-md-6">
                     <label class="form-label" for="name">Tên</label>
-                    <input class="form-control" type="text" name="name" id="name" value="{{$vaccines->name}}">
+                    <input class="form-control" type="text" name="name" id="name" disabled value="{{$vaccines->name}}">
                     <input type="hidden" name="id" value="{{$id}}">
                     @error('name')
                         <span class="text-danger" style="margin-top:5px; display: block;">{{ $message }}</span>

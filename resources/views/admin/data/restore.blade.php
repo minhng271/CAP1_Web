@@ -84,10 +84,10 @@
                                         id="input_import_file"></span> <span>(T.Đa: 40MiB)</span>
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <span style=" font-weight: 600; display: block; border-bottom: 1px solid; margin-bottom: 10px; ">Những tùy chọn khác:</span>
                                 <span><input type="checkbox"> Bật kiểm tra khóa ngoại</span>
-                            </div>
+                            </div> --}}
 
                             <div class="mb-3">
                                 <span>Định dạng:</span>
