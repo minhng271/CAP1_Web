@@ -23,16 +23,48 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                   <div class="form-group">
-                        {!! Form::label('address', 'Địa Chỉ', []) !!}
-                        {!! Form::text('address', '', ['class' => 'form-control', 'id' => 'address']) !!}
-                        @error('address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            {!! Form::label('city', 'Tỉnh/ Thành Phố', []) !!}
+                            <select name="city" id="city" class="form-select select_address">
+                                <option value="" selected>Tỉnh/ Thành Phố</option>
+                                @foreach ($city as $val)
+                                    <option value="{{ $val->matp }}">{{ $val->name_city }}</option>
+                                @endforeach
+                            </select>
+                            @error('city')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            {!! Form::label('province', 'Quận/ Huyện', []) !!}
+                            <select name="province" id="province" class="form-select select_address">
+                                <option value="" selected>Chọn Quận/ Huyện</option>
+                            </select>
+                            @error('province')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            {!! Form::label('ward', 'Phường/ Xã', []) !!}
+                            <select name="ward" id="ward" class="form-select">
+                                <option value="" selected>Chọn Phường/ Xã</option>
+                            </select>
+                            @error('ward')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            {!! Form::label('address', 'Địa Chỉ/ Số Nhà', []) !!}
+                            <input type="text" name="address" id="address" class="form-control">
+                            @error('address')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary" name="submit" value="submit">Thêm mới</button>
-                    
+
                     {!! Form::close() !!}
                 </div>
             </div>

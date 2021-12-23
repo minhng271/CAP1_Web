@@ -1,5 +1,7 @@
 <?php
 
+use App\hospital;
+use App\patient;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,8 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            users::class
-        ]);
+        // $this->call([
+        //     users::class
+        // ]);
+
+        factory(hospital::class,2)->create();
     }
 }

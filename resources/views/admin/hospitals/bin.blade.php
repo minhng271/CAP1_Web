@@ -42,19 +42,11 @@
                     <input type="submit" class="btn btn-primary" name="option" value="Áp dụng">
                 </div> --}}
                 {{-- script --}}
-                <script>
-                    $(document).ready(function() {
-                        $("#ckeck-all").click(function() {
-                            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-                        });
-                    });
-                </script>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td>
-                                <th scope="col">#</th>
+                                <th scope="col">STT</th>
                                 <th scope="col">Tên Bệnh Viện</th>
                                 <th scope="col">Địa Chỉ</th>
                                 <th scope="col">Email</th>
@@ -70,8 +62,6 @@
                                 @foreach ($hospitals as $item)
     
                                     <tr>
-                                        <td><input type="checkbox" name="check[]" value="{{ $item->id }}"
-                                                class="check"></td>
                                         <th scope="row">{{ $count }}</th>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->address}}</td>

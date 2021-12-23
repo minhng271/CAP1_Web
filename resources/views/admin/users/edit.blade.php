@@ -91,35 +91,58 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
-                            {!! Form::label('address', 'Đia Chỉ', []) !!}
-                            {!! Form::text('address', $patient->address , ['class' => 'form-control', 'id' => 'address']) !!}
-                            @error('address')
+                        <div class="col-md-4 form-group">
+                            {!! Form::label('city', 'Tỉnh/ Thành Phố', []) !!}
+                            <select name="city" id="city" class="form-select select_address">
+                                <option value="">Tỉnh/ Thành Phố</option>
+                                @foreach ($city as $val)
+                                    <option @php
+                                        if($patient->city == $val->name_city) echo 'selected';
+                                    @endphp value="{{ $val->matp }}">{{ $val->name_city }}</option>
+                                @endforeach
+                            </select>
+                            @error('city')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="form-group col-md-4">
-                            {!! Form::label('ward', 'Xã, Phường', []) !!}
-                            {!! Form::text('ward', $patient->ward , ['class' => 'form-control', 'id' => 'ward']) !!}
+                        <div class="col-md-4 form-group">
+                            {!! Form::label('province', 'Quận/ Huyện', []) !!}
+                            <select name="province" id="province" class="form-select select_address">
+                                <option value="" selected>Chọn Quận/ Huyện</option>
+                            
+                                @foreach ($province as $val)
+                                <option @php
+                                    if($patient->district == $val->name_province) echo 'selected';
+                                @endphp value="{{ $val->maqh }}">{{ $val->name_province }}</option>
+                            @endforeach
+
+                            </select>
+                            @error('province')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 form-group">
+                            {!! Form::label('ward', 'Phường/ Xã', []) !!}
+                            <select name="ward" id="ward" class="form-select">
+                                <option value="">Chọn Phường/ Xã</option>
+                                @foreach ($ward as $val)
+                                <option @php
+                                    if($patient->ward == $val->name_wards) echo 'selected';
+                                @endphp value="{{ $val->xaid }}">{{ $val->name_wards }}</option>
+                            @endforeach
+
+                            </select>
                             @error('ward')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="form-group col-md-4">
-                            {!! Form::label('district', 'Quận, Huyện', []) !!}
-                            {!! Form::text('district', $patient->district , ['class' => 'form-control', 'id' => 'district']) !!}
-                            @error('district')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        
                     </div>
                     
                     <div class="row">
                         <div class="form-group col-md-4">
-                            {!! Form::label('city', 'Tỉnh, Thành Phố', []) !!}
-                            {!! Form::text('city', $patient->city , ['class' => 'form-control', 'id' => 'city']) !!}
-                            @error('city')
+                            {!! Form::label('address', 'Địa Chỉ/ Số Nhà', []) !!}
+                            <input type="text" name="address" id="address" class="form-control" value="{{$patient->address}}">
+                            @error('address')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -139,7 +162,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" name="submit_edit" value="{{$patient->id_card}}">Thay Đổi</button>
-                    <a href="{{ url('admin/user', []) }}" class="btn btn-secondary" >Hủy</a>
+                    <a href="{{ url('admin/users', []) }}" class="btn btn-secondary" >Hủy</a>
     
                     {!! Form::close() !!}
                 </div>

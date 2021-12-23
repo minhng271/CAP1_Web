@@ -7,22 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
     <meta name="author" content="AdminKit">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords"
         content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="{{ asset('img/icons/icon-48x48.png') }}" />
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
-    <title>Admin MTAC</title>
+    <title>Hệ Thống MTAC</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <style>
+        body{
+            font-family: Nunito;
+        }
         .card.flex-fill {
             min-height: 425px;
             margin-bottom: 10px;
@@ -55,6 +61,11 @@
         .card.position-relative {
             top: 25px;
         }
+        ul>li>a>span{
+            text-transform: capitalize;
+        }
+        li.sidebar-item>a {margin-left: 10px;}
+        
 
     </style>
     <div class="wrapper">
@@ -64,8 +75,8 @@
                     <img src="{{ asset('img/mtac-system.png ') }}" alt="">
                 </a>
                 <ul class="sidebar-nav">
-                    <li class="sidebar-header">
-                        DANH SÁCH ACCOUNT-ADMIN
+                    <li class="sidebar-header" style="font-size: 20px">
+                        ACCOUNT-ADMIN
                     </li>
                     <li></li>
                     <li class="sidebar-item">
@@ -78,10 +89,10 @@
                                     Viện</a></li>
                             <li class="@php if(session('active') == 'hos_lis1') echo " active-a" @endphp"><a
                                     href="{{ url('admin/hospital') }}" class="sidebar-dropdown-link">Danh Sách Bệnh
-                                    viện</a></li>
+                                    Viện</a></li>
                             <li class="@php if(session('active') == 'hos_bin1') echo " active-a" @endphp"><a
                                     href="{{ url('admin/hospital/bin') }}" class="sidebar-dropdown-link">Danh Sách
-                                    Bệnh viện đã xóa</a></li>
+                                    Đã Xóa</a></li>
                         </ul>
                     </li>
                     <li></li>
@@ -91,18 +102,13 @@
                         <ul class="collapse list-unstyled @php if(session('active') == 'hos_add' || session('active') == 'hos_lis' ||session('active') == 'hos_bin') echo "
                             show" @endphp" id="hospital_account">
                             <li class="@php if(session('active') == 'hos_add') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital-acc/add') }}" class="sidebar-dropdown-link">Thêm tài
-                                    khoản quản lý Bệnh
-                                    Viện</a></li>
+                                    href="{{ url('admin/hospital-acc/add') }}" class="sidebar-dropdown-link">Thêm Tài
+                                    Khoản Bệnh Viện</a></li>
                             <li class="@php if(session('active') == 'hos_lis') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital-acc') }}" class="sidebar-dropdown-link">Danh Sách tài
-                                    khoản quản lý Bệnh
-                                    viện</a></li>
+                                    href="{{ url('admin/hospital-acc') }}" class="sidebar-dropdown-link">Danh Sách Tài
+                                    Khoản</a></li>
                             <li class="@php if(session('active') == 'hos_bin') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/hospital-acc/bin') }}" class="sidebar-dropdown-link">Danh Sách
-                                    tài khoản quản lý
-                                    Bệnh
-                                    viện đã xóa</a></li>
+                                    href="{{ url('admin/hospital-acc/bin') }}" class="sidebar-dropdown-link">Tài Khoản Đã Xóa</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -117,8 +123,7 @@
                                     href="{{ url('admin/users') }}" class="sidebar-dropdown-link">Danh Sách Người
                                     Dùng</a></li>
                             <li class="@php if(session('active') == 'user_bin') echo " active-a" @endphp"><a
-                                    href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Người
-                                    Dùng đã xóa</a></li>
+                                    href="{{ url('admin/user/bin') }}" class="sidebar-dropdown-link">Danh Sách Đã Xóa</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -128,10 +133,10 @@
                             show" @endphp" id="backup">
                             <li class="@php if(session('active') == 'backup') echo " active-a" @endphp"><a
                                     href="{{ url('admin/data/backup') }}" class="sidebar-dropdown-link">
-                                    Sao lưu Data</a></li>
-                            <li class="@php if(session('active') == 'restore_data') echo " active-a" @endphp"><a
+                                    Sao Lưu Data</a></li>
+                            {{-- <li class="@php if(session('active') == 'restore_data') echo " active-a" @endphp"><a
                                     href="{{ url('admin/data/restore') }}" class="sidebar-dropdown-link">
-                                    Khôi Phục Data</a></li>
+                                    Khôi Phục Data</a></li> --}}
                         </ul>
                     </li>
                     {{-- <li class="sidebar-item @php if(session('active') == 'wait') echo " active-a" @endphp">
@@ -165,21 +170,15 @@
 
                                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                     data-bs-toggle="dropdown">
-                                    <img src="{{ asset('img/avatar-hoan-my.png') }}"
+                                    <img src="{{ asset('img/avatar-admin.png') }}"
                                         class="avatar img-fluid rounded me-1 border" alt="Charles Hall" /> <span
                                         class="text-dark" style="margin-right: 20px;">ADMIN</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    {{-- <a class="dropdown-item" href="{{ url('admin/profile') }}"><i class="align-middle me-1"
-                                            data-feather="user"></i> Thông Tin Cá Nhân</a>
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="pie-chart"></i> Phân Tích</a> --}}
-                                    {{-- <div class="dropdown-divider"></div> --}}
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         Đăng Xuất
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                         class="d-none">
                                         @csrf
@@ -196,9 +195,15 @@
 
         </div>
     </div>
-
+    
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="js/app.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -241,18 +246,10 @@
             });
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
 
     <script>
         $(document).ready(function() {
+            $('li.active-a').parents('li.sidebar-item').children('a.dropdown-toggle').css('backgroundColor','#435ebe54');
             $('label.result').click(function() {
                 $(this).parents('tr').children('th').children('input[type=checkbox]').attr('checked',
                     'checked');
@@ -265,18 +262,42 @@
                 var data = $(this).attr('data');
                 var id = $('#' + data).addClass('d-none');
             });
-
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
             $("#selectAll").click(function() {
                 $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-
+    
             });
 
+            $('.select_address').on('change', function() {
+                var action = $(this).attr('id');
+                var ma_id = $(this).val();
+                var result = '';
+
+                if(action == 'city'){
+                    result = 'province';
+                }else {
+                    result = 'ward';
+                }
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '{{url('/select-delivery')}}',
+                    crossDomain: true,
+                    data:{action:action, ma_id:ma_id},
+                    success: function (data) { 
+                        $('#'+result).html(data);
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+                });
+            });
         });
-    </script>
+    </script> 
 </body>
 
 </html>

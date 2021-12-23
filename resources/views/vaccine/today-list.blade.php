@@ -8,8 +8,8 @@
             padding: 15px 20px;
             background: #fff;
             position: absolute;
-            top: 2%;
-            left: 25%;
+            top: -10%;
+            left: 22%;
         }
 
         .col-md-6.info-patient h3 {
@@ -52,6 +52,9 @@
             opacity: 0;
         }
 
+        label{
+            text-transform: capitalize;
+        }
     </style>
     <div class="content">
         @if (session('done_patient'))
@@ -86,6 +89,7 @@
                                     <th class="d-none d-md-table-cell">CCCD/CMND</th>
                                     <th class="d-none d-xl-table-cell">Số Thẻ BHYT</th>
                                     <th class="d-none d-md-table-cell">Số Điện Thoại</th>
+                                    <th class="d-none d-md-table-cell">Thanh Toán</th>
                                     <th colspan="3" style="text-align: center; letter-spacing: 1px; padding-left: 0px;">Thao Tác</th>
                                 </tr>
                             </thead>
@@ -106,15 +110,16 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->id_card }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->health_card }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
+                                            
+                                            <td class="d-none d-xl-table-cell"><span class="@php
+                                                if($item->status == "Đã thanh toán") echo 'done';
+                                                else echo 'undone';
+                                            @endphp">{{ $item->status }}</span></td>
 
                                             <td class="d-none d-md-table-cell d-user-2" data="@php
                                                 echo 'confirm-' . $item->id_card;
                                             @endphp">
                                                 <i class="fas fa-check" style="color: #3b7ddd;"></i>
-                                                {{-- <a href="{{ url('vaccine/done-patient', ['id' => $item->id]) }}"
-                                                    onclick="return confirm('CHUYỂN VÀO DANH SÁCH CHỜ')">
-                                                    <i class="fas fa-check"></i>
-                                                </a> --}}
                                             </td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id_card }}]">
                                                 <a href="{{ url('vaccine/delete-patient', ['id' => $item->id_card]) }}"
@@ -135,32 +140,37 @@
                                                 <h3>ThÔNG TIN BỆNH NHÂN</h3>
 
                                                 <div class="info">
-                                                    <div class="mb d-flex">
-                                                        <label for="" class='form-label'>{{ $item->fullname }}</label>
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Họ Và Tên</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->fullname }}">
                                                     </div>
                                                     <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Email</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->email }}">
+                                                    </div>
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Ngày Sinh</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="@php
                                                                 echo date('d-m-Y', strtotime($item->birthday));
                                                             @endphp">
                                                     </div>
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>CMND/CCCD</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->id_card }}">
                                                     </div>
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Số Thẻ BHYT</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->health_card }}">
                                                     </div>
                                                     
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Giới tính</label>
-                                                        <div class="mb d-flex-gender">
+                                                        <div class="mb mb-2 d-flex-gender">
                                                             <input type="radio" @php
                                                                 if ($item->gender == 'male') {
                                                                     echo 'checked';
@@ -178,32 +188,42 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Số Điện thoại</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->phone }}">
                                                     </div>
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Địa chỉ</label>
                                                         <input type="text" class='form-control w-50'
-                                                            value="{{ $item->address }}-{{ $item->ward }}-{{ $item->district }}-{{ $item->city }}">
+                                                            value="{{ $item->address }}">
                                                     </div>
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Phường/ Xã</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->ward }}">
+                                                    </div>
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Quận/ Huyện</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->district }}">
+                                                    </div>
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Tỉnh/ Thành Phố</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->city }}">
+                                                    </div>
+                                                    
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Lần tiêm</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->injection_times }}">
                                                     </div>
-                                                    {{-- <div class="mb d-flex">
-                                                        <label for="" class='form-label'>Tên Vaccine</label>
-                                                        <input type="text" class='form-control w-50'
-                                                            value="{{ $item->name }}">
-                                                    </div> --}}
                                                 </div>
 
                                                 <div class="mb-3 d-flex mb-submit justify-content-end mt-3">
                                                     <span class="btn btn-primary btn-d-none"
                                                         data='{{ $item->id_card }}'>Xác Nhận</span>
-                                                    {{-- <a href="{{ url()->current() }}" class="btn btn-primary">Xác Nhận</a> --}}
                                                 </div>
                                             </form>
                                         </div>
@@ -227,38 +247,38 @@
                                    action="{{ url('vaccine/confirm-vaccine', ['id_card' => $item->id_card]) }}"
                                    method="post">
                                    @csrf
-                                   <div class="mb d-flex">
+                                   <div class="mb mb-2 d-flex">
                                        <label for=""
                                            class='form-label'>Tên bệnh nhân</label>
                                        <input type="text" class='form-control w-50'
                                            value="{{ $item->fullname }}">
                                    </div>
-                                   <div class="mb d-flex">
+                                   <div class="mb mb-2 d-flex">
                                        <label for="" class='form-label'>CMND/CCCD</label>
                                        <input type="text" class='form-control w-50'
                                            value="{{ $item->health_card }}">
                                    </div>
-                                   <div class="mb d-flex">
+                                   <div class="mb mb-2 d-flex">
                                        <label for="" class='form-label'>Lần tiêm</label>
                                        <input type="text" class='form-control w-50'
                                            value="{{ $item->injection_times }}">
                                    </div>
 
                                    @if ($item->injection_times > 1)
-                                       <div class="mb d-flex">
+                                       <div class="mb mb-2 d-flex">
                                            <label for="" class='form-label'>vắc xin tiêm lần 1</label>
                                            <input type="text" class='form-control w-50'
                                                value="{{ $item->vaccine_1 }}">
                                        </div>
                                    @endif
                                    @if ($item->injection_times > 2)
-                                       <div class="mb d-flex">
+                                       <div class="mb mb-2 d-flex">
                                            <label for="" class='form-label'>vắc xin tiêm lần 2</label>
                                            <input type="text" class='form-control w-50'
                                                value="{{ $item->vaccine_2 }}">
                                        </div>
                                    @endif
-                                   <div class="mb d-flex">
+                                   <div class="mb mb-2 d-flex">
                                     <label for=""
                                         class='form-label'>Loại Bệnh</label>
                                     <input type="text" class='form-control w-50'
@@ -268,28 +288,48 @@
                                             echo DB::table('diseases')->where('id',$item->id_disease)->first()->name;
                                         }
                                         @endphp">
-                                </div>
-
-                                   <div class="mb d-flex mt-4">
-                                       <label for="select_vac" class='form-label'
-                                           style=" font-weight: 600; font-size: 1.2rem; text-transform: uppercase; margin-left: 15%; text-decoration: underline;">
-                                           Chọn Vắc Xin
-                                       </label>
-                                       <select class="form-select w-50"
-                                           style="border: 3px solid #f08484;" name="select_vac"
-                                           id="select_vac">
-                                           @foreach ($list_vac as $name_vac)
-                                               <option @php
-                                                   if ($name_vac['name'] == $item->vaccine_1) {
-                                                       echo 'selected';
-                                                   }
-                                               @endphp value="{{ $name_vac['name'] }}">
-                                                   {{ $name_vac['name'] }} - <span style="color: rgb(245, 35, 35);">{{$name_vac['quantity']}}</span></option>
-                                           @endforeach
-                                       </select>
-                                   </div>
+                                    </div>
+                                    
+                                        <div class="mb mb-2 d-flex">
+                                            <label for="status" class='form-label'>Thanh toán</label>
+                                            <select class="form-select w-50"  name="status" id="status">
+                                                <option value="Đã thanh toán" @php
+                                                    if($item->status !== 'Chưa thanh toán') echo 'selected';
+                                                @endphp>Đã Thanh Toán</option>
+                                                <option value="Chưa thanh toán"  @php
+                                                if($item->status === 'Chưa thanh toán') echo 'selected';
+                                            @endphp>Chưa Thanh Toán</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb d-flex mt-4">
+                                            <label for="select_vac" class='form-label'
+                                                style=" font-weight: 600; font-size: 1.2rem; text-transform: uppercase; margin-left: 15%; text-decoration: underline;">
+                                                Chọn Vắc Xin:
+                                            </label>
+                                            <select class="form-select w-50"
+                                                style="border: 3px solid #f08484;" name="select_vac"
+                                                id="select_vac">
+                                                @php
+                                                $list_vac = App\vaccine_hos::join('vaccines','vaccines.id','=','vaccine_hos.id_vac')
+                                                ->where('vaccines.id_disease', $item->id_disease)
+                                                ->where('vaccine_hos.id_hos', Auth::user()->id_hos)
+                                                ->get();
+                                            @endphp
+     
+                                            @foreach ($list_vac as $name_vac)
+                                                <option @php
+                                                    if ($name_vac['name'] == $item->vaccine_1) {
+                                                        echo 'selected';
+                                                    }
+                                                @endphp value="{{ $name_vac['name'] }}">
+                                                    {{ $name_vac['name'] }} - <span
+                                                        style="color: rgb(245, 35, 35);">{{ $name_vac['quantity'] }}</span>
+                                                </option>
+                                            @endforeach
+                                            </select>
+                                        </div>
                                    <div class="d-flex justify-content-center mt-4">
-                                       <div class="mb d-flex justify-content-evenly w-50">
+                                       <div class="mb mb-2 d-flex justify-content-evenly w-50">
                                            <button type="submit" class="btn btn-primary"
                                                style="width: 40%; height: 40px;">
                                                XÁC NHẬN

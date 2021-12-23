@@ -60,12 +60,12 @@
     <main class="content">
         <div class="container-fluid p-0">
             @if (session('done_patient'))
-                <div class="alert alert-success" style=" margin-bottom: 1px; ">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
+                <div class="alert alert-success" style=" margin-bottom: 1px; width: 30%;transform: translateX(15px); ">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
                     Nhận</div>
                 
             @endif
             @if (session('delete_patient'))
-                <div class="alert alert-success" style=" margin-bottom: 1px; ">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
+                <div class="alert alert-success" style=" margin-bottom: 1px; width: 30%;transform: translateX(15px); ">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
                     công</div>
                 
             @endif

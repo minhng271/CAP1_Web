@@ -7,8 +7,8 @@
         }
 
     </style>
-    @if (session('status'))
-        <span class="alert alert-success">{{session('status')}}</span>        
+    @if (session('update'))
+        <span class="alert alert-success">{{session('update')}}</span>        
     @endif
     <div class="content">
         <div id="content" class="container-fluid">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('name', 'Tên Bệnh Viện', []) !!}
-                        {!! Form::text('name', "$hospital->name", ['class' => 'form-control', 'id' => 'name']) !!}
+                        {!! Form::text('name', "$hospital->name", ['disabled','class' => 'form-control', 'id' => 'name']) !!}
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -39,13 +39,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('address', 'Địa Chỉ', []) !!}
-                        {!! Form::text('address', "$hospital->address", ['class' => 'form-control', 'id' => 'address']) !!}
-                        @error('address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                   
                     
                     <div class="form-group">
                         {!! Form::hidden('id_user', $hospital->id_user, []) !!}

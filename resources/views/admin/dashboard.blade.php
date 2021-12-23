@@ -35,43 +35,51 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-0">
-                                <h5 class="card-title">Tổng số Bệnh viện ĐĂNG KÝ</h5>
+                                <h5 class="card-title">Tổng số Bệnh viện <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                    (trong năm @php
+                                    echo date('Y');
+                                @endphp)</span></h5>
                             </div>
 
                             <div class="col-auto">
                                 <div class="stat text-primary">
-                                    <img style="width: 100%;" src="{{ asset('img/icons/c1.jpg') }}" alt="">
+                                    <img style="width: 100%;" src="{{ asset('img/icons/hos1.jpg') }}" alt="">
                                 </div>
                             </div>
                         </div>
-                        <h1 class="mt-1 mb-3">{{$sum_count_hos_moth}}</h1>
-                        {{-- <div class="mb-0">
-                            <span class="@php if((1<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                        <h1 class="mt-1 mb-3">{{$sum_count_hos_moth}} <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">(bệnh viện)</span></h1>
+                        <div class="mb-0">
+                            <span class="@php if(($ratio_sum_count_hos_moth<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                             <i class="mdi mdi-arrow-bottom-right"></i>
-                                @php if((2>0)){ echo '+'; } @endphp 10%</span>
-                            <span class="text-muted">So với ngày trước</span>
-                        </div> --}}
+                                @php if(($ratio_sum_count_hos_moth>0)){ 
+                                    echo '+';
+                                     }
+                                @endphp {{$ratio_sum_count_hos_moth}}%</span>
+                            <span class="text-muted">So với năm trước</span>
+                        </div>
                     </div>
                 </div>
                 <div class="card col-md-3">
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-0">
-                                <h5 class="card-title">Bệnh Viện đăng ký <br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
-                                    (trong tháng)</span></h5>
+                                <h5 class="card-title">Bệnh Viện đăng ký <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                    (trong tháng @php
+                                    echo date('m');
+                                @endphp)</span></h5>
                             </div>
 
                             <div class="col-auto">
                                 <div class="stat text-primary">
-                                    <img style="width: 100%;" src="{{ asset('img/icons/c1.jpg') }}" alt="">
+                                    <img style="width: 100%;" src="{{ asset('img/icons/hos2.jpg') }}" alt="">
                                 </div>
                             </div>
                         </div>
-                        <h1 class="mt-1 mb-3">{{$sum_hos_moth}}</h1>
+                        <h1 class="mt-1 mb-3">{{$sum_hos_moth}} <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">(bệnh viện)</span></h1>
                         <div class="mb-0">
                             <span class="@php if(($ratio_sum_hos_moth<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                             <i class="mdi mdi-arrow-bottom-right"></i>
-                                @php if(($ratio_sum_hos_moth>0)){ echo '+'; } @endphp {{$ratio_sum_hos_moth}}</span>
+                                @php if(($ratio_sum_hos_moth>0)){ echo '+'; } @endphp {{$ratio_sum_hos_moth}}%</span>
                             <span class="text-muted">So với tháng trước</span>
                         </div>
                     </div>
@@ -80,43 +88,48 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-0">
-                                <h5 class="card-title">Tổng số Người dùng ĐĂNG KÝ <br></h5>
+                                <h5 class="card-title">Tổng số Người dùng<span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                    (trong năm @php
+                                    echo date('Y');
+                                @endphp)</span></h5>
                             </div>
 
                             <div class="col-auto">
                                 <div class="stat text-primary">
-                                    <img style="width: 100%;" src="{{ asset('img/icons/c1.jpg') }}" alt="">
+                                    <img style="width: 100%;border-radius: 100%;" src="{{ asset('img/icons/pat1.jpg') }}" alt="">
                                 </div>
                             </div>
                         </div>
-                        <h1 class="mt-1 mb-3">{{$sum_count_user_moth}}</h1>
-                        {{-- <div class="mb-0">
-                            <span class="@php if((1<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                        <h1 class="mt-1 mb-3">{{$sum_count_user_moth}} <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">(người dùng)</span></h1>
+                        <div class="mb-0">
+                            <span class="@php if(($ratio_sum_count_hos_moth<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                             <i class="mdi mdi-arrow-bottom-right"></i>
-                                @php if((2>0)){ echo '+'; } @endphp {{$ratio_sum_hos_moth}}</span>
-                            <span class="text-muted">So với tháng trước</span>
-                        </div> --}}
+                                @php if(($ratio_sum_count_hos_moth>0)){ echo '+'; } @endphp {{$ratio_sum_count_hos_moth}}%</span>
+                            <span class="text-muted">So với năm trước</span>
+                        </div>
                     </div>
                 </div>
                 <div class="card col-md-3">
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-0">
-                                <h5 class="card-title">Người dùng đăng ký <br><span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
-                                    (trong tháng)</span></h5>
+                                <h5 class="card-title">Người dùng đăng ký <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
+                                    (trong tháng @php
+                                    echo date('m');
+                                @endphp)</span></h5>
                             </div>
 
                             <div class="col-auto">
                                 <div class="stat text-primary">
-                                    <img style="width: 100%;" src="{{ asset('img/icons/c1.jpg') }}" alt="">
+                                    <img style="width: 100%;background: white;" src="{{ asset('img/icons/pat2.jpg') }}" alt="">
                                 </div>
                             </div>
                         </div>
-                        <h1 class="mt-1 mb-3">{{$sum_user_moth}}</h1>
+                        <h1 class="mt-1 mb-3">{{$sum_user_moth}} <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">(người dùng)</span></h1>
                         <div class="mb-0">
                             <span class="@php if((1<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
                             <i class="mdi mdi-arrow-bottom-right"></i>
-                                @php if((2>0)){ echo '+'; } @endphp {{$ratio_sum_user_moth}}</span>
+                                @php if((2>0)){ echo '+'; } @endphp {{$ratio_sum_user_moth}}%</span>
                             <span class="text-muted">So với tháng trước</span>
                         </div>
                     </div>

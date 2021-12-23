@@ -1,31 +1,87 @@
-body {
-    background-color: #d5e3e4;
-}
 
 .container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-inner {
+    border-radius: 0 10px 10px 0;
+}
+
+.carousel-caption {
+    text-align: left;
+    left: 5%;
+}
+
+.login-sec {
+    padding: 50px 30px;
+    position: relative;
+}
+
+.login-sec .copy-text {
+    position: absolute;
+    width: 80%;
+    bottom: 20px;
+    font-size: 13px;
     text-align: center;
 }
 
-.formLogin {
-    text-align: left;
-    margin: auto;
-    width: 100%;
+.login-sec .copy-text i {
+    color: #feb58a;
 }
 
-.row {
-    display: flex;
-    justify-content: center;
+.login-sec .copy-text a {
+    color: #e36262;
 }
 
-#logo {
-    width: 220px;
-    height: 200px;
+.login-sec h2 {
     margin-bottom: 30px;
+    font-weight: 800;
+    font-size: 30px;
+    color: #de6262;
 }
 
-#Login {
-    background-color: #76c8ce;
-    color: #ffff;
-    padding: 5px 25px;
-    border-radius: 10px;
+.login-sec h2:after {
+    content: " ";
+    width: 100px;
+    height: 5px;
+    background: #feb58a;
+    display: block;
+    margin-top: 20px;
+    border-radius: 3px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-login {
+    background: #de6262;
+    color: #fff;
+    font-weight: 600;
+}
+
+.banner-text {
+    width: 70%;
+    position: absolute;
+    bottom: 40px;
+    padding-left: 20px;
+}
+
+.banner-text h2 {
+    color: #fff;
+    font-weight: 600;
+}
+
+.banner-text h2:after {
+    content: " ";
+    width: 100px;
+    height: 5px;
+    background: #fff;
+    display: block;
+    margin-top: 20px;
+    border-radius: 3px;
+}
+
+.banner-text p {
+    color: #fff;
 }

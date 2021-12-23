@@ -87,7 +87,7 @@
                            </div> 
                            </form>
                     </div>
-                    <div class="card flex-fill">
+                    <div class="card flex-fill" >
                         <table class="table table-hover my-0">
                             <thead>
                                 <tr>
@@ -97,7 +97,10 @@
                                     <th class="d-none d-xl-table-cell">Giới tính</th>
                                     <th class="d-none d-xl-table-cell">Ngày Sinh</th>
                                     <th class="d-none d-md-table-cell">Số Điện Thoại</th>
+                                    <th class="d-none d-md-table-cell">Lần Tiêm</th>
+                                    <th class="d-none d-md-table-cell">Tên Vắc Xin</th>
                                     <th>Trạng Thái</th>
+                                    <th>Thanh Toán</th>
                                     <th>Thông tin</th>
                                 </tr>
                             </thead>
@@ -125,14 +128,21 @@
                                             <td class="d-none d-xl-table-cell">@php
                                                 echo date('d-m-Y', strtotime($item->birthday));
                                             @endphp</td>
-                                            <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
-                                            <td>
-                                                @if ($item->done_inject == 0)
+                                                <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
+                                                <td class="d-none d-xl-table-cell">{{ $item->injection_times }}</td>
+                                                <td class="d-none d-xl-table-cell">{{ App\vaccine::where('id',$item->id_vac)->first()->name }}</td>
+                                                
+                                                <td>
+                                                    @if ($item->done_inject == 0)
                                                     <span style='color: white;background: #f12d2d;padding: 4px 6px;border-radius: 4px;'>Chưa Tiêm</span>
-                                                @else
+                                                    @else
                                                     <span style='background: #39f639;padding: 4px 6px;border-radius: 4px;'>Đã Tiêm</span>
-                                                @endif
-                                            </td>
+                                                    @endif
+                                                </td>
+                                                <td class="d-none d-xl-table-cell"><span class="@php
+                                                    if($item->status == "Đã thanh toán") echo 'done';
+                                                    else echo 'undone';
+                                                @endphp">{{ $item->status }}</span></td>
                                             <td class="d-none d-md-table-cell d-user" data="{{ $item->id_card }}">
                                                 <i class="far fa-user" style="color: #3b7ddd;display: flex;    justify-content: center;"></i>
                                             </td>
@@ -147,7 +157,7 @@
 
                                                 <div class="info">
                                                     <div class="mb d-flex">
-                                                        <label for="" class='form-label'>{{ $item->fullname }}</label>
+                                                        <label for="" class='form-label'>Họ Và Tên</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->fullname }}">
                                                     </div>
@@ -198,17 +208,11 @@
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->injection_times }}">
                                                     </div>
-                                                    {{-- <div class="mb d-flex">
-                                                        <label for="" class='form-label'>Tên Vaccine</label>
-                                                        <input type="text" class='form-control w-50'
-                                                            value="{{ $item->name }}">
-                                                    </div> --}}
                                                 </div>
 
                                                 <div class="mb-3 d-flex mb-submit justify-content-end mt-3">
                                                     <span class="btn btn-primary btn-d-none"
                                                         data='{{ $item->id_card }}'>Xác Nhận</span>
-                                                    {{-- <a href="{{ url()->current() }}" class="btn btn-primary">Xác Nhận</a> --}}
                                                 </div>
                                             </form>
                                         </div>

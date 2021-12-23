@@ -33,18 +33,11 @@
                     </form>
                 </div>
                 {!! Form::open(['url' => 'users/option']) !!}
-                {{-- <script>
-                    $(document).ready(function() {
-                        $("#ckeck-all").click(function() {
-                            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-                        });
-                    });
-                </script> --}}
+                
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                {{-- <td><input type="checkbox" name="check-all" value="" id="ckeck-all"></td> --}}
                                 <th scope="col">#</th>
                                 <th scope="col">Tên Bệnh Viện</th>
                                 <th scope="col">Địa Chỉ</th>
@@ -60,11 +53,9 @@
                                 @foreach ($hospitals as $item)
 
                                     <tr>
-                                        {{-- <td><input type="checkbox" name="check[]" value="{{ $item->id }}"
-                                                class="check"></td> --}}
                                         <th scope="row">{{ $count }}</th>
                                         <td>{{ $item->name }}</td>
-                                        <td>{{ $item->address }}</td>
+                                        <td>{{ $item->address.'-'.$item->ward.'-'.$item->province.'-'.$item->city }}</td>
                                         <td>{{ date('d-m-Y', strtotime($item->created_at)) }}</td>
                                         <td>
                                             <a href="{{ url('admin/hospital/edit/'.$item->id) }}"

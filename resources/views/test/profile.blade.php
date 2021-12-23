@@ -8,7 +8,7 @@
             <div class="profile-main">
                 <div class="profile-top row">
                     <div class="profile-avatar col-md-4 d-flex justify-content-center">
-                        <img src="{{ asset('img/avatar.jpg') }}" style='width: 64%;border-radius: 100%;' alt="">
+                        <img src="{{ asset('img/avatars/'.$hospital->images) }}" style='width: 300px; height: 300px; border-radius: 100%;' alt="">
 
                     </div>
                     <div class="profile-first col-md-8">

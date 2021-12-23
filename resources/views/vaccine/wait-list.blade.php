@@ -51,6 +51,11 @@
             transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             opacity: 0;
         }
+        
+        label{
+            text-transform: capitalize;
+        }
+
 
     </style>
     <div class="content">
@@ -72,7 +77,7 @@
                             <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
                         </form>
                     </div>
-                    <div class="card flex-fill">
+                    <div class="card flex-fill"  style="min-height: 600px">
                         <table class="table table-hover my-0">
                             <thead>
                                 <tr>
@@ -129,9 +134,14 @@
 
                                                 <div class="info">
                                                     <div class="mb d-flex">
-                                                        <label for="" class='form-label'>{{ $item->fullname }}</label>
+                                                        <label for="" class='form-label'>Họ và Tên</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->fullname }}">
+                                                    </div>
+                                                    <div class="mb d-flex">
+                                                        <label for="" class='form-label'>Email</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->email }}">
                                                     </div>
                                                     <div class="mb d-flex">
                                                         <label for="" class='form-label'>Ngày Sinh</label>
@@ -176,27 +186,36 @@
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->phone }}">
                                                     </div>
-                                                    <div class="mb d-flex">
+                                                    <div class="mb mb-2 d-flex">
                                                         <label for="" class='form-label'>Địa chỉ</label>
                                                         <input type="text" class='form-control w-50'
-                                                            value="{{ $item->address }}-{{ $item->ward }}-{{ $item->district }}-{{ $item->city }}">
+                                                            value="{{ $item->address }}">
+                                                    </div>
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Phường/ Xã</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->ward }}">
+                                                    </div>
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Quận/ Huyện</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->district }}">
+                                                    </div>
+                                                    <div class="mb mb-2 d-flex">
+                                                        <label for="" class='form-label'>Tỉnh/ Thành Phố</label>
+                                                        <input type="text" class='form-control w-50'
+                                                            value="{{ $item->city }}">
                                                     </div>
                                                     <div class="mb d-flex">
                                                         <label for="" class='form-label'>Lần tiêm</label>
                                                         <input type="text" class='form-control w-50'
                                                             value="{{ $item->injection_times }}">
                                                     </div>
-                                                    {{-- <div class="mb d-flex">
-                                                        <label for="" class='form-label'>Tên Vaccine</label>
-                                                        <input type="text" class='form-control w-50'
-                                                            value="{{ $item->name }}">
-                                                    </div> --}}
                                                 </div>
 
                                                 <div class="mb-3 d-flex mb-submit justify-content-end mt-3">
                                                     <span class="btn btn-primary btn-d-none"
                                                         data='{{ $item->id_card }}'>Xác Nhận</span>
-                                                    {{-- <a href="{{ url()->current() }}" class="btn btn-primary">Xác Nhận</a> --}}
                                                 </div>
                                             </form>
                                         </div>

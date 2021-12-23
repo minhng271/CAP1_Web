@@ -18,44 +18,69 @@
         }
 
     </style>
-    <div class="content">
-        <div class="container-fluid p-0">
-           
-            <div class="col-12 col-lg-12 col-xxl-12">
-                <div class="card-header  d-flex justify-content-between">
-                    <h3>Xét giới hạn người đăng ký trong một ngày làm việc</h3>
-                </div>
-                
-                <div class="card flex-fill" style=" display: flex; justify-content: center; align-items: center; ">
-                    <div class="limit-top row " style=" justify-content: center; align-items: center; ">
-                        <div class="limit-avatar col-md-4 d-flex justify-content-center">
-                            <img src="{{ asset('img/avatar.jpg') }}" style='width: 64%;border-radius: 100%;' alt="">
-
-                        </div>
-                        <form method="POST" class="limit col-md-4" action="{{ url('vaccine/limit/store_edit') }}">
-                            @csrf
-                            <div class="row">
-                                <div class="mb-3 col-md-12">
-                                    <label class="form-label" for="name"
-                                        style="    text-transform: uppercase;font-size: 1.3rem; font-weight: 600; font-family: inherit; ">
-                                        Giới hạn đăng ký hôm nay</label>
-                                    <input type="text" style=" width: 57%; font-size: 2rem; " name="limit" value="{{$limit}}"  >
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="mb-3 mr-3">
-                                    <button class="mb-3 col-md- btn btn-primary" type="submit" name="submit" value="submit">Lưu Thay Đổi</button>
-                                </div>
-                                <div class="mb-3">
-                                    <a class="mb-3 col-md- btn btn-outline-secondary" href="{{ url('vaccine/limit') }}">Hủy bỏ</a>
-                                </div>
-                            </div>
-                        </form>
+     <div class="content">
+        <form method="POST" action="{{ url('vaccine/limit/store_edit') }}">
+            @csrf
+            <div class="container-fluid p-0">
+                <div class="col-12 col-lg-12 col-xxl-12">
+                    <div class="card-header  d-flex justify-content-between">
+                        <h3>Xét giới hạn người đăng ký trong một ngày làm việc</h3>
                     </div>
+                    <div class="card flex-fill" style=" display: flex; align-items: center; ">
 
+                        <div class="row"
+                            style="margin-top:15px;background: aliceblue;padding: 20px ;width: 96%; border-radius:8px;min-height: 395px;">
+                            <div class="mb-3 col-md-4 limit-now">
+                                <label class="form-label" for="name"
+                                    style="    text-transform: uppercase;font-size: 1.2rem; font-weight: 600; font-family: inherit; ">
+                                    Giới hạn đăng ký hôm nay <br> {{ date('d-m-Y') }}{{ date('d') }}</label>
+                                <input type="text" name="limit_now" class="form-control"
+                                    value="{{ $date_now->limit_vaccine }}"
+                                    style=" font-size: 2.5rem; font-weight: 600; display: inline-block; width:50%">
+
+                                <span style=" font-size: 1rem; font-weight: 100; "> (người đăng ký)
+                                </span>
+                                </span>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="col-md-12 mb-5"
+                                    style=" text-transform: uppercase;font-size: 1.2rem; font-weight: 600; font-family: inherit; ">
+                                    Xét giới hạn các ngày tiếp theo. tháng {{ date('m') }} năm {{ date('Y') }}
+                                </div>
+                                <div class="row">
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @foreach ($limits as $item)
+                                        @php
+                                            $temp = '+' . $i++ . 'day';
+                                        @endphp
+                                        <div class="mb-3 col-md-3 d-flex flex-column">
+                                            <label class="form-label" for="name"
+                                                style="text-transform: uppercase;font-size: 1rem; font-weight: 600; font-family: inherit; ">
+                                                {{ date('d', strtotime($temp)) }}</label>
+                                            <input type="text" name="{{ $i }}" value="{{ $item->limit_vaccine }}"
+                                                class="form-control">
+                                            <span style=" font-size: 0.8rem; ">
+                                                (người đăng ký)
+                                            </span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-end">
+                                <button class=" col-md- btn btn-primary" style="width: 15%;height: 65%;" type="submit"
+                                    name="submit" value="submit">Lưu
+                                    Thay Đổi</button>
+                                <a class=" col-md- btn btn-outline-secondary" href="{{ url('vaccine/limit') }} "
+                                    style="width: 15%; height: 65%;margin-left: 15px;">
+                                    Hủy bỏ</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
 
 
     </div>

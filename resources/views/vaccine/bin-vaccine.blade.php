@@ -114,13 +114,13 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->quantity }}</td>
 
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/khoi-phuc-vaccine/' . $item->id . '?lot_number=' . $item->lot_number) }}"
+                                                <a href="{{ url('vaccine/khoi-phuc-vaccine/' . $item->id . '?lot_number=' . $item->lot_number. '&date_of_manufacture=' . $item->date_of_manufacture. '&out_of_date=' . $item->out_of_date) }}"
                                                     onclick="return confirm('KHÔI PHỤC VACCINE NÀY')">
                                                     <i class="fas fa-window-restore"></i>
                                                 </a>
                                             </td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/delete-vaccine-bin/' . $item->id . '?lot_number=' . $item->lot_number) }}"
+                                                <a href="{{ url('vaccine/delete-vaccine-bin/' . $item->id . '?lot_number=' . $item->lot_number. '&date_of_manufacture=' . $item->date_of_manufacture. '&out_of_date=' . $item->out_of_date) }}"
                                                     onclick="return confirm('XÓA VĨNH VIỄN VACCINE NÀY')">
                                                     <i class="far fa-trash-alt"></i>
                                                 </a>

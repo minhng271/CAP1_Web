@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class vaccine extends Model
 {
     use SoftDeletes;
+    // protected $table = 'vaccines';
     protected $fillable = ['name','country','description','age_use_from','age_use_to','id_disease'];
 
     public function vaccine_patient(){

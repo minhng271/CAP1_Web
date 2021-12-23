@@ -11,6 +11,14 @@
 
 <body>
     <style>
+        body {
+            background: url("./public/img/bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
         .Text-before {
             position: absolute;
             background: rgb(46, 38, 38);
@@ -46,34 +54,34 @@
         <img src="{{ asset('img/mtac-system.png') }}" alt="" />
         <div class="menu">
             <div class="Vaccine">
-              @php
-              if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'test') {
-                  echo "<div class='d-flex'>
+                @php
+                    if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'test') {
+                        echo "<div class='d-flex'>
                                   <div class='Test-before'></div>
                                   <div class='Text-before'
                                       style='color: white;font-family: monospace; font-size: 2rem; display: flex; justify-content: center; align-items: center; top: 0; left: 0; right: 0; bottom: 0; '>
                                       Tài khoản của bạn không được sử dụng chức năng này</div>
                         </div>";
-              }
-              if (Auth::user()->type_hos == 'null') {
-                  echo "<div class='d-flex'>
+                    }
+                    if (Auth::user()->type_hos == 'null') {
+                        echo "<div class='d-flex'>
                                   <div class='Test-before'></div>
                                   <div class='Text-before'
                                       style='color: white;font-family: monospace; font-size: 2rem; display: flex; justify-content: center; align-items: center; top: 0; left: 0; right: 0; bottom: 0; '>
                                       Tài khoản của bạn không được sử dụng chức năng này</div>
                         </div>";
-              }
-              
-          @endphp
-            
-          <a href="@if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'test')
-            # 
+                    }
+                    
+                @endphp
+
+                <a
+                    href="@if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'test') # 
             @else {{ url('dashboard/vaccine') }} @endif">
                     <img src="{{ asset('img/iconVac.png') }}" alt="" /> <br />
                     <span>Tiêm Vaccine</span>
                 </a>
             </div>
-            
+
             <div class="Test">
                 @php
                     if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'vaccine') {
@@ -97,8 +105,8 @@
                 @endphp
 
 
-                <a href="@if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'vaccine')
-                    # 
+                <a
+                    href="@if (Auth::user()->type == 'hospital' && Auth::user()->type_hos == 'vaccine') # 
                     @else {{ url('dashboard/test') }} @endif">
                     <img src="{{ asset('img/iconTest.png') }}" alt="" /> <br />
                     <span>Xét nghiệm</span>

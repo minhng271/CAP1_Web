@@ -19,44 +19,63 @@
 
     </style>
     <div class="content">
-        @if (session('limit'))
-                <div style="margin-bottom: 1px" class="alert alert-success"><b>{{ session('limit') }}</b></div>
-        @endif
         <div class="container-fluid p-0">
-           <div class="row">
+            @if (session('limit'))
+                <span style="top: -48px;width: 30%;transform: translateX(15px);" class="alert alert-success"><b>{{ session('limit') }}</b></span>
+            @endif
             <div class="col-12 col-lg-12 col-xxl-12">
                 <div class="card-header  d-flex justify-content-between">
                     <h3>Xét giới hạn người đăng ký trong một ngày làm việc</h3>
                 </div>
-                <div class="card flex-fill" style=" display: flex; justify-content: center; align-items: center; ">
-                    <div class="limit-top row " style=" justify-content: center; align-items: center; ">
-                        <div class="limit-avatar col-md-4 d-flex justify-content-center">
-                            <img src="{{ asset('img/avatar.jpg') }}" style='width: 64%;border-radius: 100%;' alt="">
+                <div class="card flex-fill" style=" display: flex; align-items: center; ">
 
+                    <div class="row"
+                        style="margin-top:15px;background: aliceblue;padding: 20px ;width: 96%; border-radius:8px;min-height: 395px;">
+                        <div class="mb-3 col-md-4 limit-now">
+                            <label class="form-label" for="name"
+                                style="    text-transform: uppercase;font-size: 1.2rem; font-weight: 600; font-family: inherit; ">
+                                Giới hạn đăng ký hôm nay <br> {{ date('d-m-Y') }}{{ date('d') }}</label>
+                            <span
+                                style=" font-size: 2.5rem; font-weight: 600; margin-left: 5px; display: inline-block; ">{{ $date_now->limit_vaccine }}
+                                <span style=" font-size: 1rem; font-weight: 100; "> (người đăng ký)
+                                </span>
+                            </span>
                         </div>
-                        <div class="limit col-md-4">
-                            <div class="row">
-                                <div class="mb-3 col-md-12">
-                                    <label class="form-label" for="name"
-                                        style="    text-transform: uppercase;font-size: 1.3rem; font-weight: 600; font-family: inherit; ">
-                                        Giới hạn đăng ký tiêm vắc xin COVID-19 hôm nay</label>
-                                    <span style=" font-size: 3rem; font-weight: 600; margin-left: 15px; display: inline-block; ">
-                                        {{$limit}} <span style=" font-size: 1rem; font-weight: 100; "> (người đăng ký) </span>
-                                    </span>
-                                </div>
+                        <div class="col-md-8">
+                            <div class="col-md-12 mb-5"
+                                style=" text-transform: uppercase;font-size: 1.2rem; font-weight: 600; font-family: inherit; ">
+                                Xét giới hạn các ngày tiếp theo năm {{ date('Y') }}
                             </div>
                             <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <a class="mb-3 col-md- btn btn-outline-primary" href="{{ url('vaccine/limit/edit') }}">
-                                        Thay Đổi Giới Hạn</a>
-                                </div>
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($limits as $item)
+                                    @php
+                                        $temp = '+' . $i++ . 'day';
+                                    @endphp
+                                    <div class="mb-3 col-md-3 d-flex flex-column">
+                                        <label class="form-label" for="name"
+                                            style="    text-transform: uppercase;font-size: 1rem; font-weight: 600; font-family: inherit; ">
+                                            {{ date('d/m', strtotime($temp)) }}</label>
+                                        <span
+                                            style=" font-size: 1.5rem; font-weight: 400; margin-left: 15px; display: inline-block; ">
+                                            {{$item->limit_vaccine}}
+                                        </span>
+                                        <span style=" font-size: 0.8rem; ">
+                                            (người đăng ký)
+                                        </span>
+                                    </div>
+                                @endforeach
                             </div>
+                        </div>
+                        <div class="row d-flex justify-content-end">
+                            <a href="{{ url('vaccine/limit/edit') }}" style="width: 15%;height: 65%;"
+                                class="btn btn-primary">Thay đổi giới hạn</a>
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div>     
         </div>
 
 

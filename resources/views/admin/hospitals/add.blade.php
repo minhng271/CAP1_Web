@@ -50,13 +50,6 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        {!! Form::label('address', 'Địa Chỉ', []) !!}
-                        {!! Form::text('address', '', ['class' => 'form-control', 'id' => 'address']) !!}
-                        @error('address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
                         
                         {!! Form::label('type_hos', 'Quyền Sử Dụng', []) !!}
                         <select class="form-select" name="type_hos" id="type_hos">

@@ -10,7 +10,7 @@ class hospital extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name','address','phone','id_user'];
+    protected $fillable = ['name','address','phone','id_user','city','province','ward','created_at','updated_at'];
     public function test_patient()
     {
         return $this->hasMany(test_patient::class, 'id_hos', 'id');

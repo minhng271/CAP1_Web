@@ -1,5 +1,4 @@
 @extends('layouts.vaccine')
-@section('content')
     <style>
         .col-md-6.info-patient {
             border: 1px solid;
@@ -30,9 +29,9 @@
             color: red;
             opacity: 100%;
         }
-        
+
         .d-user:hover>i:after,
-        td.d-md-table-cell:hover>a:after{
+        td.d-md-table-cell:hover>a:after {
             width: 100%;
             opacity: 100%;
         }
@@ -50,28 +49,39 @@
             opacity: 0;
         }
 
-
     </style>
+@section('content')
     <main class="content">
         @if (session('update_vaccine'))
-                <div class="alert alert-success" style="margin-bottom:1px;">Cập nhật vắc xin <b>{{ session('update_vaccine') }}</b> Thành Công</div>
-            @endif
-            @if (session('delete_vaccine'))
-                <div class="alert alert-success" style="margin-bottom:1px;">Xóa <b>{{ session('delete_vaccine') }}</b> lô <b>{{session('lot_number')}}</b> Khỏi danh sách chờ thành công</div>
-            @endif
+            <div class="alert alert-success" style="margin-bottom:1px;">Cập nhật vắc xin
+                <b>{{ session('update_vaccine') }}</b> Thành Công</div>
+        @endif
+        @if (session('delete_vaccine'))
+            <div class="alert alert-success" style="margin-bottom:1px;">Xóa <b>{{ session('delete_vaccine') }}</b> lô
+                <b>{{ session('lot_number') }}</b> Khỏi danh sách chờ thành công</div>
+        @endif
         <div class="container-fluid p-0">
-            
+
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
                         <h3 style="text-transform: uppercase; font-weight: 600;">Danh sách Thông tin Vaccine</h3>
-                        <form class="col-md-4 d-flex justify-content-end" method="GET">
+                        <form class="col-md-6 d-flex justify-content-end" method="GET">
                             <input type="text" class='form-control' class="form-control" name="keyword"
                                 value="{{ request()->input('keyword') }}" placeholder="Tìm Kiếm ...">
+                            <select class="form-select" name="type_disease" style=" width: 35%; " id="type_disease">
+                                <option value="">--Tất Cả--</option>
+                                @foreach ($list_disease as $item)
+                                    <option value="{{ $item->id }}" @php
+                                        $type_disease = isset($_GET['type_disease'])?$_GET['type_disease']:''; 
+                                        if($type_disease == $item->id) echo "selected";
+                                    @endphp>{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                             <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
                         </form>
                     </div>
-                    <div class="card flex-fill">
+                    <div class="card flex-fill"  style="min-height: 500px">
                         <table class="table table-hover my-0">
                             <thead>
                                 <tr>
@@ -95,7 +105,6 @@
                                 @endphp
                                 @if ($vaccines)
                                     @foreach ($vaccines as $item)
-
                                         @php
                                             $count++;
                                         @endphp
@@ -106,30 +115,30 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->age_use_from }}</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->age_use_to }}</td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->date_add));
+                                                echo date('d-m-Y', strtotime($item->date_add));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->date_of_manufacture));
+                                                echo date('d-m-Y', strtotime($item->date_of_manufacture));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">@php
-                                                echo date("d-m-Y", strtotime($item->out_of_date));
+                                                echo date('d-m-Y', strtotime($item->out_of_date));
                                             @endphp</td>
                                             <td class="d-none d-xl-table-cell">{{ $item->lot_number }}</td>
-                                            <td class="d-none d-xl-table-cell" style="color: #ff2525">{{ $item->quantity }}</td>
-                                            
+                                            <td class="d-none d-xl-table-cell" style="color: #ff2525">
+                                                {{ $item->quantity }}</td>
+
                                             <td class="d-none d-md-table-cell" id="done[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/edit-vaccine/'.$item->id) }}">
+                                                <a href="{{ url('vaccine/edit-vaccine/' . $item->id) }}">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             </td>
                                             <td class="d-none d-md-table-cell" id="delete[{{ $item->id }}]">
-                                                <a href="{{ url('vaccine/delete-vaccine/'.$item->id.'?lot_number='.$item->lot_number) }}"
+                                                <a href="{{ url('vaccine/delete-vaccine/' . $item->id . '?lot_number=' . $item->lot_number. '&date_of_manufacture=' . $item->date_of_manufacture. '&out_of_date=' . $item->out_of_date) }}"
                                                     onclick="return confirm('XÓA VACCINE NÀY')">
                                                     <i class="far fa-trash-alt"></i>
                                                 </a>
                                             </td>
                                         </tr>
-                                        
                                     @endforeach
                                 @else
                                     <tr style="background:#rgb(240 238 238);color: black;">

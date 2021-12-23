@@ -18,11 +18,33 @@
     h5.card-title {
         text-transform: uppercase;
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
         color: #3a47de;
     }
 
 </style>
+<div id="mess-limit" class="swal-overlay swal-overlay--show-modal @php
+            if(!DB::table('limit_update')->where('date',date('Y-m-d',strtotime('+ 2day')))->where('limit_vaccine','0')->first()) echo "d-none";
+        @endphp" tabindex="-1">
+            <div class="swal-modal" role="dialog" aria-modal="true" style="margin-top: 7% !important; margin-top: 10px">
+                <div class="swal-icon swal-icon--warning">
+                    
+                </div>
+                <div class="swal-title" style="position: relative;">
+                    <i class="fa-solid fa-exclamation" style="position: absolute; z-index: 999; top: -200%;left: 11px;font-size: 3rem;color: #f8bc89;right: 0;"></i>
+            
+                    Bạn cần cập nhật giới hạn vắc xin cho những ngày tiếp theo !!!</div>
+                <div class="swal-text" style="">Chuyển tới phần cập nhật ?</div>
+                <div class="swal-footer">
+                    <div class="swal-button-container">
+                        <button id="btn-cancel" class="swal-button swal-button--cancel" tabindex="0">Cancel</button>
+                    </div>
+                    <div class="swal-button-container">
+                        <a id="btn-redirect-update" href="{{ url('vaccine/limit') }}" class=" text-decoration-none swal-button swal-button--confirm swal-button--danger">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>  
     <main class="content">
                 <div class="container-fluid p-0">
                     <div class="row">
@@ -40,11 +62,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <h1 class="mt-1 mb-3">{{number_format($sum_vac)}} <span style=" font-size: 13px; font-weight: 400; text-transform: lowercase; color: black;">
                                         (Liều)
                                     </span></h1>
                                     <div class="mb-0">
-                                        <span class="text-muted"> Số liệu từ trước tới nay</span>
+                                        <span class="@php if(($ratio_sum_old_vac<0)){ echo 'text-danger'; }else echo 'text-success';@endphp">
+                                        @php if(($ratio_sum_old_vac>0)){ echo '+'; } @endphp {{$ratio_sum_old_vac}}%</span>
+                                        <span class="text-muted">So với năm trước</span>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +86,7 @@
 
                                         <div class="col-auto">
                                             <div class="stat text-primary">
-                                                <img style="width: 100%;" src="{{ asset('img/icons/smile.png') }}" alt="">
+                                                <img style="background: #00ff1387;width: 100%;border-radius: 100%;" src="{{ asset('img/icons/smile.png') }}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -87,7 +112,7 @@
 
                                         <div class="col-auto">
                                             <div class="stat text-primary">
-                                                <img style="width: 100%;" src="{{ asset('img/icons/vaccine-con-lai.png') }}" alt="">
+                                                <img style="width: 100%;" src="{{ asset('img/icons/vac3.png') }}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +137,7 @@
 
                                         <div class="col-auto">
                                             <div class="stat text-primary">
-                                                <i class="align-middle" data-feather="shopping-cart"></i>
+                                                <img style="width: 100%;" src="{{ asset('img/icons/vac4.png') }}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -145,6 +170,8 @@
             </main>
 @endsection
 <script>
+    
+
     document.addEventListener("DOMContentLoaded", function() {
         var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
         var gradient = ctx.createLinearGradient(0, 0, 0, 225);

@@ -60,11 +60,11 @@
     <main class="content">
         <div class="container-fluid p-0">
             @if (session('restore_patient'))
-                <div class="alert alert-success" style=" margin-bottom: 1px; ">Khôi phục <b>{{ session('restore_patient') }}</b> Thành Công</div>
+                <div class="alert alert-success" style=" margin-bottom: 1px; width: 30%;transform: translateX(15px); ">Khôi phục <b>{{ session('restore_patient') }}</b> Thành Công</div>
             
             @endif
             @if (session('delete_patient'))
-                <div class="alert alert-success" style=" margin-bottom: 1px; ">Xóa <b>{{ session('delete_patient') }}</b> vĩnh viễn thành
+                <div class="alert alert-success" style=" margin-bottom: 1px;width: 30%;transform: translateX(15px); ">Xóa <b>{{ session('delete_patient') }}</b> vĩnh viễn thành
                     công</div>
             
             @endif

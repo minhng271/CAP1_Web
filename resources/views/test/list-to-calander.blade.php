@@ -54,12 +54,12 @@
     <main class="content">
         <div class="container-fluid p-0">
             @if (session('done_patient'))
-                <div class="alert alert-success" style=" margin-bottom: 1px; ">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
+                <div class="alert alert-success" style=" margin-bottom: 1px; width: 30%;transform: translateX(15px); ">Đã chuyển <b>{{ session('done_patient') }}</b> vào danh sách chờ Xác
                     Nhận</div>
                 
             @endif
             @if (session('delete_patient'))
-                <div class="alert alert-success" style=" margin-bottom: 1px; ">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
+                <div class="alert alert-success" style=" margin-bottom: 1px; width: 30%;transform: translateX(15px); ">Xóa <b>{{ session('delete_patient') }}</b> Khỏi danh sách chờ thành
                     công</div>
                 
             @endif
@@ -67,19 +67,10 @@
                 <div class="col-12 col-lg-12 col-xxl-12">
                     <div class="card-header  d-flex justify-content-between">
                         <h3 class="col-md-6">Tra Danh Sách Theo Lịch</h3>
-                        {{-- <form class="col-md-4 d-flex justify-content-end" method="GET">
-                            <input type="text" class='form-control' class="form-control" name="keyword"
-                                value="{{ request()->input('keyword') }}" placeholder="Tìm Kiếm ...">
-                            <input class="btn btn-primary ml-1" type="submit" value="Tìm Kiếm">
-                        </form> --}}
                         <form action="" method="get" class="col-md-6 row d-flex justify-content-end">
                             <div class="col-md-6">
                                 <input type="text" id="from_date" name="created_at"
-                                    value="@if (request()->input('created_at'))
-                                    {{ request()->input('created_at') }}
-                                    @else
-                                        {{$created_at}}
-                                    @endif" readonly="readonly"
+                                    value="@if (request()->input('created_at')){{ request()->input('created_at') }}@else{{$created_at}}@endif" readonly="readonly"
                                     class="form-control" />
                             </div>
                             <div class="col-md-3">
@@ -87,7 +78,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="card flex-fill">
+                    <div class="card flex-fill" style="min-height: 600px">
                         <table class="table table-hover my-0">
                             <thead>
                                 <tr>

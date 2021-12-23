@@ -60,7 +60,6 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Tên Bệnh Viện</th>
                                 <th scope="col">SDT</th>
-                                <th scope="col">Địa Chỉ</th>
                                 <th scope="col">Chức năng</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Tác vụ</th>
@@ -80,7 +79,6 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->phone }}</td>
-                                        <td>{{ $item->address }}</td>
                                         <td>@php
                                             if($item->type_hos == 'test'){
                                                 echo "xét nghiệm";

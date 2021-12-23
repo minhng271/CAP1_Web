@@ -16,7 +16,7 @@ class patientSeeder extends Seeder
         patient::insert(
             [
                 [
-                    'id_card'   =>'132456798',
+                    'id_card'   =>'130056798',
                     'fullname'  =>'Thái Bá Tuấn Anh',
                     'birthDate' => '2000-02-26',
                     'gender' => 'male',
@@ -33,7 +33,7 @@ class patientSeeder extends Seeder
                     'password'=>Hash::make('13246798') 
                 ],
                 [
-                    'id_card'   =>'132476798',
+                    'id_card'   =>'132476008',
                     'fullname'  =>'Nguyễn Ngọc Thùy Minh',
                     'birthDate' => '2000-01-27',
                     'gender' => 'female',
@@ -50,7 +50,7 @@ class patientSeeder extends Seeder
                     'password'=>Hash::make('13246798') 
                 ],
                 [
-                    'id_card'   =>'112456798',
+                    'id_card'   =>'116656798',
                     'fullname'  =>'Mai Bá Long',
                     'birthDate' => '2000-02-21',
                     'gender' => 'male',
@@ -67,7 +67,7 @@ class patientSeeder extends Seeder
                     'password'=>Hash::make('13246798') 
                 ],
                 [
-                    'id_card'   =>'116456798',
+                    'id_card'   =>'116456009',
                     'fullname'  =>'Lê Hoàng Quốc Việt',
                     'birthDate' => '2000-02-13',
                     'gender' => 'male',
@@ -84,7 +84,7 @@ class patientSeeder extends Seeder
                     'password'=>Hash::make('13246798') 
                 ],
                 [
-                    'id_card'   =>'132456123',
+                    'id_card'   =>'132456333',
                     'fullname'  =>'Nguyễn Đỗ Quốc Huy',
                     'birthDate' => '2000-02-28',
                     'gender' => 'male',

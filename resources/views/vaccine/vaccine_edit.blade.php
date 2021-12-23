@@ -19,7 +19,7 @@
 
                 <div class="mb-3  col-md-6">
                     <label class="form-label" for="country">Quốc Gia</label>
-                    <input class="form-control" type="text" name="country" id="country" value="{{$vaccines->country}}">
+                    <input class="form-control" disabled type="text" name="country" id="country" value="{{$vaccines->country}}">
                     @error('country')
                         <span class="text-danger" style="margin-top:5px; display: block;">{{ $message }}</span>
                     @enderror

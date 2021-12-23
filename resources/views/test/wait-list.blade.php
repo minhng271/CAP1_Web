@@ -35,7 +35,7 @@
 
         <div class="container-fluid p-0">
             @if (session('status'))
-                <div style=" margin-bottom: 1px; " class="alert alert-success">{{ session('status') }}</div>
+                <div style=" margin-bottom: 1px; width: 30%;transform: translateX(15px);" class="alert alert-success">{{ session('status') }}</div>
             @endif
             <div class="row">
                 <div class="col-12 col-lg-12 col-xxl-12">

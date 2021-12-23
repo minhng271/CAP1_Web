@@ -23,4 +23,8 @@ class vaccine_patient extends Model
     {
         return $this->belongsTo(vaccine::class, 'id_vac');
     }
+    public function disease()
+    {
+        return $this->belongsTo(disease::class, 'id_disease');
+    }
 }
