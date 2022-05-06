@@ -142,15 +142,20 @@ class VaccineController extends Controller
     function limit()
     {
         session(['active' => 'limit']);
-        if (!limit_web_mobile::where('date', date('Y-m-d', strtotime('+8day')))->first()) {
+        if(!limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first()){
             limit_web_mobile::create([
                 'date' =>  date('Y-m-d'),
                 'id_hos' => user::find(Auth::id())->id_hos,
                 'limit_vaccine' => 0
             ]);
+        }
+
+        if (!limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d', strtotime('+8day')))->first()) {
+            
             // tính số ngày cần cộng thêm
-            $date_last = strtotime(limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)
-                ->orderBy('date', 'DESC')->first()->date);
+            $date_temp = limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->orderBy('date', 'DESC')->first()?
+            limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->orderBy('date', 'DESC')->first()->date:date('Y-m-d');
+            $date_last = strtotime($date_temp);
             $first_date = strtotime(date('Y-m-d', strtotime('+8day')));
             $datediff = abs($first_date - $date_last);
             $count = floor($datediff / (60 * 60 * 24));
@@ -189,12 +194,12 @@ class VaccineController extends Controller
     {
         if ($request->input('submit')) {
             if (limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first()) {
-
                 // hom nay 
                 limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)
-                    ->where('date', date('Y-m-d'))->update([
-                        'limit_vaccine' => $request->limit_now
-                    ]);
+                ->where('date', date('Y-m-d'))->update([
+                    'limit_vaccine' => $request->limit_now
+                ]);
+                
                 // ngay sau
                 for ($i = 2; $i <= 9; $i++) {
                     $day = $i - 1;
@@ -846,6 +851,7 @@ class VaccineController extends Controller
     //DS theo lịch
     function list_to_calander(Request $request)
     {   
+
         session(['active' => 'calander']);
         if ($request->input('created_at')) {
             $created_at = date("Y-m-d", strtotime($request->input('created_at')));

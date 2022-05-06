@@ -112,9 +112,12 @@
                                             <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
                                             
                                             <td class="d-none d-xl-table-cell"><span class="@php
-                                                if($item->status == "Đã thanh toán") echo 'done';
+                                                if($item->status != "chưa thanh toán") echo 'done';
                                                 else echo 'undone';
-                                            @endphp">{{ $item->status }}</span></td>
+                                            @endphp">@php
+                                                if($item->status != "chưa thanh toán") echo 'Đã Thanh Toán';
+                                                else echo 'Chưa Thanh Toán';
+                                            @endphp</span></td>
 
                                             <td class="d-none d-md-table-cell d-user-2" data="@php
                                                 echo 'confirm-' . $item->id_card;

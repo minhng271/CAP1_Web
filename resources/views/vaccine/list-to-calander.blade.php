@@ -76,11 +76,7 @@
                            <form action="" method="get" class="col-md-6 row d-flex justify-content-end">
                             <div class="col-md-6">  
                                 <input type="text" id="from_date" name="created_at" 
-                                value="@if (request()->input('created_at'))
-                                {{ request()->input('created_at') }}
-                                @else
-                                    {{$created_at}}
-                                @endif" readonly="readonly" class="form-control" />  
+                                value="@if(request()->input('created_at')){{request()->input('created_at')}}@else{{$created_at}}@endif" readonly="readonly" class="form-control" />  
                            </div>
                             <div class="col-md-3">  
                                 <button type="submit" name="filter" id="filter" class="btn btn-info w-100">Tra cứu</button>  
@@ -130,7 +126,11 @@
                                             @endphp</td>
                                                 <td class="d-none d-xl-table-cell">{{ $item->phone }}</td>
                                                 <td class="d-none d-xl-table-cell">{{ $item->injection_times }}</td>
-                                                <td class="d-none d-xl-table-cell">{{ App\vaccine::where('id',$item->id_vac)->first()->name }}</td>
+                                                <td class="d-none d-xl-table-cell">@php
+                                                    if(DB::table('vaccines')->where('id',$item->id_vac)->first()){
+                                                        echo DB::table('vaccines')->where('id',$item->id_vac)->first()->name;
+                                                    }
+                                                @endphp</td>
                                                 
                                                 <td>
                                                     @if ($item->done_inject == 0)

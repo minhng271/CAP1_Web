@@ -157,3 +157,8 @@ Route::get('profile/{id}', function ($id) {
 
 
 Route::post('our_backup_database', 'AdminController@our_backup_database')->name('our_backup_database');
+
+Route::get('qr', function () {
+    
+    return view('qr');
+});

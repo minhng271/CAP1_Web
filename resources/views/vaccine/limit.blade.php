@@ -34,7 +34,7 @@
                         <div class="mb-3 col-md-4 limit-now">
                             <label class="form-label" for="name"
                                 style="    text-transform: uppercase;font-size: 1.2rem; font-weight: 600; font-family: inherit; ">
-                                Giới hạn đăng ký hôm nay <br> {{ date('d-m-Y') }}{{ date('d') }}</label>
+                                Giới hạn đăng ký hôm nay <br> {{ date('d-m-Y') }}</label>
                             <span
                                 style=" font-size: 2.5rem; font-weight: 600; margin-left: 5px; display: inline-block; ">{{ $date_now->limit_vaccine }}
                                 <span style=" font-size: 1rem; font-weight: 100; "> (người đăng ký)
@@ -60,7 +60,7 @@
                                             {{ date('d/m', strtotime($temp)) }}</label>
                                         <span
                                             style=" font-size: 1.5rem; font-weight: 400; margin-left: 15px; display: inline-block; ">
-                                            {{$item->limit_vaccine}}
+                                            <b>{{$item->limit_vaccine}}</b>
                                         </span>
                                         <span style=" font-size: 0.8rem; ">
                                             (người đăng ký)
