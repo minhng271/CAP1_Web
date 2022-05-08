@@ -24,7 +24,7 @@
 
 </style>
 <div id="mess-limit" class="swal-overlay swal-overlay--show-modal @php
-            if(!DB::table('limit_update')->where('date',date('Y-m-d',strtotime('+ 2day')))->where('limit_vaccine','0')->first()) echo "d-none";
+            if(!DB::table('limit_updates')->where('date',date('Y-m-d',strtotime('+ 2day')))->where('limit_vaccine','0')->first()) echo "d-none";
         @endphp" tabindex="-1">
             <div class="swal-modal" role="dialog" aria-modal="true" style="margin-top: 7% !important; margin-top: 10px">
                 <div class="swal-icon swal-icon--warning">

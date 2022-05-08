@@ -215,6 +215,21 @@
 
                         </ul>
                     </li>
+                    <li class="sidebar-item">
+                        <a href="#qr" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">QUÉT THÔNG TIN QR</a>
+                        <ul class="collapse list-unstyled @php if(session('active') == 'qr') echo " show" @endphp"
+                            id="qr">
+                            <li class="@php if(session('active') == 'qr') echo " active-a" @endphp"><a
+                                    href="{{ url('vaccine/quet-thong-tin-qr') }}" class="sidebar-dropdown-link">
+                                    <span @php
+                                        if (session('active') == 'qr') {
+                                            echo " style='color: #fff'";
+                                        }
+                                    @endphp class="align-middle">
+                                        <i class="fas fa-calendar-alt"></i> Quét QR</span></a>
+
+                        </ul>
+                    </li>
                 </ul>
 
 
@@ -278,7 +293,24 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="js/app.js"></script>
+    <script src="{{ asset('js/html5-qrcode.min.js') }}"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+          var elem = document.getElementsByClassName("result");
+          elem.click();
+        }
+        // camera 
+        function onScanSuccess(qrCodeMessage) {
+          document.getElementById('result').innerHTML = '<span class="result">'+qrCodeMessage+'</span>';
+          onload(window.open(qrCodeMessage));
+        }
+        function onScanError(errorMessage) {
+        //handle scan error
+        }
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+          "reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess, onScanError);
+        </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -321,6 +353,7 @@
             });
         });
     </script>
+    <script type="text/javascript" src="{{ asset('js/instascan.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>

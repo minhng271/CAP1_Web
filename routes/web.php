@@ -51,6 +51,10 @@ Route::middleware(['auth', 'is_test'])->group(function () {
     Route::get('test/xet-gia-tien-benh', 'TestController@price_disease');
     Route::get('test/price_test_edit/{id}', 'TestController@price_disease_edit');
     Route::post('test/price_update', 'TestController@price_update');
+
+    // QR
+    Route::get('test/quet-thong-tin-qr', 'TestController@qr');
+
     
 });
 
@@ -101,6 +105,9 @@ Route::middleware(['auth', 'is_vaccine'])->group(function () {
     Route::get('vaccine/restore-patient/{id_card}', 'VaccineController@restorePatient');
     Route::post('vaccine/result', 'VaccineController@result');
     Route::get('vaccine/danh-sach-theo-lich', 'VaccineController@list_to_calander');
+
+    // QR
+    Route::get('vaccine/quet-thong-tin-qr', 'VaccineController@qr');
 });
 
 

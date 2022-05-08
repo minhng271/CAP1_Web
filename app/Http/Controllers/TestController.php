@@ -154,33 +154,44 @@ class TestController extends Controller
     function limit()
     {
         session(['active' => 'limit']);
-        if (!limit_web_mobile::where('date', date('Y-m-d', strtotime('+8day')))->first()) {
+
+        // lần đầu tiên đăng nhập
+        if(!limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first()){
             limit_web_mobile::create([
                 'date' =>  date('Y-m-d'),
                 'id_hos' => user::find(Auth::id())->id_hos,
                 'limit_test' => 0
             ]);
-            // tính số ngày cần cộng thêm
-            $date_last = strtotime(limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)
-                ->orderBy('date', 'DESC')->first()->date);
-            $first_date = strtotime(date('Y-m-d', strtotime('+8day')));
-            $datediff = abs($first_date - $date_last);
-            $count = floor($datediff / (60 * 60 * 24));
-
+            
             // tạo các ngày tiếp theo
-            for ($i = $count; $i >= 1; $i--) {
+            for ($i = 1; $i < 9; $i++) {
                 limit_web_mobile::create([
-                    'date' =>  date('Y-m-d', strtotime('+9day -' . $i . "day")),
+                    'date' =>  date('Y-m-d', strtotime('+' . $i . "day")),
                     'id_hos' => user::find(Auth::id())->id_hos,
                     'limit_test' => 0
                 ]);
             }
+
+        }else{
+            // tính số ngày cần cộng thêm
+            $date_last_old = strtotime(limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->orderBy('date', 'DESC')->first()->date);
+            $date_last_new = strtotime(date('Y-m-d', strtotime('+8day')));
+            // tính ngày cần cộng thêm
+            $datediff = abs($date_last_new - $date_last_old);
+            $count = floor($datediff / (60 * 60 * 24));
+
+            // add ngày cần cộng
+            for ($i = $count; $i >= 1; $i--) {
+                        limit_web_mobile::create([
+                            'date' =>  date('Y-m-d', strtotime('+9day -' . $i . "day")),
+                            'id_hos' => user::find(Auth::id())->id_hos,
+                            'limit_test' => 0
+                        ]);
+            }
         }
 
-        if (limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first()) {
-            $limits =  limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', '>', date('Y-m-d'))->get();
-            $date_now = limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first();
-        }
+        $limits =  limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', '>', date('Y-m-d'))->get();
+        $date_now = limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first();
         return view('test.limit', compact('limits', 'date_now'));
     }
 
@@ -453,4 +464,10 @@ class TestController extends Controller
         $name = disease::find($id_disease)->name;
         return redirect('test/xet-gia-tien-benh')->with('name_vac',$name);
     }
+
+    public function qr(){
+
+        return view('test.qr');
+    }
+
 }

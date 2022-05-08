@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTimePriceDisease extends Migration
+class AddTimeToLimitupdate extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,7 @@ class AddTimePriceDisease extends Migration
      */
     public function up()
     {
-        Schema::table('price_disease_hos', function (Blueprint $table) {
-            
+        Schema::table('limit_updates', function (Blueprint $table) {
             $table->timestamps();
         });
     }
@@ -26,7 +25,7 @@ class AddTimePriceDisease extends Migration
      */
     public function down()
     {
-        Schema::table('price_disease_hos', function (Blueprint $table) {
+        Schema::table('limit_update2', function (Blueprint $table) {
             //
         });
     }
