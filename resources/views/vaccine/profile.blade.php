@@ -2,7 +2,7 @@
 @section('content')
     <div class="content">
         <div class="profile">
-            <div class="content">
+            <div class="content"  style="background: white; border-radius: 8px">
                 @if (session('success'))
                     <div class="alert alert-success">{{session('success')}}</div>
                 @endif

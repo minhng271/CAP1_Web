@@ -915,7 +915,7 @@ class VaccineController extends Controller
     }
 
     public function qr(){
-
+        session(['active' => 'qr']);
         return view('vaccine.qr');
     }
 }

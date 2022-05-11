@@ -156,13 +156,13 @@ class TestController extends Controller
         session(['active' => 'limit']);
 
         // lần đầu tiên đăng nhập
-        if(!limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first()){
+        if (!limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->where('date', date('Y-m-d'))->first()) {
             limit_web_mobile::create([
                 'date' =>  date('Y-m-d'),
                 'id_hos' => user::find(Auth::id())->id_hos,
                 'limit_test' => 0
             ]);
-            
+
             // tạo các ngày tiếp theo
             for ($i = 1; $i < 9; $i++) {
                 limit_web_mobile::create([
@@ -171,8 +171,7 @@ class TestController extends Controller
                     'limit_test' => 0
                 ]);
             }
-
-        }else{
+        } else {
             // tính số ngày cần cộng thêm
             $date_last_old = strtotime(limit_web_mobile::where('id_hos', user::find(Auth::id())->id_hos)->orderBy('date', 'DESC')->first()->date);
             $date_last_new = strtotime(date('Y-m-d', strtotime('+8day')));
@@ -182,11 +181,11 @@ class TestController extends Controller
 
             // add ngày cần cộng
             for ($i = $count; $i >= 1; $i--) {
-                        limit_web_mobile::create([
-                            'date' =>  date('Y-m-d', strtotime('+9day -' . $i . "day")),
-                            'id_hos' => user::find(Auth::id())->id_hos,
-                            'limit_test' => 0
-                        ]);
+                limit_web_mobile::create([
+                    'date' =>  date('Y-m-d', strtotime('+9day -' . $i . "day")),
+                    'id_hos' => user::find(Auth::id())->id_hos,
+                    'limit_test' => 0
+                ]);
             }
         }
 
@@ -425,49 +424,52 @@ class TestController extends Controller
         // print_r($patients);
         return view('test.list-to-calander', compact('patients', 'created_at'));
     }
-    function price_disease(){
+    function price_disease()
+    {
         $diseases = disease::all();
         foreach ($diseases as $item) {
-            if(!price_disease_hos::where('id_disease',$item->id)->where('id_hos',user::find(Auth::id())->id_hos)->first()){
+            if (!price_disease_hos::where('id_disease', $item->id)->where('id_hos', user::find(Auth::id())->id_hos)->first()) {
                 price_disease_hos::create([
                     'id_hos' => user::find(Auth::id())->id_hos,
                     'id_disease' => $item->id,
                     'price_test' => 0
                 ]);
-            }            
+            }
         }
         session(['active' => 'price_dis']);
         $price_dis = DB::table('price_disease_hos')
-        ->select('price_disease_hos.id','price_disease_hos.price_test','diseases.name')
-        ->where('id_hos',user::find(Auth::id())->id_hos)
-        ->join('diseases','diseases.id','=','price_disease_hos.id_disease')->get();
-        return view('test.price_disease',compact('price_dis'));
+            ->select('price_disease_hos.id', 'price_disease_hos.price_test', 'diseases.name')
+            ->where('id_hos', user::find(Auth::id())->id_hos)
+            ->join('diseases', 'diseases.id', '=', 'price_disease_hos.id_disease')->get();
+        return view('test.price_disease', compact('price_dis'));
     }
 
-    function price_disease_edit(Request $request){
+    function price_disease_edit(Request $request)
+    {
         session(['active' => 'price_dis']);
         $price_dis = DB::table('price_disease_hos')
-        ->select('price_disease_hos.id','price_disease_hos.price_test','diseases.name')
-        ->where('price_disease_hos.id',$request->id)
-        ->join('diseases','diseases.id','=','price_disease_hos.id_disease')->first();
-        return view('test.price_disease_edit',compact('price_dis'));
+            ->select('price_disease_hos.id', 'price_disease_hos.price_test', 'diseases.name')
+            ->where('price_disease_hos.id', $request->id)
+            ->join('diseases', 'diseases.id', '=', 'price_disease_hos.id_disease')->first();
+        return view('test.price_disease_edit', compact('price_dis'));
     }
 
-    public function price_update(Request $request){
-        price_disease_hos::where('id',$request->id)->update(
+    public function price_update(Request $request)
+    {
+        price_disease_hos::where('id', $request->id)->update(
             [
                 'price_test' => $request->price_test
             ]
         );
-         
+
         $id_disease = price_disease_hos::find($request->id)->id_disease;
         $name = disease::find($id_disease)->name;
-        return redirect('test/xet-gia-tien-benh')->with('name_vac',$name);
+        return redirect('test/xet-gia-tien-benh')->with('name_vac', $name);
     }
 
-    public function qr(){
-
+    public function qr()
+    {
+        session(['active' => 'price_dis']);
         return view('test.qr');
     }
-
 }
