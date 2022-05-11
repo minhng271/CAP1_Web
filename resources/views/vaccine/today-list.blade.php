@@ -296,10 +296,10 @@
                                         <div class="mb mb-2 d-flex">
                                             <label for="status" class='form-label'>Thanh toán</label>
                                             <select class="form-select w-50"  name="status" id="status">
-                                                <option value="Đã thanh toán" @php
+                                                <option value="đã thanh toán" @php
                                                     if($item->status != 'chưa thanh toán') echo 'selected';
                                                 @endphp>Đã Thanh Toán</option>
-                                                <option value="Chưa thanh toán"  @php
+                                                <option value="chưa thanh toán"  @php
                                                 if($item->status == 'chưa thanh toán') echo 'selected';
                                             @endphp>Chưa Thanh Toán</option>
                                             </select>
