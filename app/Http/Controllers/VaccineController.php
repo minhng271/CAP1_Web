@@ -709,13 +709,14 @@ class VaccineController extends Controller
             $keyword = $request->input('keyword');
         }
 
-        $vaccines = vaccine_patient::select('patients.*', 'vaccine_patients.id_disease', 'vaccine_patients.id_vac', 'vaccine_patients.status', 'vaccine_patients.injection_times', 'vaccine_patients.vaccine_1', 'vaccine_patients.vaccine_2', 'vaccine_patients.vaccine_3', 'vaccines.name')
+        $vaccines = vaccine_patient::select('patients.*', 'vaccine_patients.id_disease', 'vaccine_patients.registerTime', 'vaccine_patients.id_vac', 'vaccine_patients.status', 'vaccine_patients.injection_times', 'vaccine_patients.vaccine_1', 'vaccine_patients.vaccine_2', 'vaccine_patients.vaccine_3', 'vaccines.name')
             ->join('patients', 'vaccine_patients.id_card', 'patients.id_card')
             ->leftJoin('vaccines', 'vaccine_patients.id_vac', 'vaccines.id')
             ->where('vaccine_patients.id_hos', user::find(Auth::id())->id_hos)
             ->where('vaccine_patients.done_inject', '0')
             ->where('date', date('Y-m-d'))
             ->where('patients.fullname', 'like', '%' . $keyword . '%')
+            ->orderBy('vaccine_patients.registerTime')
             ->with('disease')->paginate(config('app.paginate'));
         return view('vaccine.today-list', compact('vaccines'));
     }

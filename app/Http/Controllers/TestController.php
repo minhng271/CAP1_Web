@@ -315,6 +315,7 @@ class TestController extends Controller
             ->where('test_patient.id_hos', User::find(Auth::id())->id_hos)
             ->where('test_patient.wait_at', '0')
             ->where('date', date('Y-m-d'))
+            ->orderBy('vaccine_patients.registerTime')
             ->where('patients.fullname', 'like', '%' . $keyword . '%')->paginate(config('app.paginate'));
         return view('test.today-list', compact('patients'));
     }
